@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-tw">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>貓神健檢小幫手</title>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-
-            crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
     <!-- clipboard.js v2.0.4 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
@@ -56,8 +55,8 @@
         function findLength(str){
             var length, half, full, chi = 0;
             half = str.match(/[\u0000-\u00ff]/g) || [];	//半形
-            chi = str.match(/[\u4e00-\u9fa5]/g) || [];	//中文
-            full = str.match(/[\uff00-\uffff]/g) || [];	//全形
+            chi = str.match(/[\u4e00-\u9fa5]/g) || [];	    //中文
+            full = str.match(/[\uff00-\uffff]/g) || [];	    //全形
 
             return (half.length / 2) + chi.length + full.length;
         }
