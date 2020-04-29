@@ -269,6 +269,13 @@ $(document).ready(function () {
         title: '暱稱'
     }];
 
+    $('#char_table').bootstrapTable({
+        columns: tableColums,
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark"
+    });
+    $('#char_table').bootstrapTable('showLoading');
+
     $.myFileReader
         .addFile('5star','./csv/5star.csv')
         .run(
@@ -300,19 +307,14 @@ $(document).ready(function () {
                         'had5': (row["★5"] === "TRUE")? '':'none'
                     };
                 });
+                $('#char_table').bootstrapTable('hideLoading');
                 $('#char_table').bootstrapTable('load', rows);
             },
             function (key) {
+                $('#char_table').bootstrapTable('hideLoading');
                 console.log("error", key);
             });
 
-    $('#char_table').bootstrapTable({
-        data: [],
-        columns: tableColums,
-        classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark"
-
-    });
 
     $("button#gen").on('click', function(){
         var table = $('#editor1').html();
