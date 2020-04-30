@@ -16,12 +16,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
 
     <!-- bootstrap 4.3.1 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <!-- bootstrap table 1.15.5 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.5/bootstrap-table.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.5/bootstrap-table.js"></script>
+    <!-- bootstrap table 1.16.6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.js"></script>
 
     <!-- bootbox.js v5.4.0 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
@@ -29,50 +30,210 @@
     <!-- jquery.csv.js 2012 -->
     <script src="./lib/jquery-csv/jquery.csv.min.js"></script>
 
+    <!-- User script -->
     <script src="./js/my-storage.js"></script>
     <script src="./js/my-canvas.js"></script>
-
     <script src="./js/main.js"></script>
+    <!-- User css -->
+    <link rel="stylesheet" href="./style/css/app.css">
 
+    <!-- Script -->
     <script type="text/javascript">
     </script>
 
 </head>
 <body>
+    <div class="fixed-nav">
+        <ul class="nav nav-pills" id="myTab" role="tablist" style="min-height:40px">
+            <li class="nav-item">
+                <a class="nav-link active" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">角色表</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="option-tab" data-toggle="tab" href="#option-list" role="tab" aria-controls="list" aria-selected="true">進階</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuOffset">產生</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                    <a class="dropdown-item" id="gentext-tab" data-toggle="tab" href="#gentexttable" role="tab" aria-controls="gentext" aria-selected="false">
+                        <i class="fas fa-list-ul"></i>
+                        生成純文字
+                        <i class="fas fa-caret-right"></i>
+                    </a>
+                    <span class="dropdown-item-text">純文字版本適合任何人使用，複製後直接貼上即可。(建議)</span>
+                    <a class="dropdown-item" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">
+                        <i class="fas fa-th-list"></i>
+                        生成表格
+                        <i class="fas fa-caret-right"></i>
+                    </a>
+                    <span class="dropdown-item-text">生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</span>
 
-<ul class="nav nav-pills" id="myTab" role="tablist" style="min-height:40px">
-    <li class="nav-item">
-        <a class="nav-link active" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">角色表</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">生成表格</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="gentext-tab" data-toggle="tab" href="#gentexttable" role="tab" aria-controls="gentext" aria-selected="false">生成純文字</a>
-    </li>
-</ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="list" aria-selected="true">
+                    <i class="fas fa-question-circle"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<div class="tab-content" id="myTabContent">
 
-    <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
-        <table id="char_table" class="table table-bordered table-striped table-sm table-borderless"></table>
-        <div class="alert alert-primary" role="alert">
-            小提示︰健檢表格請在置頂的集中串中回應喔♪
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+            <table id="char_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+            <div class="alert alert-primary" role="alert">
+                小提示︰健檢表格請在置頂的集中串中回應喔♪
+            </div>
+            <div class="fixed-bottom-panel" >
+                <div class="panel-body">
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button type="button" class="btn btn-primary open-detail" id="openDetail">
+                            <i class="fas fa-id-card"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary close-detail" id="closeDetail">
+                            <i class="fas fa-id-card"></i>
+                        </button>
+                    </div>
+
+                    <div class="btn-group dropup mr-2" role="group">
+                        <button id="weaponGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="icon">
+                                <img src="images/icons/weapon/sword.png" />
+                            </div>
+                        </button>
+                        <div id="weaponGroup" class="dropdown-menu" aria-labelledby="weaponGroupDrop">
+                            <a class="dropdown-item" href="#" data-weapon-type="劍">
+                                <img src="images/icons/weapon/sword.png" height="32" width="32"/>
+                                劍
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="杖">
+                                <img src="images/icons/weapon/staff.png" height="32" width="32"/>
+                                杖
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="槍">
+                                <img src="images/icons/weapon/lance.png" height="32" width="32"/>
+                                槍
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="刀">
+                                <img src="images/icons/weapon/katana.png" height="32" width="32"/>
+                                刀
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="錘">
+                                <img src="images/icons/weapon/hammer.png" height="32" width="32"/>
+                                錘
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="拳">
+                                <img src="images/icons/weapon/fists.png" height="32" width="32"/>
+                                拳
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="弓">
+                                <img src="images/icons/weapon/bow.png" height="32" width="32"/>
+                                弓
+                            </a>
+                            <a class="dropdown-item" href="#" data-weapon-type="斧">
+                                <img src="images/icons/weapon/ax.png" height="32" width="32"/>
+                                斧
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="btn-group dropup mr-2" role="group">
+                        <button id="elementGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="icon">
+                                <img src="images/icons/element/none.png" />
+                            </div>
+                        </button>
+                        <div id="elementGroup" class="dropdown-menu" aria-labelledby="elementGroupDrop">
+                            <a class="dropdown-item" href="#" data-element-type="地">
+                                <img src="images/icons/element/earth.png" height="32" width="32"/>
+                                地屬性
+                            </a>
+                            <a class="dropdown-item" href="#" data-element-type="火">
+                                <img src="images/icons/element/fire.png" height="32" width="32"/>
+                                火屬性
+                            </a>
+                            <a class="dropdown-item" href="#" data-element-type="水">
+                                <img src="images/icons/element/water.png" height="32" width="32"/>
+                                水屬性
+                            </a>
+                            <a class="dropdown-item" href="#" data-element-type="風">
+                                <img src="images/icons/element/wind.png" height="32" width="32"/>
+                                風屬性
+                            </a>
+                            <a class="dropdown-item" href="#" data-element-type="無">
+                                <img src="images/icons/element/none.png" height="32" width="32"/>
+                                無屬性
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="btn-group dropup mr-2" role="group">
+                        <button id="optionListGroup" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <div id="optionList" class="dropdown-menu" aria-labelledby="optionListGroup">
+                            <a class="dropdown-item" href="#selectall">
+                                <i class="fas fa-check-square"></i> 選擇全部
+                            </a>
+                            <a class="dropdown-item" href="#unselectall">
+                                <i class="far fa-square"></i> 取消選擇
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user-check"></i> 自動記錄
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
-        <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
-        <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
-        <div id="editor1" contentEditable="false"></div>
-    </div>
+        <div class="tab-pane fade" id="option-list" role="tabpanel" aria-labelledby="option-tab">
+            <div class="container-lg">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="checked" disabled>
+                            <label class="custom-control-label" for="customSwitch1">輸出表格包含未持有角色</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch2" disabled>
+                            <label class="custom-control-label" for="customSwitch1">輸出表格包含天冥值資料</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="tab-pane fade" id="gentexttable" role="tabpanel" aria-labelledby="gentext-tab">
-        <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
-        <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
-        <div id="editor2" contentEditable="false"></div>
-    </div>
+        </div>
 
-</div>
+        <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
+            <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
+            <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
+            <div id="editor1" contentEditable="false"></div>
+        </div>
+
+        <div class="tab-pane fade" id="gentexttable" role="tabpanel" aria-labelledby="gentext-tab">
+            <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
+            <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
+            <div id="editor2" contentEditable="false"></div>
+        </div>
+
+        <div class="tab-pane fade" id="help" role="tabpanel" aria-labelledby="help-tab">
+            <img src="images/otoha_bar1.png" class="img-fluid"/>
+            <div class="container-lg">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>
+                            本表格生產器主要為巴哈姆特哈拉區而設。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </body>
 </html>

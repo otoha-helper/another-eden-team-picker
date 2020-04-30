@@ -37,7 +37,6 @@
              */
             save: function (key, item) {
                 localStorage.setItem(key, JSON.stringify(item));
-                console.log("save");
                 return this;
             },
             /**

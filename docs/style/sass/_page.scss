@@ -1,0 +1,91 @@
+.fixed-nav{
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  .nav-item{
+    .nav-link{
+      border-radius: 0px 0px 5px 5px;
+      -moz-border-radius: 0px 0px 5px 5px;
+      -webkit-border-radius: 0px 0px 5px 5px;
+    }
+    .dropdown-item{
+      border: 1px solid;
+    }
+  }
+
+}
+.tab-content{
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.fixed-bottom-panel{
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  bottom: -3px;
+  display: block;
+  .panel-body{
+    display: table;
+    margin: 0 auto;
+    .btn-group{
+      position: relative;
+      .btn{
+        border-radius: 5px 5px 0px 0px;
+        -moz-border-radius: 5px 5px 0px 0px;
+        -webkit-border-radius: 5px 5px 0px 0px;
+      }
+      .open-detail{
+        display: block;
+      }
+      .close-detail{
+        display: none;
+      }
+    }
+  }
+}
+
+.btn{
+  .icon{
+    width: 20px;
+    display: inline-block;
+    overflow: visible;
+    img{
+      height: 30px;
+      width: 30px;
+      position: absolute;
+      top: 4px;
+      left: 7px;
+    }
+  }
+}
+
+
+table{
+  i{
+    cursor: pointer;
+  }
+  .media{
+    img{
+      width: 50px;
+      height: 50px;
+    }
+    h5{
+      font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+      font-weight: bold;
+      margin: 0px;
+    }
+  }
+
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input.light-shadow{
+    padding: 0;
+    text-align: center;
+  }
+}
