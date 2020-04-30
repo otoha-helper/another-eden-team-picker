@@ -1,0 +1,104 @@
+@charset "UTF-8";
+/*
+* Another eden team picker style
+* Designed for Another eden team picker
+* Copyrighted AlexWong
+ */
+/* line 1, ../sass/_page.scss */
+.fixed-nav {
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+/* line 10, ../sass/_page.scss */
+.fixed-nav .nav-item .nav-link {
+  border-radius: 0px 0px 5px 5px;
+  -moz-border-radius: 0px 0px 5px 5px;
+  -webkit-border-radius: 0px 0px 5px 5px;
+}
+/* line 15, ../sass/_page.scss */
+.fixed-nav .nav-item .dropdown-item {
+  border: 1px solid;
+}
+
+/* line 21, ../sass/_page.scss */
+.tab-content {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* line 26, ../sass/_page.scss */
+.fixed-bottom-panel {
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  bottom: -3px;
+  display: block;
+}
+/* line 32, ../sass/_page.scss */
+.fixed-bottom-panel .panel-body {
+  display: table;
+  margin: 0 auto;
+}
+/* line 35, ../sass/_page.scss */
+.fixed-bottom-panel .panel-body .btn-group {
+  position: relative;
+}
+/* line 37, ../sass/_page.scss */
+.fixed-bottom-panel .panel-body .btn-group .btn {
+  border-radius: 5px 5px 0px 0px;
+  -moz-border-radius: 5px 5px 0px 0px;
+  -webkit-border-radius: 5px 5px 0px 0px;
+}
+/* line 42, ../sass/_page.scss */
+.fixed-bottom-panel .panel-body .btn-group .open-detail {
+  display: block;
+}
+/* line 45, ../sass/_page.scss */
+.fixed-bottom-panel .panel-body .btn-group .close-detail {
+  display: none;
+}
+
+/* line 53, ../sass/_page.scss */
+.btn .icon {
+  width: 20px;
+  display: inline-block;
+  overflow: visible;
+}
+/* line 57, ../sass/_page.scss */
+.btn .icon img {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  top: 4px;
+  left: 7px;
+}
+
+/* line 69, ../sass/_page.scss */
+table i {
+  cursor: pointer;
+}
+/* line 73, ../sass/_page.scss */
+table .media img {
+  width: 50px;
+  height: 50px;
+}
+/* line 77, ../sass/_page.scss */
+table .media h5 {
+  font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+  font-weight: bold;
+  margin: 0px;
+}
+/* line 84, ../sass/_page.scss */
+table input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+/* line 87, ../sass/_page.scss */
+table input.light-shadow {
+  padding: 0;
+  text-align: center;
+}
