@@ -2,18 +2,23 @@
 <html lang="zh-TW">
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165278227-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <!--<script async src="https://www.googletagmanager.com/gtag/js?id=UA-165278227-1"></script>-->
+    <!--<script>-->
+      <!--window.dataLayer = window.dataLayer || [];-->
+      <!--function gtag(){dataLayer.push(arguments);}-->
+      <!--gtag('js', new Date());-->
 
-      gtag('config', 'UA-165278227-1');
-    </script>
-    <meta charset="UTF-8">
+      <!--gtag('config', 'UA-165278227-1');-->
+    <!--</script>-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+    <meta name="author" content="AlexWong" >
+    <meta name="robots" content="index, follow" >
+    <meta name="description" content="巴哈姆特穿越時空的貓哈拉版用隊伍健檢表格產生器" >
+    <meta name="keywords" content="穿越時空的貓, 隊伍健檢" >
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>貓神健檢小幫手</title>
+    <title>貓神健檢小幫手 - 表格產生器</title>
 
     <!-- jquery.js v3.4.1 -->
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
@@ -44,14 +49,17 @@
     <script src="./js/my-canvas.js"></script>
     <script src="./js/main.js"></script>
     <!-- User css -->
-    <link rel="stylesheet" href="./style/css/app.css">
+    <link rel="stylesheet" href="./style/css/app.css" media="screen" type="text/css">
+    <!--[if IE]><link href="./style/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" ><![endif]-->
+    <!--[if lt IE 9]><link href="./style/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" ><![endif]-->
 
-    <!-- Script -->
+    <!-- In page Script -->
     <script type="text/javascript">
     </script>
 
 </head>
 <body>
+<section class="top-nav">
     <div class="fixed-nav">
         <ul class="nav nav-pills" id="myTab" role="tablist" style="min-height:40px">
             <li class="nav-item">
@@ -85,19 +93,37 @@
             </li>
         </ul>
     </div>
-
-
+</section>
+<section class="content-tabs">
     <div class="tab-content" id="myTabContent">
 
         <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
-            <table id="char_table" class="table table-bordered table-striped table-sm table-borderless"></table>
-            <div class="alert alert-primary" role="alert">
-                小提示︰健檢表格請在置頂的集中串中回應喔♪
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="" id="toolbar">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Select all">
+                            <button type="button" class="btn" id="selectAllStar5Listed">
+                                <i class="fas fa-check-square"></i> 選擇全部
+                            </button>
+                            <button type="button" class="btn" id="unselectAllStar5Listed">
+                                <i class="far fa-square"></i> 取消選擇
+                            </button>
+                        </div>
+
+                    </div>
+                    <table id="char_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                </div>
+                <div class="row justify-content-center no-gutters">
+                    <div class="col-12 col-sm-6">
+
+                    </div>
+                </div>
             </div>
+
             <div class="fixed-bottom-panel" >
                 <div class="panel-body">
-                    <div class="btn-group mr-2" role="group" aria-label="Second group">
-                        <button type="button" class="btn btn-primary open-detail" id="openDetail">
+                    <div class="btn-group mr-2" role="group">
+                        <button type="button" class="btn btn-light open-detail" id="openDetail">
                             <i class="fas fa-id-card"></i>
                         </button>
                         <button type="button" class="btn btn-primary close-detail" id="closeDetail">
@@ -106,7 +132,7 @@
                     </div>
 
                     <div class="btn-group dropup mr-2" role="group">
-                        <button id="weaponGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button id="weaponGroupDrop" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="icon">
                                 <img src="images/icons/weapon/sword.png" />
                             </div>
@@ -149,7 +175,7 @@
                     </div>
 
                     <div class="btn-group dropup mr-2" role="group">
-                        <button id="elementGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button id="elementGroupDrop" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="icon">
                                 <img src="images/icons/element/none.png" />
                             </div>
@@ -184,15 +210,13 @@
                             <i class="fas fa-cog"></i>
                         </button>
                         <div id="optionList" class="dropdown-menu" aria-labelledby="optionListGroup">
-                            <a class="dropdown-item" href="#selectall">
-                                <i class="fas fa-check-square"></i> 選擇全部
+                            <a class="dropdown-item" href="#cleanup">
+                                <i class="fas fa-trash-alt"></i> 清除記錄
                             </a>
-                            <a class="dropdown-item" href="#unselectall">
-                                <i class="far fa-square"></i> 取消選擇
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user-check"></i> 自動記錄
-                            </a>
+                            <div class="dropdown-divider"></div>
+                            <span class="dropdown-header">
+                                <i class="fas fa-user-check"></i> 自動記錄中
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -200,42 +224,87 @@
         </div>
 
         <div class="tab-pane fade" id="option-list" role="tabpanel" aria-labelledby="option-tab">
-            <div class="container-lg">
-                <div class="row">
-                    <div class="col-12">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+
+                        <div id="mainStory" data-newest="66">
+                            <h4>主線章節</h4>
+                            <div class="btn-inline main-story-btn-group" id="mainStoryBtnGroup"></div>
+                        </div>
+                        <p></p>
+                        <h4>其他</h4>
+                        <div id="extraStory">
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <table id="free_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-10 col-lg-6">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="checked" disabled>
-                            <label class="custom-control-label" for="customSwitch1">輸出表格包含未持有角色</label>
+                            <label class="custom-control-label" for="customSwitch1">
+                                輸出表格包含未持有角色
+                            </label>
                         </div>
+
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="customSwitch2" disabled>
-                            <label class="custom-control-label" for="customSwitch1">輸出表格包含天冥值資料</label>
+                            <label class="custom-control-label" for="customSwitch1">
+                                輸出表格包含天冥值資料
+                            </label>
                         </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
+            <div class="container">
+                <div class="row justify-content-center no-gutters">
+                    <div class="">
+                        <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
+                        <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
+                        <div id="editor1" contentEditable="false"></div>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
-            <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
-            <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
-            <div id="editor1" contentEditable="false"></div>
-        </div>
-
         <div class="tab-pane fade" id="gentexttable" role="tabpanel" aria-labelledby="gentext-tab">
-            <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
-            <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
-            <div id="editor2" contentEditable="false"></div>
+            <div class="container">
+                <div class="row justify-content-center no-gutters">
+                    <div class="">
+                        <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
+                        <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
+                        <div id="editor2" contentEditable="false"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="tab-pane fade" id="help" role="tabpanel" aria-labelledby="help-tab">
-            <img src="images/otoha_bar1.png" class="img-fluid"/>
-            <div class="container-lg">
-                <div class="row">
-                    <div class="col-sm-12">
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+                        <img src="images/otoha_bar1.png" class="img-fluid"/>
+                        <h1>貓神健檢小幫手</h1>
                         <p>
-                            本表格生產器主要為巴哈姆特哈拉區而設。
+                            本表格生產器主要為巴哈姆特穿越時空的貓哈拉區而設，主要目的為幫忙隊伍健檢。
                         </p>
                     </div>
                 </div>
@@ -244,5 +313,6 @@
         </div>
 
     </div>
+</section>
 </body>
 </html>

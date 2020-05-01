@@ -1,11 +1,26 @@
-.fixed-nav{
+body{
+  min-width: 320px;
+  h1,h2,h3,h4,h5{
+    font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+  }
+}
+
+
+.top-nav{
   position: fixed;
   height: 40px;
   width: 100%;
-  background-color: white;
   top: 0;
   left: 0;
+  background-color: white;
   z-index: 999;
+}
+
+.fixed-nav{
+  position: relative;
+  height: 40px;
+  display: table;
+  margin: 0 auto;
   .nav-item{
     .nav-link{
       border-radius: 0px 0px 5px 5px;
@@ -18,8 +33,11 @@
   }
 
 }
-.tab-content{
+
+.content-tabs{
   padding-top: 40px;
+}
+.tab-content{
   padding-bottom: 40px;
 }
 
@@ -38,6 +56,7 @@
         border-radius: 5px 5px 0px 0px;
         -moz-border-radius: 5px 5px 0px 0px;
         -webkit-border-radius: 5px 5px 0px 0px;
+        border: 1px solid dodgerblue;
       }
       .open-detail{
         display: block;
@@ -88,4 +107,23 @@ table{
     padding: 0;
     text-align: center;
   }
+}
+
+.extra-story-item{
+  .custom-control-label{
+    line-height: 20px;
+  }
+}
+
+.main-story-btn-group{
+  .btn{
+    margin-bottom: 3px;
+    border-radius: 0;
+  }
+  .btn-secondary{
+    background-color: lightgrey;
+    border-color: lightgrey;
+    color: black;
+  }
+
 }

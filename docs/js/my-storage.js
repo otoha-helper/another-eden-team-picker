@@ -45,6 +45,9 @@
              */
             remove: function (key) {
                 localStorage.removeItem(key);
+            },
+            clean: function () {
+                localStorage.clear();
             }
         },
         /**

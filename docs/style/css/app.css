@@ -5,33 +5,54 @@
 * Copyrighted AlexWong
  */
 /* line 1, ../sass/_page.scss */
-.fixed-nav {
+body {
+  min-width: 320px;
+}
+/* line 3, ../sass/_page.scss */
+body h1, body h2, body h3, body h4, body h5 {
+  font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+}
+
+/* line 9, ../sass/_page.scss */
+.top-nav {
   position: fixed;
   height: 40px;
   width: 100%;
-  background-color: white;
   top: 0;
   left: 0;
+  background-color: white;
   z-index: 999;
 }
-/* line 10, ../sass/_page.scss */
+
+/* line 19, ../sass/_page.scss */
+.fixed-nav {
+  position: relative;
+  height: 40px;
+  display: table;
+  margin: 0 auto;
+}
+/* line 25, ../sass/_page.scss */
 .fixed-nav .nav-item .nav-link {
   border-radius: 0px 0px 5px 5px;
   -moz-border-radius: 0px 0px 5px 5px;
   -webkit-border-radius: 0px 0px 5px 5px;
 }
-/* line 15, ../sass/_page.scss */
+/* line 30, ../sass/_page.scss */
 .fixed-nav .nav-item .dropdown-item {
   border: 1px solid;
 }
 
-/* line 21, ../sass/_page.scss */
-.tab-content {
+/* line 37, ../sass/_page.scss */
+.content-tabs {
   padding-top: 40px;
+}
+
+/* line 40, ../sass/_page.scss */
+.tab-content {
   padding-bottom: 40px;
 }
 
-/* line 26, ../sass/_page.scss */
+/* line 44, ../sass/_page.scss */
 .fixed-bottom-panel {
   position: fixed;
   height: 40px;
@@ -39,37 +60,38 @@
   bottom: -3px;
   display: block;
 }
-/* line 32, ../sass/_page.scss */
+/* line 50, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body {
   display: table;
   margin: 0 auto;
 }
-/* line 35, ../sass/_page.scss */
+/* line 53, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group {
   position: relative;
 }
-/* line 37, ../sass/_page.scss */
+/* line 55, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .btn {
   border-radius: 5px 5px 0px 0px;
   -moz-border-radius: 5px 5px 0px 0px;
   -webkit-border-radius: 5px 5px 0px 0px;
+  border: 1px solid dodgerblue;
 }
-/* line 42, ../sass/_page.scss */
+/* line 61, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .open-detail {
   display: block;
 }
-/* line 45, ../sass/_page.scss */
+/* line 64, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .close-detail {
   display: none;
 }
 
-/* line 53, ../sass/_page.scss */
+/* line 72, ../sass/_page.scss */
 .btn .icon {
   width: 20px;
   display: inline-block;
   overflow: visible;
 }
-/* line 57, ../sass/_page.scss */
+/* line 76, ../sass/_page.scss */
 .btn .icon img {
   height: 30px;
   width: 30px;
@@ -78,27 +100,44 @@
   left: 7px;
 }
 
-/* line 69, ../sass/_page.scss */
+/* line 88, ../sass/_page.scss */
 table i {
   cursor: pointer;
 }
-/* line 73, ../sass/_page.scss */
+/* line 92, ../sass/_page.scss */
 table .media img {
   width: 50px;
   height: 50px;
 }
-/* line 77, ../sass/_page.scss */
+/* line 96, ../sass/_page.scss */
 table .media h5 {
   font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
   font-weight: bold;
   margin: 0px;
 }
-/* line 84, ../sass/_page.scss */
+/* line 103, ../sass/_page.scss */
 table input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-/* line 87, ../sass/_page.scss */
+/* line 106, ../sass/_page.scss */
 table input.light-shadow {
   padding: 0;
   text-align: center;
+}
+
+/* line 113, ../sass/_page.scss */
+.extra-story-item .custom-control-label {
+  line-height: 20px;
+}
+
+/* line 119, ../sass/_page.scss */
+.main-story-btn-group .btn {
+  margin-bottom: 3px;
+  border-radius: 0;
+}
+/* line 123, ../sass/_page.scss */
+.main-story-btn-group .btn-secondary {
+  background-color: lightgrey;
+  border-color: lightgrey;
+  color: black;
 }
