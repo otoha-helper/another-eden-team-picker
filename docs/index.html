@@ -75,13 +75,13 @@
                     生成純文字
                     <i class="fas fa-caret-right"></i>
                 </a>
-                <span class="dropdown-item-text">純文字版本適合任何人使用，複製後直接貼上即可。(建議)</span>
-                <a class="dropdown-item" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">
+                <span class="dropdown-item-text"><small>純文字版本適合任何人使用，複製後直接貼上即可。</small><br>(建議)</span>
+                <a class="dropdown-item mt-2" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">
                     <i class="fas fa-th-list"></i>
                     生成表格
                     <i class="fas fa-caret-right"></i>
                 </a>
-                <span class="dropdown-item-text">生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</span>
+                <span class="dropdown-item-text"><small>生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</small></span>
 
             </div>
         </li>
@@ -243,16 +243,23 @@
 
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#free">配佈角色</a>
+                                    <a class="nav-link" href="#free">配佈 / 斷章角色</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#extra-settings">
+                                    <a class="nav-link" href="#select_as_book">異節</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#extra_settings">
                                         <i class="fas fa-cog"></i>
                                     </a>
                                 </li>
                             </ul>
                         </nav>
                         <div class="story-scroll-panel pl-3 pr-3" data-spy="scroll" data-target="#navbar-story" data-offset="0">
+                            <div class="mb-2">
+                                <small>補充性資料可選擇性填寫。</small>
+                            </div>
+
                             <div id="mainStory" data-newest="66">
                                 <h4 id="mainStoryTitle">主線章節</h4>
                                 <div class="btn-inline main-story-btn-group" id="mainStoryBtnGroup"></div>
@@ -296,8 +303,12 @@
                                 <table id="sp_table" class="table table-bordered table-striped table-sm table-borderless"></table>
                             </div>
 
+                            <div id="select_as_book">
+                                <h4 class="pt-4">異節</h4>
+                                <table id="as_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                            </div>
 
-                            <div id="extra-settings">
+                            <div id="extra_settings">
                                 <h4 class="pt-4">設定</h4>
                                 <div class="form-group row extra-setting-item">
                                     <div class="col-8">輸出表格包含未持有角色</div>

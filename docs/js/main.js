@@ -374,6 +374,30 @@ $(document).ready(function () {
         $('.open-detail').show();
     });
 
+    $('#as_book_table').bootstrapTable({
+        columns: [{
+            field: 'id',
+            visible: false
+        },{
+            field: 'name',
+            title: '名稱',
+            width: 100
+        },{
+            field: 'as',
+            title: '異節',
+            width: 160
+        },{
+            field: 'q',
+            title: '數量',
+            width: 60,
+            formatter: function (value, row, index) {
+                return '<input class="form-control as-book-input" value="' + value + '" type="number" min="0" max="255">';
+            },
+        }],
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+    });
 
 
     // Free Table Options
@@ -468,11 +492,6 @@ $(document).ready(function () {
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
-        detailView: true,
-        detailViewIcon: false,
-        detailFormatter: function (index, row, element) {
-            return row['book4'] + '/' + row['book5'] + '/' + row['pos'] + '/' + row['asPos'];
-        },
         toolbar: "#free_toolbar",
         toolbarAlign: "right"
     });
@@ -570,12 +589,7 @@ $(document).ready(function () {
         columns: spTableColums,
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark",
-        detailView: true,
-        detailViewIcon: false,
-        detailFormatter: function (index, row, element) {
-            return row['book4'] + '/' + row['book5'] + '/' + row['pos'] + '/' + row['asPos'];
-        }
+        theadClasses: "thead-dark"
     });
 
 
@@ -623,6 +637,25 @@ $(document).ready(function () {
                             'asPos': row['AS特殊地位']
                         };
                     });
+
+                    var asBook = $.map(obj, function (row) {
+                        if ($.trim(row['AS名']) === '') return;
+                        var nickname = row["暱稱"];
+                        var asNickname = row["AS暱稱"];
+                        if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
+                            nickname = row["角色名"];
+                        } else if ($.trim(nickname) === "") {
+                            nickname = row["角色名"];
+                        }
+                        return {
+                            'id': row['id'],
+                            'name': row["角色名"],
+                            'asNickname': asNickname,
+                            'as': row['AS名'] + '之異節',
+                            'q': 0
+                        }
+                    });
+                    $('#as_book_table').bootstrapTable('load', asBook);
 
                     if ($.myStorage.checkExist('selected5star')){
                         var save = $.myStorage.get('selected5star');
