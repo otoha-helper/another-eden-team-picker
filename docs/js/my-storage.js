@@ -18,7 +18,10 @@
              *  Checking local storage had data or not
              * @returns {boolean}
              */
-            checkExist: function(){
+            checkExist: function(key){
+                if (localStorage.length > 0 && typeof key === "string"){
+                    return !!(localStorage.getItem(key));
+                }
                 return (localStorage.length > 0);
             },
             /**

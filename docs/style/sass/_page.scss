@@ -5,8 +5,7 @@ body{
   }
 }
 
-
-.top-nav{
+.top-fixed-nav{
   position: fixed;
   height: 40px;
   width: 100%;
@@ -14,13 +13,6 @@ body{
   left: 0;
   background-color: white;
   z-index: 999;
-}
-
-.fixed-nav{
-  position: relative;
-  height: 40px;
-  display: table;
-  margin: 0 auto;
   .nav-item{
     .nav-link{
       border-radius: 0px 0px 5px 5px;
@@ -39,17 +31,26 @@ body{
 }
 .tab-content{
   padding-bottom: 40px;
+  .story-scroll-nav{
+    .nav-item{
+      padding-right: 2px;
+      .dropdown-toggle{
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+  }
+  .story-scroll-panel{
+    overflow-y: scroll;
+    height: 500px;
+  }
 }
 
 .fixed-bottom-panel{
   position: fixed;
-  height: 40px;
-  width: 100%;
-  bottom: -3px;
-  display: block;
+  bottom: 0;
+  height: 38px;
   .panel-body{
-    display: table;
-    margin: 0 auto;
     .btn-group{
       position: relative;
       .btn{
@@ -109,7 +110,7 @@ table{
   }
 }
 
-.extra-story-item{
+.extra-story-item, .extra-setting-item{
   .custom-control-label{
     line-height: 20px;
   }
@@ -125,5 +126,5 @@ table{
     border-color: lightgrey;
     color: black;
   }
-
 }
+

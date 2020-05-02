@@ -13,8 +13,8 @@ body h1, body h2, body h3, body h4, body h5 {
   font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
 }
 
-/* line 9, ../sass/_page.scss */
-.top-nav {
+/* line 8, ../sass/_page.scss */
+.top-fixed-nav {
   position: fixed;
   height: 40px;
   width: 100%;
@@ -23,75 +23,74 @@ body h1, body h2, body h3, body h4, body h5 {
   background-color: white;
   z-index: 999;
 }
-
-/* line 19, ../sass/_page.scss */
-.fixed-nav {
-  position: relative;
-  height: 40px;
-  display: table;
-  margin: 0 auto;
-}
-/* line 25, ../sass/_page.scss */
-.fixed-nav .nav-item .nav-link {
+/* line 17, ../sass/_page.scss */
+.top-fixed-nav .nav-item .nav-link {
   border-radius: 0px 0px 5px 5px;
   -moz-border-radius: 0px 0px 5px 5px;
   -webkit-border-radius: 0px 0px 5px 5px;
 }
-/* line 30, ../sass/_page.scss */
-.fixed-nav .nav-item .dropdown-item {
+/* line 22, ../sass/_page.scss */
+.top-fixed-nav .nav-item .dropdown-item {
   border: 1px solid;
 }
 
-/* line 37, ../sass/_page.scss */
+/* line 29, ../sass/_page.scss */
 .content-tabs {
   padding-top: 40px;
 }
 
-/* line 40, ../sass/_page.scss */
+/* line 32, ../sass/_page.scss */
 .tab-content {
   padding-bottom: 40px;
 }
+/* line 35, ../sass/_page.scss */
+.tab-content .story-scroll-nav .nav-item {
+  padding-right: 2px;
+}
+/* line 37, ../sass/_page.scss */
+.tab-content .story-scroll-nav .nav-item .dropdown-toggle {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+/* line 43, ../sass/_page.scss */
+.tab-content .story-scroll-panel {
+  overflow-y: scroll;
+  height: 500px;
+}
 
-/* line 44, ../sass/_page.scss */
+/* line 49, ../sass/_page.scss */
 .fixed-bottom-panel {
   position: fixed;
-  height: 40px;
-  width: 100%;
-  bottom: -3px;
-  display: block;
+  bottom: 0;
+  height: 38px;
 }
-/* line 50, ../sass/_page.scss */
-.fixed-bottom-panel .panel-body {
-  display: table;
-  margin: 0 auto;
-}
-/* line 53, ../sass/_page.scss */
+/* line 54, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group {
   position: relative;
 }
-/* line 55, ../sass/_page.scss */
+/* line 56, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .btn {
   border-radius: 5px 5px 0px 0px;
   -moz-border-radius: 5px 5px 0px 0px;
   -webkit-border-radius: 5px 5px 0px 0px;
   border: 1px solid dodgerblue;
 }
-/* line 61, ../sass/_page.scss */
+/* line 62, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .open-detail {
   display: block;
 }
-/* line 64, ../sass/_page.scss */
+/* line 65, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .close-detail {
   display: none;
 }
 
-/* line 72, ../sass/_page.scss */
+/* line 73, ../sass/_page.scss */
 .btn .icon {
   width: 20px;
   display: inline-block;
   overflow: visible;
 }
-/* line 76, ../sass/_page.scss */
+/* line 77, ../sass/_page.scss */
 .btn .icon img {
   height: 30px;
   width: 30px;
@@ -100,42 +99,42 @@ body h1, body h2, body h3, body h4, body h5 {
   left: 7px;
 }
 
-/* line 88, ../sass/_page.scss */
+/* line 89, ../sass/_page.scss */
 table i {
   cursor: pointer;
 }
-/* line 92, ../sass/_page.scss */
+/* line 93, ../sass/_page.scss */
 table .media img {
   width: 50px;
   height: 50px;
 }
-/* line 96, ../sass/_page.scss */
+/* line 97, ../sass/_page.scss */
 table .media h5 {
   font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
   font-weight: bold;
   margin: 0px;
 }
-/* line 103, ../sass/_page.scss */
+/* line 104, ../sass/_page.scss */
 table input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-/* line 106, ../sass/_page.scss */
+/* line 107, ../sass/_page.scss */
 table input.light-shadow {
   padding: 0;
   text-align: center;
 }
 
-/* line 113, ../sass/_page.scss */
-.extra-story-item .custom-control-label {
+/* line 114, ../sass/_page.scss */
+.extra-story-item .custom-control-label, .extra-setting-item .custom-control-label {
   line-height: 20px;
 }
 
-/* line 119, ../sass/_page.scss */
+/* line 120, ../sass/_page.scss */
 .main-story-btn-group .btn {
   margin-bottom: 3px;
   border-radius: 0;
 }
-/* line 123, ../sass/_page.scss */
+/* line 124, ../sass/_page.scss */
 .main-story-btn-group .btn-secondary {
   background-color: lightgrey;
   border-color: lightgrey;
