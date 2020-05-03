@@ -197,8 +197,8 @@ $(document).ready(function () {
                     });
                     $('#as_book_table').bootstrapTable('load', asBook);
 
-                    if ($.myStorage.checkExist('selected5star')){
-                        var save = $.myStorage.get('selected5star');
+                    if ($.myStorage.checkExist('selectedStar5')){
+                        var save = $.myStorage.get('selectedStar5');
 
                         var restore = $.map(rows,function (row) {
                             var getRow = $.map(save, function (saveRow) {
@@ -338,7 +338,9 @@ $(document).ready(function () {
                             'nickname': row["暱稱"],
                             'element': row["主屬"],
                             'minStar': row["起始☆"],
-                            'maxStar': row["最高★"]
+                            'maxStar': row["最高★"],
+                            'had3': false,
+                            'had4': false
                         };
                     });
 
@@ -448,43 +450,7 @@ $(document).ready(function () {
 
 
 
-    $('#selectAllFreeListed').on('click', function () {
-        var data = $('#free_table').bootstrapTable('getData');
-        var rows = $('#free_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-        var newRows = $.map(data,function (row, i) {
-            row['had4'] = true;
-            if (row['had5'] !== "none"){
-                row['had5'] = true;
-            }
-            if ($.trim(row['as']) !== ''){
-                row['hadas'] = true;
-            }
-            row['lightShadow'] = data[i]['lightShadow'];
-            return row;
-        });
-        var extend = $.extend({},rows,newRows);
-        $('#free_table').bootstrapTable('load', extend);
-        // toSaveFreeselections();
-    });
 
-    $('#unselectAllFreeListed').on('click', function () {
-        var data = $('#free_table').bootstrapTable('getData');
-        var rows = $('#free_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-        var newRows = $.map(data,function (row) {
-            row['had4'] = false;
-            if (row['had5'] !== "none"){
-                row['had5'] = false;
-            }
-            if ($.trim(row['as']) !== ''){
-                row['hadas'] = false;
-            }
-            row['lightShadow'] = 0;
-            return row;
-        });
-        var extend = $.extend({},rows,newRows);
-        $('#free_table').bootstrapTable('load', extend);
-        // toSaveFreeselections();
-    });
 
     $('body').on('click', '.dropdown-menu#optionList .dropdown-item', function() {
         var target = $(this).attr('href');
@@ -663,27 +629,7 @@ function genExtraStory(list) {
     });
 }
 
-function toSaveStar5selections() {
-    var data = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-    var save = $.map(data,function (row, i) {
-        if (
-            row['had4'] === true ||
-            row['had5'] === true ||
-            row['hadas'] === true ||
-            row['lightShadow'] > 0
-        ){
-            return {
-                id: row['id'],
-                had4: row['had4'],
-                had5: row['had5'],
-                hadas: row['hadas'],
-                lightShadow: row['lightShadow']
-            };
-        }
 
-    });
-    $.myStorage.save('selected5star',save);
-}
 
 function onWindowInitOrResize() {
     var windowHeight = $(window).height();
@@ -910,6 +856,27 @@ function star5tableHandle() {
         theadClasses: "thead-dark",
     });
 }
+function toSaveStar5selections() {
+    var data = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var save = $.map(data,function (row, i) {
+        if (
+            row['had4'] === true ||
+            row['had5'] === true ||
+            row['hadas'] === true ||
+            row['lightShadow'] > 0
+        ){
+            return {
+                id: row['id'],
+                had4: row['had4'],
+                had5: row['had5'],
+                hadas: row['hadas'],
+                lightShadow: row['lightShadow']
+            };
+        }
+
+    });
+    $.myStorage.save('selectedStar5',save);
+}
 
 function freeTableHandle() {
     // Table icon click events
@@ -1067,9 +1034,175 @@ function freeTableHandle() {
         toolbar: "#free_toolbar",
         toolbarAlign: "right"
     });
+
+    $('#selectAllFreeListed').on('click', function () {
+        var data = $('#free_table').bootstrapTable('getData');
+        var rows = $('#free_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        var newRows = $.map(data,function (row, i) {
+            row['had3'] = true;
+            row['had4'] = true;
+            return row;
+        });
+        var extend = $.extend({},rows,newRows);
+        $('#free_table').bootstrapTable('load', extend);
+    });
+
+    $('#unselectAllFreeListed').on('click', function () {
+        var data = $('#free_table').bootstrapTable('getData');
+        var rows = $('#free_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        var newRows = $.map(data,function (row) {
+            row['had3'] = false;
+            row['had4'] = false;
+            return row;
+        });
+        var extend = $.extend({},rows,newRows);
+        $('#free_table').bootstrapTable('load', extend);
+    });
+
+    //TODO Add save function
 }
 
 function star4TableHandle() {
+    // Table icon click events
+    window.operateEventsStar4 = {
+        'click .icon': function (e, value, row, index) {
+
+        },
+        'click .had3': function (e, value, row, index) {
+            if (!row["had3"]){
+                row["had3"] = true;
+            }else{
+                row["had4"] = false;
+            }
+            $('#star4_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveStar4selections();
+        },
+        'click .had4': function (e, value, row, index) {
+            if (!row["had4"]){
+                row["had3"] = true;
+                row["had4"] = true;
+            }else{
+                row["had4"] = false;
+            }
+            $('#star4_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveStar4selections();
+        }
+
+    };
+    // Star 4 Table Options
+    var star4TableColums = [{
+        field: 'id',
+        visible: false,
+    }, {
+        field: 'element',
+        width: 5,
+        formatter: function () { return ''; },
+        cellStyle: elementCellStyle
+    },{
+        field: 'name',
+        title: '角色',
+        width: 230,
+        formatter: function (value, row, index) {
+            var nickname = row['nickname'];
+            if ($.trim(nickname) === ''){
+                nickname = "-"
+            }
+            if ($.trim(row['asNickname'])){
+                nickname +=  '/' + row['asNickname']
+            }
+
+            var html = '<div class="media">\n' +
+                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <div class="media-body">\n' +
+                '    <h5 class="mt-0">'+ value +'</h5>\n' +
+                nickname +
+                '  </div>\n' +
+                '</div>';
+            return html;
+        },
+        events: operateEventsStar4
+    }, {
+        field: 'had3',
+        title: '☆3',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had3" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had3" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsStar4
+    }, {
+        field: 'had4',
+        title: '☆4',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsStar4
+    }];
+
+    $('#star4_table').bootstrapTable({
+        columns: star4TableColums,
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+        toolbar: "#star4_toolbar",
+        toolbarAlign: "right"
+    });
+
+    $('#selectAllStar4Listed').on('click', function () {
+        var data = $('#star4_table').bootstrapTable('getData');
+        var rows = $('#star4_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        var newRows = $.map(data,function (row, i) {
+            row['had3'] = true;
+            row['had4'] = true;
+            return row;
+        });
+        var extend = $.extend({},rows,newRows);
+        $('#star4_table').bootstrapTable('load', extend);
+        toSaveStar4selections();
+    });
+
+    $('#unselectAllStar4Listed').on('click', function () {
+        var data = $('#star4_table').bootstrapTable('getData');
+        var rows = $('#star4_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        var newRows = $.map(data,function (row) {
+            row['had3'] = false;
+            row['had4'] = false;
+            return row;
+        });
+        var extend = $.extend({},rows,newRows);
+        $('#star4_table').bootstrapTable('load', extend);
+        toSaveStar4selections();
+    });
+}
+function toSaveStar4selections() {
+    var data = $('#star4_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var save = $.map(data,function (row, i) {
+        if (
+            row['had3'] === true ||
+            row['had4'] === true
+        ){
+            return {
+                id: row['id'],
+                had3: row['had3'],
+                had4: row['had4']
+            };
+        }
+
+    });
+    $.myStorage.save('selectedStar4',save);
+}
+
+function spTableHandle() {
     // Table icon click events
     window.operateEventsSp = {
         'click .icon': function (e, value, row, index) {
@@ -1112,78 +1245,6 @@ function star4TableHandle() {
 
     };
 
-    // Star 4 Table Options
-    var star4TableColums = [{
-        field: 'id',
-        visible: false,
-    }, {
-        field: 'element',
-        width: 5,
-        formatter: function () { return ''; },
-        cellStyle: elementCellStyle,
-        events: operateEventsSp
-    },{
-        field: 'name',
-        title: '角色',
-        width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
-        events: operateEventsSp
-    }, {
-        field: 'had3',
-        title: '☆3',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value){
-                return '<i class="fa fa-heart had4" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEventsSp
-    }, {
-        field: 'had4',
-        title: '☆4',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value){
-                return '<i class="fa fa-heart had4" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEventsSp
-    }];
-
-    $('#star4_table').bootstrapTable({
-        columns: star4TableColums,
-        uniqueId: "id",
-        classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark",
-        toolbar: "#star4_toolbar",
-        toolbarAlign: "right"
-    });
-}
-
-function spTableHandle() {
     // Sp Table Options
     var spTableColums = [{
         field: 'id',
