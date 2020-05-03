@@ -5,7 +5,6 @@ var spaceText = '＿';
 var divide = ' | ';
 
 $(document).ready(function () {
-    // TODO Bootstrap dropdowns options popperConfig not work
 
     onWindowInitOrResize();
     window.addEventListener("orientationchange", function() {
@@ -123,491 +122,32 @@ $(document).ready(function () {
 
     });
 
-    // Table icon click events
-    window.operateEvents = {
-        'click .icon': function (e, value, row, index) {
-            $('#char_table').bootstrapTable('toggleDetailView', index);
-        },
-        'click .had4': function (e, value, row, index) {
-            if (!row["had4"]){
-                row["had4"] = true;
-            }else{
-                row["had4"] = false;
-                if(row["had5"] == true) row["had5"] = false;
-                row["lightShadow"] = 0;
-            }
-            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            toSaveStar5selections();
-        },
-        'click .had5': function (e, value, row, index) {
-            if (!row["had5"]){
-                row["had5"] = true;
-                row["had4"] = true;
-            }else{
-                row["had5"] = false;
-            }
-            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            toSaveStar5selections();
-        },
-        'click .hadas': function (e, value, row, index) {
-            if (!row["hadas"]){
-                row["hadas"] = true;
-            }else{
-                row["hadas"] = false;
-            }
-            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            toSaveStar5selections();
-        },
-        'change .light-shadow': function (e, value, row, index) {
-            row['lightShadow'] = $(e.target).val();
-            toSaveStar5selections();
-        }
 
-    };
-    window.operateEventsFree = {
-        'click .icon': function (e, value, row, index) {
-            $('#free_table').bootstrapTable('toggleDetailView', index);
-        },
-        'click .had4': function (e, value, row, index) {
-            if (!row["had4"]){
-                row["had4"] = true;
-            }else{
-                row["had4"] = false;
-                if(row["had5"] == true) row["had5"] = false;
-                row["lightShadow"] = 0;
-            }
-            $('#free_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'click .had5': function (e, value, row, index) {
-            if (!row["had5"]){
-                row["had5"] = true;
-                row["had4"] = true;
-            }else{
-                row["had5"] = false;
-            }
-            $('#free_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'click .hadas': function (e, value, row, index) {
-            if (!row["hadas"]){
-                row["hadas"] = true;
-            }else{
-                row["hadas"] = false;
-            }
-            $('#free_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'change .light-shadow': function (e, value, row, index) {
-            row['lightShadow'] = $(e.target).val();
-            // toSaveStar5selections();
-        }
+    // Handle tables
+    star5tableHandle();
+    freeTableHandle();
+    star4TableHandle();
+    spTableHandle();
 
-    };
-    window.operateEventsSp = {
-        'click .icon': function (e, value, row, index) {
-            $('#sp_table').bootstrapTable('toggleDetailView', index);
-        },
-        'click .had4': function (e, value, row, index) {
-            if (!row["had4"]){
-                row["had4"] = true;
-            }else{
-                row["had4"] = false;
-                if(row["had5"] == true) row["had5"] = false;
-                row["lightShadow"] = 0;
-            }
-            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'click .had5': function (e, value, row, index) {
-            if (!row["had5"]){
-                row["had5"] = true;
-                row["had4"] = true;
-            }else{
-                row["had5"] = false;
-            }
-            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'click .hadas': function (e, value, row, index) {
-            if (!row["hadas"]){
-                row["hadas"] = true;
-            }else{
-                row["hadas"] = false;
-            }
-            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'change .light-shadow': function (e, value, row, index) {
-            row['lightShadow'] = $(e.target).val();
-            // toSaveStar5selections();
-        }
-
-    };
-
-    // Star 5 Table Options
-    var star5TableColums = [{
-        field: 'id',
-        visible: false
-    }, {
-        field: 'element',
-        width: 5,
-        formatter: function () { return ''; },
-        cellStyle: function (value, row, index) {
-            switch (value) {
-                case "地":
-                    return {css: {'background-color': '#dca485'}};
-                case "水":
-                    return {css: {'background-color': '#62b3ff'}};
-                case "風":
-                    return {css: {'background-color': '#50e250'}};
-                case "火":
-                    return {css: {'background-color': 'red'}};
-                case "無":
-                    return {css: {'background-color': 'gray'}};
-            }
-            return {css: {'background-color': 'white'}};
-        },
-        events: operateEvents
-    },{
-        field: 'name',
-        title: '角色',
-        width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
-        events: operateEvents
-    }, {
-        field: 'had4',
-        title: '☆4',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value){
-                return '<i class="fa fa-heart had4" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEvents
-    }, {
-        field: 'had5',
-        title: '★5',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value === "none"){
-                return '<font color="gray">-</font>';
-            }else if(value){
-                return '<i class="fa fa-heart had5" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had5" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEvents
-    }, {
-        field: 'hadas',
-        title: 'AS',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if ($.trim(row["as"])) {
-                if(value){
-                    return '<i class="fa fa-user-friends hadas" style="color:red"></i>';
-                }else{
-                    return '<i class="fa fa-user-friends hadas" style="color:#aaa"></i>';
-                }
-            }else{
-                return '<font color="gray">-</font>';
-            }
-        },
-        events: operateEvents
-    }, {
-        field: 'lightShadow',
-        title: '天冥',
-        width: 60,
-        formatter: function (value, row, index) {
-            return '<input class="form-control light-shadow" value="' + value + '" type="number" min="0" max="255">';
-        },
-        events: operateEvents
-    }];
-
-    $('#char_table').bootstrapTable({
-        columns: star5TableColums,
-        uniqueId: "id",
-        classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark",
-        detailView: true,
-        detailViewIcon: false,
-        detailFormatter: function (index, row, element) {
-            return row['book4'] + '/' + row['book5'] + '/' + row['pos'] + '/' + row['asPos'];
-        },
-        toolbar: "#toolbar",
-        toolbarAlign: "right"
-    });
-    $('#char_table').bootstrapTable('showLoading');
-
-    $('#openDetail').click(function () {
-        $('#char_table').bootstrapTable('expandAllRows');
-        $('.open-detail').hide();
-        $('.close-detail').show();
-
-    });
-    $('#closeDetail').click(function () {
-        $('#char_table').bootstrapTable('collapseAllRows');
-        $('.close-detail').hide();
-        $('.open-detail').show();
-    });
-
-    $('#as_book_table').bootstrapTable({
-        columns: [{
-            field: 'id',
-            visible: false
-        },{
-            field: 'name',
-            title: '名稱',
-            width: 100
-        },{
-            field: 'as',
-            title: '異節',
-            width: 160
-        },{
-            field: 'q',
-            title: '數量',
-            width: 60,
-            formatter: function (value, row, index) {
-                return '<input class="form-control as-book-input" value="' + value + '" type="number" min="0" max="255">';
-            },
-        }],
-        uniqueId: "id",
-        classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark",
-    });
-
-
-    // Free Table Options
-    var freeTableColums = [{
-        field: 'id',
-        visible: false,
-    }, {
-        field: 'element',
-        width: 5,
-        formatter: function () { return ''; },
-        events: operateEventsFree
-    },{
-        field: 'name',
-        title: '角色',
-        width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
-        events: operateEventsFree
-    }, {
-        field: 'had4',
-        title: '☆4',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value){
-                return '<i class="fa fa-heart had4" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEventsFree
-    }, {
-        field: 'had5',
-        title: '★5',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value === "none"){
-                return '<font color="gray">-</font>';
-            }else if(value){
-                return '<i class="fa fa-heart had5" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had5" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEventsFree
-    }, {
-        field: 'hadas',
-        title: 'AS',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if ($.trim(row["as"])) {
-                if(value){
-                    return '<i class="fa fa-user-friends hadas" style="color:red"></i>';
-                }else{
-                    return '<i class="fa fa-user-friends hadas" style="color:#aaa"></i>';
-                }
-            }else{
-                return '<font color="gray">-</font>';
-            }
-        },
-        events: operateEventsFree
-    }, {
-        field: 'lightShadow',
-        title: '天冥',
-        width: 40,
-        formatter: function (value, row, index) {
-            return '<input class="form-control light-shadow" value="' + value + '" type="number" min="0" max="255">';
-        },
-        events: operateEventsFree
-    }];
-
-    $('#free_table').bootstrapTable({
-        columns: freeTableColums,
-        uniqueId: "id",
-        classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark",
-        toolbar: "#free_toolbar",
-        toolbarAlign: "right"
-    });
-
-
-
-    // Sp Table Options
-    var spTableColums = [{
-        field: 'id',
-        visible: false,
-    }, {
-        field: 'element',
-        width: 5,
-        formatter: function () { return ''; },
-        events: operateEventsSp
-    },{
-        field: 'name',
-        title: '角色',
-        width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
-        events: operateEventsSp
-    }, {
-        field: 'had4',
-        title: '☆4',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value){
-                return '<i class="fa fa-heart had4" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEventsSp
-    }, {
-        field: 'had5',
-        title: '★5',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if(value === "none"){
-                return '<font color="gray">-</font>';
-            }else if(value){
-                return '<i class="fa fa-heart had5" style="color:red"></i>';
-            }else{
-                return '<i class="fa fa-heart had5" style="color:#aaa"></i>';
-            }
-        },
-        events: operateEventsSp
-    }, {
-        field: 'hadas',
-        title: 'AS',
-        width: 40,
-        align: "center",
-        formatter: function(value, row, index){
-            if ($.trim(row["as"])) {
-                if(value){
-                    return '<i class="fa fa-user-friends hadas" style="color:red"></i>';
-                }else{
-                    return '<i class="fa fa-user-friends hadas" style="color:#aaa"></i>';
-                }
-            }else{
-                return '<font color="gray">-</font>';
-            }
-        },
-        events: operateEventsSp
-    }, {
-        field: 'lightShadow',
-        title: '天冥',
-        width: 40,
-        formatter: function (value, row, index) {
-            return '<input class="form-control light-shadow" value="' + value + '" type="number" min="0" max="255">';
-        },
-        events: operateEventsSp
-    }];
-
-    $('#sp_table').bootstrapTable({
-        columns: spTableColums,
-        uniqueId: "id",
-        classes: "table table-bordered table-striped table-sm table-borderless",
-        theadClasses: "thead-dark"
-    });
-
-
+    // Read csv in table
     $.myFileReader
         .addFile('5star','./csv/5star.csv')
         .addFile('extra','./csv/extra.csv')
         .addFile('free','./csv/free.csv')
         .addFile('5star_sp','./csv/5star_sp.csv')
+        .addFile('4star','./csv/4star.csv')
         .run(
             function (key) {
                 console.log("Starting ", key);
+                if (key === '5star'){
+                    $('#char_table').bootstrapTable('showLoading');
+                }
             },
             function (result) {
                 console.log("All file loaded");
             },
             function (key, data) {
                 console.log("loaded",key);
-
                 if (key === "5star") {
                     var obj = $.csv.toObjects(data);
                     var rows = $.map(obj, function (row) {
@@ -651,7 +191,7 @@ $(document).ready(function () {
                             'id': row['id'],
                             'name': row["角色名"],
                             'asNickname': asNickname,
-                            'as': row['AS名'] + '之異節',
+                            'as': row['AS名'] + '的異節',
                             'q': 0
                         }
                     });
@@ -754,6 +294,7 @@ $(document).ready(function () {
                             'minStory': row["最低加入章節"],
                             'useBook': row["消耗夢書"],
                             'presonal': row["專武"],
+                            'element': row["主屬"],
                             'had4': false,
                             'had5': false,
                             'hadas': false,
@@ -784,7 +325,44 @@ $(document).ready(function () {
                         $('#sp_table').bootstrapTable('load', spRows);
                     }
                 }
+                if (key === "4star"){
+                    var star4Rows = $.map($.csv.toObjects(data), function (row) {
+                        if (
+                            row["角色名"].charAt(0) === '*' ||
+                            row["升職"] === '已升'
+                        ) return;
 
+                        return {
+                            'id': row["ID"],
+                            'name': row["角色名"],
+                            'nickname': row["暱稱"],
+                            'element': row["主屬"],
+                            'minStar': row["起始☆"],
+                            'maxStar': row["最高★"]
+                        };
+                    });
+
+                    if ($.myStorage.checkExist('selectedStar4')){
+                        var saveStar4 = $.myStorage.get('selectedStar4');
+
+                        var restoreStar4 = $.map(star4Rows,function (row) {
+                            var getRow = $.map(saveStar4, function (saveRow) {
+                                if (row['id'] === saveRow['id']){
+                                    return saveRow;
+                                }
+                            });
+
+                            if (getRow.length){
+                                row['had3'] = getRow[0]['had3'];
+                                row['had4'] = getRow[0]['had4'];
+                            }
+                            return row;
+                        });
+                        $('#star4_table').bootstrapTable('load', restoreStar4);
+                    }else{
+                        $('#star4_table').bootstrapTable('load', star4Rows);
+                    }
+                }
 
             },
             function (key) {
@@ -868,43 +446,7 @@ $(document).ready(function () {
 
     });
 
-    $('#selectAllStar5Listed').on('click', function () {
-        var data = $('#char_table').bootstrapTable('getData');
-        var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-        var newRows = $.map(data,function (row, i) {
-            row['had4'] = true;
-            if (row['had5'] !== "none"){
-                row['had5'] = true;
-            }
-            if ($.trim(row['as']) !== ''){
-                row['hadas'] = true;
-            }
-            row['lightShadow'] = data[i]['lightShadow'];
-            return row;
-        });
-        var extend = $.extend({},rows,newRows);
-        $('#char_table').bootstrapTable('load', extend);
-        toSaveStar5selections();
-    });
 
-    $('#unselectAllStar5Listed').on('click', function () {
-        var data = $('#char_table').bootstrapTable('getData');
-        var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-        var newRows = $.map(data,function (row) {
-            row['had4'] = false;
-            if (row['had5'] !== "none"){
-                row['had5'] = false;
-            }
-            if ($.trim(row['as']) !== ''){
-                row['hadas'] = false;
-            }
-            row['lightShadow'] = 0;
-            return row;
-        });
-        var extend = $.extend({},rows,newRows);
-        $('#char_table').bootstrapTable('load', extend);
-        toSaveStar5selections();
-    });
 
     $('#selectAllFreeListed').on('click', function () {
         var data = $('#free_table').bootstrapTable('getData');
@@ -1065,7 +607,7 @@ function genMainStoryBtn() {
 
 function genExtraStory(list) {
     var html = $.map(list, function (row, i) {
-        var label1 = '<div class="col-8 col-sm-9 ">' + '<span class="badge badge-secondary">'+row["類型"] +'</span> <span>'+row['名稱'] + '</span></div>\n';
+        var label1 = '<div class="col-8 col-sm-9">' + '<span class="badge badge-secondary">'+row["類型"] +'</span> <span>'+row['名稱'] + '</span></div>\n';
         var input1 = '<div class="col-4 col-sm-3">';
         input1 += '<div class="custom-control custom-switch">\n' +
             '   <input type="checkbox" class="custom-control-input" id="extraStory['+i+']">\n' +
@@ -1146,6 +688,593 @@ function toSaveStar5selections() {
 function onWindowInitOrResize() {
     var windowHeight = $(window).height();
     $(".story-scroll-panel").height(windowHeight - 80 - 56);
+}
+
+var elementCellStyle = function (value, row, index) {
+        switch (value) {
+            case "地":
+                return {css: {'background-color': '#dca485'}};
+            case "水":
+                return {css: {'background-color': '#62b3ff'}};
+            case "風":
+                return {css: {'background-color': '#50e250'}};
+            case "火":
+                return {css: {'background-color': 'red'}};
+            case "無":
+                return {css: {'background-color': 'gray'}};
+        }
+        return {css: {'background-color': 'white'}};
+    };
+
+function star5tableHandle() {
+    // Table icon click events
+    window.operateEvents = {
+        'click .icon': function (e, value, row, index) {
+            $('#char_table').bootstrapTable('toggleDetailView', index);
+        },
+        'click .had4': function (e, value, row, index) {
+            if (!row["had4"]){
+                row["had4"] = true;
+            }else{
+                row["had4"] = false;
+                if(row["had5"] == true) row["had5"] = false;
+                row["lightShadow"] = 0;
+            }
+            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveStar5selections();
+        },
+        'click .had5': function (e, value, row, index) {
+            if (!row["had5"]){
+                row["had5"] = true;
+                row["had4"] = true;
+            }else{
+                row["had5"] = false;
+            }
+            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveStar5selections();
+        },
+        'click .hadas': function (e, value, row, index) {
+            if (!row["hadas"]){
+                row["hadas"] = true;
+            }else{
+                row["hadas"] = false;
+            }
+            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveStar5selections();
+        },
+        'change .light-shadow': function (e, value, row, index) {
+            row['lightShadow'] = $(e.target).val();
+            toSaveStar5selections();
+        }
+
+    };
+
+
+    // Star 5 Table Options
+    var star5TableColums = [{
+        field: 'id',
+        visible: false
+    }, {
+        field: 'element',
+        width: 5,
+        formatter: function () { return ''; },
+        cellStyle: elementCellStyle,
+        events: operateEvents
+    },{
+        field: 'name',
+        title: '角色',
+        width: 230,
+        formatter: function (value, row, index) {
+            var nickname = row['nickname'];
+            if ($.trim(nickname) === ''){
+                nickname = "-"
+            }
+            if ($.trim(row['asNickname'])){
+                nickname +=  '/' + row['asNickname']
+            }
+
+            var html = '<div class="media">\n' +
+                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <div class="media-body">\n' +
+                '    <h5 class="mt-0">'+ value +'</h5>\n' +
+                nickname +
+                '  </div>\n' +
+                '</div>';
+            return html;
+        },
+        events: operateEvents
+    }, {
+        field: 'had4',
+        title: '☆4',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEvents
+    }, {
+        field: 'had5',
+        title: '★5',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value === "none"){
+                return '<font color="gray">-</font>';
+            }else if(value){
+                return '<i class="fa fa-heart had5" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had5" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEvents
+    }, {
+        field: 'hadas',
+        title: 'AS',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if ($.trim(row["as"])) {
+                if(value){
+                    return '<i class="fa fa-user-friends hadas" style="color:red"></i>';
+                }else{
+                    return '<i class="fa fa-user-friends hadas" style="color:#aaa"></i>';
+                }
+            }else{
+                return '<font color="gray">-</font>';
+            }
+        },
+        events: operateEvents
+    }, {
+        field: 'lightShadow',
+        title: '天冥',
+        width: 60,
+        formatter: function (value, row, index) {
+            return '<input class="form-control light-shadow" value="' + value + '" type="number" min="0" max="255">';
+        },
+        events: operateEvents
+    }];
+
+    $('#char_table').bootstrapTable({
+        columns: star5TableColums,
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+        toolbar: "#toolbar",
+        toolbarAlign: "right"
+    });
+
+    $('#selectAllStar5Listed').on('click', function () {
+        var data = $('#char_table').bootstrapTable('getData');
+        var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        var newRows = $.map(data,function (row, i) {
+            row['had4'] = true;
+            if (row['had5'] !== "none"){
+                row['had5'] = true;
+            }
+            if ($.trim(row['as']) !== ''){
+                row['hadas'] = true;
+            }
+            row['lightShadow'] = data[i]['lightShadow'];
+            return row;
+        });
+        var extend = $.extend({},rows,newRows);
+        $('#char_table').bootstrapTable('load', extend);
+        toSaveStar5selections();
+    });
+
+    $('#unselectAllStar5Listed').on('click', function () {
+        var data = $('#char_table').bootstrapTable('getData');
+        var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        var newRows = $.map(data,function (row) {
+            row['had4'] = false;
+            if (row['had5'] !== "none"){
+                row['had5'] = false;
+            }
+            if ($.trim(row['as']) !== ''){
+                row['hadas'] = false;
+            }
+            row['lightShadow'] = 0;
+            return row;
+        });
+        var extend = $.extend({},rows,newRows);
+        $('#char_table').bootstrapTable('load', extend);
+        toSaveStar5selections();
+    });
+
+    $('#as_book_table').bootstrapTable({
+        columns: [{
+            field: 'id',
+            visible: false
+        },{
+            field: 'name',
+            title: '名稱',
+            width: 100
+        },{
+            field: 'as',
+            title: '異節',
+            width: 160
+        },{
+            field: 'q',
+            title: '數量',
+            width: 60,
+            formatter: function (value, row, index) {
+                return '<input class="form-control as-book-input" value="' + value + '" type="number" min="0" max="255">';
+            },
+        }],
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+    });
+}
+
+function freeTableHandle() {
+    // Table icon click events
+    window.operateEventsFree = {
+        'click .icon': function (e, value, row, index) {
+            $('#free_table').bootstrapTable('toggleDetailView', index);
+        },
+        'click .had4': function (e, value, row, index) {
+            if (!row["had4"]){
+                row["had4"] = true;
+            }else{
+                row["had4"] = false;
+                if(row["had5"] == true) row["had5"] = false;
+                row["lightShadow"] = 0;
+            }
+            $('#free_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            // toSaveStar5selections();
+        },
+        'click .had5': function (e, value, row, index) {
+            if (!row["had5"]){
+                row["had5"] = true;
+                row["had4"] = true;
+            }else{
+                row["had5"] = false;
+            }
+            $('#free_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            // toSaveStar5selections();
+        },
+        'click .hadas': function (e, value, row, index) {
+            if (!row["hadas"]){
+                row["hadas"] = true;
+            }else{
+                row["hadas"] = false;
+            }
+            $('#free_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            // toSaveStar5selections();
+        },
+        'change .light-shadow': function (e, value, row, index) {
+            row['lightShadow'] = $(e.target).val();
+            // toSaveStar5selections();
+        }
+
+    };
+
+    // Free Table Options
+    var freeTableColums = [{
+        field: 'id',
+        visible: false
+    }, {
+        field: 'element',
+        width: 5,
+        formatter: function () { return ''; },
+        cellStyle: elementCellStyle,
+        events: operateEventsFree
+    },{
+        field: 'name',
+        title: '角色',
+        width: 230,
+        formatter: function (value, row, index) {
+            var nickname = row['nickname'];
+            if ($.trim(nickname) === ''){
+                nickname = "-"
+            }
+            if ($.trim(row['asNickname'])){
+                nickname +=  '/' + row['asNickname']
+            }
+
+            var html = '<div class="media">\n' +
+                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <div class="media-body">\n' +
+                '    <h5 class="mt-0">'+ value +'</h5>\n' +
+                nickname +
+                '  </div>\n' +
+                '</div>';
+            return html;
+        },
+        events: operateEventsFree
+    }, {
+        field: 'had4',
+        title: '☆4',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsFree,
+        visible: false
+    }, {
+        field: 'had5',
+        title: '★5',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value === "none"){
+                return '<font color="gray">-</font>';
+            }else if(value){
+                return '<i class="fa fa-heart had5" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had5" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsFree,
+        visible: false
+    }, {
+        field: 'star',
+        title: '★★★★★',
+        width: 120,
+        align: "left",
+        formatter: function(value, row, index){
+            if(value === "none"){
+                return '<font color="gray">-</font>';
+            }else if(value){
+                return genStar(4,'had5', true) + genStar(4.5,'had5', true);
+            }else{
+                return genStar(4,'had5') + genStar(4.5,'had5');
+            }
+        },
+        events: operateEventsFree
+    }, {
+        field: 'hadas',
+        title: 'AS',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if ($.trim(row["as"])) {
+                if(value){
+                    return '<i class="fa fa-user-friends hadas" style="color:red"></i>';
+                }else{
+                    return '<i class="fa fa-user-friends hadas" style="color:#aaa"></i>';
+                }
+            }else{
+                return '<font color="gray">-</font>';
+            }
+        },
+        events: operateEventsFree
+    }, {
+        field: 'lightShadow',
+        title: '天冥',
+        width: 40,
+        formatter: function (value, row, index) {
+            return '<input class="form-control light-shadow" value="' + value + '" type="number" min="0" max="255">';
+        },
+        events: operateEventsFree
+    }];
+
+    $('#free_table').bootstrapTable({
+        columns: freeTableColums,
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+        toolbar: "#free_toolbar",
+        toolbarAlign: "right"
+    });
+}
+
+function star4TableHandle() {
+    // Table icon click events
+    window.operateEventsSp = {
+        'click .icon': function (e, value, row, index) {
+            $('#sp_table').bootstrapTable('toggleDetailView', index);
+        },
+        'click .had4': function (e, value, row, index) {
+            if (!row["had4"]){
+                row["had4"] = true;
+            }else{
+                row["had4"] = false;
+                if(row["had5"] == true) row["had5"] = false;
+                row["lightShadow"] = 0;
+            }
+            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            // toSaveStar5selections();
+        },
+        'click .had5': function (e, value, row, index) {
+            if (!row["had5"]){
+                row["had5"] = true;
+                row["had4"] = true;
+            }else{
+                row["had5"] = false;
+            }
+            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            // toSaveStar5selections();
+        },
+        'click .hadas': function (e, value, row, index) {
+            if (!row["hadas"]){
+                row["hadas"] = true;
+            }else{
+                row["hadas"] = false;
+            }
+            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            // toSaveStar5selections();
+        },
+        'change .light-shadow': function (e, value, row, index) {
+            row['lightShadow'] = $(e.target).val();
+            // toSaveStar5selections();
+        }
+
+    };
+
+    // Star 4 Table Options
+    var star4TableColums = [{
+        field: 'id',
+        visible: false,
+    }, {
+        field: 'element',
+        width: 5,
+        formatter: function () { return ''; },
+        cellStyle: elementCellStyle,
+        events: operateEventsSp
+    },{
+        field: 'name',
+        title: '角色',
+        width: 230,
+        formatter: function (value, row, index) {
+            var nickname = row['nickname'];
+            if ($.trim(nickname) === ''){
+                nickname = "-"
+            }
+            if ($.trim(row['asNickname'])){
+                nickname +=  '/' + row['asNickname']
+            }
+
+            var html = '<div class="media">\n' +
+                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <div class="media-body">\n' +
+                '    <h5 class="mt-0">'+ value +'</h5>\n' +
+                nickname +
+                '  </div>\n' +
+                '</div>';
+            return html;
+        },
+        events: operateEventsSp
+    }, {
+        field: 'had3',
+        title: '☆3',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsSp
+    }, {
+        field: 'had4',
+        title: '☆4',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsSp
+    }];
+
+    $('#star4_table').bootstrapTable({
+        columns: star4TableColums,
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+        toolbar: "#star4_toolbar",
+        toolbarAlign: "right"
+    });
+}
+
+function spTableHandle() {
+    // Sp Table Options
+    var spTableColums = [{
+        field: 'id',
+        visible: false,
+    }, {
+        field: 'element',
+        width: 5,
+        formatter: function () { return ''; },
+        cellStyle: elementCellStyle,
+        events: operateEvents
+    },{
+        field: 'name',
+        title: '角色',
+        width: 230,
+        formatter: function (value, row, index) {
+            var nickname = row['nickname'];
+            if ($.trim(nickname) === ''){
+                nickname = "-"
+            }
+            if ($.trim(row['asNickname'])){
+                nickname +=  '/' + row['asNickname']
+            }
+
+            var html = '<div class="media">\n' +
+                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <div class="media-body">\n' +
+                '    <h5 class="mt-0">'+ value +'</h5>\n' +
+                nickname +
+                '  </div>\n' +
+                '</div>';
+            return html;
+        },
+        events: operateEventsSp
+    }, {
+        field: 'had3',
+        title: '☆3',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsSp
+    }, {
+        field: 'had4',
+        title: '☆4',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if(value){
+                return '<i class="fa fa-heart had4" style="color:red"></i>';
+            }else{
+                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+            }
+        },
+        events: operateEventsSp
+    }];
+
+    $('#sp_table').bootstrapTable({
+        columns: spTableColums,
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark"
+    });
+}
+
+function genStar(num, exClass, isActive, isAsType) {
+    var exClassName = ' ' + exClass || '';
+    var active = isActive || false;
+    var asType = isAsType || false;
+    var starNum = num || 2;
+
+    var starColor = ' star-gray';
+    if (asType && active) starColor = ' star-as-type';
+    if (!asType && active) starColor = ' star-red';
+
+    var star = '<i class="fas fa-star'+ starColor + exClassName +'"></i>';
+    var starHalf = '<i class="fas fa-star-half-alt'+ starColor + exClassName +'"></i>';
+
+
+    if (starNum === 4.5 || starNum === 3.5){
+        return starHalf;
+    }
+    return star;
+}
+
+function genStarList(min, max, selected) {
+
 }
 
 function genTeamCheckCanvas() {

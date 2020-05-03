@@ -49,48 +49,53 @@ body h1, body h2, body h3, body h4, body h5 {
 }
 /* line 37, ../sass/_page.scss */
 .tab-content .story-scroll-nav .nav-item .dropdown-toggle {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+/* line 41, ../sass/_page.scss */
+.tab-content .story-scroll-nav .nav-item > .nav-link {
   padding-left: 5px;
   padding-right: 5px;
 }
-/* line 43, ../sass/_page.scss */
+/* line 48, ../sass/_page.scss */
 .tab-content .story-scroll-panel {
   overflow-y: scroll;
   height: 500px;
 }
 
-/* line 49, ../sass/_page.scss */
+/* line 54, ../sass/_page.scss */
 .fixed-bottom-panel {
   position: fixed;
   bottom: 0;
   height: 38px;
 }
-/* line 54, ../sass/_page.scss */
+/* line 59, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group {
   position: relative;
 }
-/* line 56, ../sass/_page.scss */
+/* line 61, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .btn {
   border-radius: 5px 5px 0px 0px;
   -moz-border-radius: 5px 5px 0px 0px;
   -webkit-border-radius: 5px 5px 0px 0px;
   border: 1px solid dodgerblue;
 }
-/* line 62, ../sass/_page.scss */
+/* line 67, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .open-detail {
   display: block;
 }
-/* line 65, ../sass/_page.scss */
+/* line 70, ../sass/_page.scss */
 .fixed-bottom-panel .panel-body .btn-group .close-detail {
   display: none;
 }
 
-/* line 73, ../sass/_page.scss */
+/* line 78, ../sass/_page.scss */
 .btn .icon {
   width: 20px;
   display: inline-block;
   overflow: visible;
 }
-/* line 77, ../sass/_page.scss */
+/* line 82, ../sass/_page.scss */
 .btn .icon img {
   height: 30px;
   width: 30px;
@@ -99,44 +104,59 @@ body h1, body h2, body h3, body h4, body h5 {
   left: 7px;
 }
 
-/* line 89, ../sass/_page.scss */
+/* line 94, ../sass/_page.scss */
 table i {
   cursor: pointer;
 }
-/* line 93, ../sass/_page.scss */
+/* line 98, ../sass/_page.scss */
 table .media img {
   width: 50px;
   height: 50px;
 }
-/* line 97, ../sass/_page.scss */
+/* line 102, ../sass/_page.scss */
 table .media h5 {
   font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
   font-weight: bold;
   margin: 0px;
 }
-/* line 104, ../sass/_page.scss */
+/* line 109, ../sass/_page.scss */
 table input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-/* line 107, ../sass/_page.scss */
-table input.light-shadow {
+/* line 112, ../sass/_page.scss */
+table input.light-shadow, table input.as-book-input {
   padding: 0;
   text-align: center;
 }
 
-/* line 114, ../sass/_page.scss */
+/* line 119, ../sass/_page.scss */
 .extra-story-item .custom-control-label, .extra-setting-item .custom-control-label {
   line-height: 20px;
 }
 
-/* line 120, ../sass/_page.scss */
+/* line 125, ../sass/_page.scss */
 .main-story-btn-group .btn {
   margin-bottom: 3px;
   border-radius: 0;
 }
-/* line 124, ../sass/_page.scss */
+/* line 129, ../sass/_page.scss */
 .main-story-btn-group .btn-secondary {
   background-color: lightgrey;
   border-color: lightgrey;
   color: black;
+}
+
+/* line 136, ../sass/_page.scss */
+.star-gray {
+  color: darkgray;
+}
+
+/* line 139, ../sass/_page.scss */
+.star-red {
+  color: red;
+}
+
+/* line 142, ../sass/_page.scss */
+.star-as-type {
+  color: cornflowerblue;
 }
