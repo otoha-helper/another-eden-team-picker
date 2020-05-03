@@ -79,10 +79,11 @@
                 var readLink = this.readLink;
                 var failedLink = this.failedLink;
 
+                if (typeof startCallback === "function"){
+                    startCallback();
+                }
+
                 $.each(fileList, function (key, row) {
-                    if (typeof startCallback === "function"){
-                        startCallback(key);
-                    }
                     $.ajax({
                         type: 'get',
                         url: row.link,

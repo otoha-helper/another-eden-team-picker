@@ -34,7 +34,7 @@ $(document).ready(function () {
 
     // Tab change events
     $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-        toSaveStar5selections();
+
         if (e.target.id = "gentabel-tab"){
             var data = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
 
@@ -129,6 +129,9 @@ $(document).ready(function () {
     star4TableHandle();
     spTableHandle();
 
+    // Gen main Story btns
+    genMainStoryBtn();
+
     // Read csv in table
     $.myFileReader
         .addFile('5star','./csv/5star.csv')
@@ -138,10 +141,8 @@ $(document).ready(function () {
         .addFile('4star','./csv/4star.csv')
         .run(
             function (key) {
-                console.log("Starting ", key);
-                if (key === '5star'){
-                    $('#char_table').bootstrapTable('showLoading');
-                }
+                console.log("Starting ");
+                $('#char_table').bootstrapTable('showLoading');
             },
             function (result) {
                 console.log("All file loaded");
@@ -188,7 +189,7 @@ $(document).ready(function () {
                             nickname = row["角色名"];
                         }
                         return {
-                            'id': row['id'],
+                            'id': row['ID'],
                             'name': row["角色名"],
                             'asNickname': asNickname,
                             'as': row['AS名'] + '的異節',
@@ -221,9 +222,53 @@ $(document).ready(function () {
                         $('#char_table').bootstrapTable('hideLoading');
                         $('#char_table').bootstrapTable('load', rows);
                     }
+
+                    if ($.myStorage.checkExist('getAsBook')){
+                        var save = $.myStorage.get('getAsBook');
+
+                        var restore = $.map(asBook,function (row) {
+                            var getRow = $.map(save, function (saveRow) {
+                                if (row['id'] === saveRow['id']){
+                                    return saveRow;
+                                }
+                            });
+
+                            if (getRow.length){
+                                row['q'] = getRow[0]['q'];
+                            }
+                            return row;
+                        });
+                        $('#as_book_table').bootstrapTable('load', restore);
+                    }
+
+
                 }
                 if (key === "extra"){
                     genExtraStory($.csv.toObjects(data));
+                    if ($.myStorage.checkExist('extraStory')){
+                        var existSave = $.myStorage.get('extraStory');
+                        $.map(existSave, function (input) {
+                            var item = $("#"+input['id']);
+                            switch (input['type']) {
+                                case 'range':
+                                    var label = $(item).closest('.form-group').find('.book-display');
+                                    $(label).html(input['val']);
+                                    $(item).val(input['val']);
+                                    break;
+                                case 'checkbox':
+                                    var label = $(item).closest('.form-group').find('.custom-control-label');
+                                    var ans = input['val'];
+                                    $(item).prop("checked",input['val']);
+                                    var map = {
+                                        'true':' 己完成',
+                                        'false': '未完成'
+                                    };
+
+                                    $(label).html(map[ans]);
+                                    break;
+                            }
+                        });
+                    }
                 }
                 if (key === "free"){
                     var freeRows = $.map($.csv.toObjects(data), function (row) {
@@ -285,20 +330,13 @@ $(document).ready(function () {
                             'id': row["ID"],
                             'name': row["角色名"],
                             'nickname': row["暱稱"],
-                            'asNickname': row["AS暱稱"],
-                            'getByStory': row["取得"],
                             'minStar': row["起始☆"],
                             'maxStar': row["最高★"],
-                            'AS': (row["AS"] === "TRUE")? true : false,
-                            'asName': row["AS名"],
-                            'minStory': row["最低加入章節"],
                             'useBook': row["消耗夢書"],
                             'presonal': row["專武"],
                             'element': row["主屬"],
+                            'had3': false,
                             'had4': false,
-                            'had5': false,
-                            'hadas': false,
-                            'lightShadow': 0
                         };
                     });
 
@@ -313,10 +351,8 @@ $(document).ready(function () {
                             });
 
                             if (getRow.length){
+                                row['had3'] = getRow[0]['had3'];
                                 row['had4'] = getRow[0]['had4'];
-                                row['had5'] = getRow[0]['had5'];
-                                row['hadas'] = getRow[0]['hadas'];
-                                row['lightShadow'] = getRow[0]['lightShadow'];
                             }
                             return row;
                         });
@@ -373,93 +409,36 @@ $(document).ready(function () {
             });
 
 
-    $('body').on('focus', 'table input[type=number]', function() {
-        if (focusedElement == this) return;
-        var focusedElement = this;
-        focusedElement.select();
+    $('body').on('focus', 'input[type=number]', function() {
+        $(this).select();
     });
 
-    $('body').on('click', '.dropdown-menu#weaponGroup .dropdown-item', function() {
-        var src = $(this).find('img').get(0);
-        var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
-        var img = $(btn).find('img').get(0);
-        var elementType = $(".dropdown-menu#elementGroup").find(".active");
-
-        if ($(this).hasClass('active')){
-            $(this).removeClass('active');
-            if (elementType.length){
-                elementType = $(elementType).data('elementType');
-                $('#char_table').bootstrapTable('filterBy',{element:elementType});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{});
+    $("#cleanup").on("click", function () {
+        bootbox.confirm({
+            title: "清除已記錄資料",
+            message: "進行清除後，將失去已選擇的資料。如點擊清除後再進行資料修改，該部份的資料將會再次記錄。",
+            buttons: {
+                cancel: {
+                    label: '取消',
+                    className: 'btn-info'
+                },
+                confirm: {
+                    label: '清除',
+                    className: 'btn-danger'
+                }
+            },
+            backdrop: true,
+            callback: function (result) {
+                if (result){
+                    $.myStorage.clean();
+                    bootbox.alert({
+                        message: "資料已經清除!",
+                        backdrop: true,
+                    });
+                }
             }
+        });
 
-            $(btn).removeClass('btn-primary').addClass('btn-light');
-            $(img).attr('src', './images/icons/weapon/sword.png');
-        }else{
-            $(this).parent().find('.active').removeClass('active');
-            $(this).addClass('active');
-            var target = $(this).data('weaponType');
-
-
-            if (elementType.length){
-                elementType = $(elementType).data('elementType');
-                $('#char_table').bootstrapTable('filterBy',{element:elementType, weapon:target});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{weapon:target});
-            }
-
-            $(btn).removeClass('btn-light').addClass('btn-primary');
-            $(img).attr('src', $(src).attr('src'));
-
-        }
-    });
-
-    $('body').on('click', '.dropdown-menu#elementGroup .dropdown-item', function() {
-        var src = $(this).find('img').get(0);
-        var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
-        var img = $(btn).find('img').get(0);
-        var weaponType = $(".dropdown-menu#weaponGroup").find(".active");
-
-        if ($(this).hasClass('active')){
-            $(this).removeClass('active');
-            if (weaponType.length){
-                weaponType = $(weaponType).data('weaponType');
-                $('#char_table').bootstrapTable('filterBy',{weapon:weaponType});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{});
-            }
-            $(btn).removeClass('btn-primary').addClass('btn-light');
-            $(img).attr('src', './images/icons/element/none.png');
-        }else{
-            $(this).parent().find('.active').removeClass('active');
-            $(this).addClass('active');
-            var target = $(this).data('elementType');
-            if (weaponType.length){
-                weaponType = $(weaponType).data('weaponType');
-                $('#char_table').bootstrapTable('filterBy',{element:target, weapon:weaponType});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{element:target});
-            }
-
-            $(btn).removeClass('btn-light').addClass('btn-primary');
-            $(img).attr('src', $(src).attr('src'));
-        }
-
-    });
-
-
-
-
-
-    $('body').on('click', '.dropdown-menu#optionList .dropdown-item', function() {
-        var target = $(this).attr('href');
-
-        switch (target) {
-            case '#cleanup':
-                $.myStorage.clean();
-                break;
-        }
     });
 
     $("button#gen").on('click', function(){
@@ -475,8 +454,6 @@ $(document).ready(function () {
         var myWindow = window.open("", "_blank");
         myWindow.document.write(html);
     });
-
-    genMainStoryBtn();
 
 });
 
@@ -550,11 +527,19 @@ function genMainStoryBtn() {
     var storyBtnHolder = $('#mainStoryBtnGroup');
 
     if (storyTo){
+        var saveTo = 0;
+        if ($.myStorage.checkExist('mainStory')){
+            saveTo = $.myStorage.get('mainStory');
+            $('#mainStory').attr('data-selected-number', saveTo);
+        }
         var html = '';
         for (var i=1; i<=storyTo; i++){
-            html += '<button name="mainStoryBtn['+i+']" type="button" class="btn btn-secondary" data-val="'+i+'">'+ numberPad(i) +'</button>\n';
+            var className = 'secondary';
+            if (saveTo >= i) className = 'primary';
+            html += '<button name="mainStoryBtn['+i+']" type="button" class="btn btn-'+className+'" data-val="'+i+'">'+ numberPad(i) +'</button>\n';
         }
         $(storyBtnHolder).append(html);
+
     }
     $('body').on('click', '#mainStoryBtnGroup .btn', function() {
         var storyNow = $(this).data('val');
@@ -567,6 +552,8 @@ function genMainStoryBtn() {
             }
         });
         $('#mainStory').attr('data-selected-number', storyNow);
+        $.myStorage.save('mainStory', storyNow);
+
     });
 
 }
@@ -576,8 +563,8 @@ function genExtraStory(list) {
         var label1 = '<div class="col-8 col-sm-9">' + '<span class="badge badge-secondary">'+row["類型"] +'</span> <span>'+row['名稱'] + '</span></div>\n';
         var input1 = '<div class="col-4 col-sm-3">';
         input1 += '<div class="custom-control custom-switch">\n' +
-            '   <input type="checkbox" class="custom-control-input" id="extraStory['+i+']">\n' +
-            '   <label class="custom-control-label" for="extraStory['+i+']">\n' +
+            '   <input type="checkbox" class="custom-control-input" id="extraStory_'+i+'">\n' +
+            '   <label class="custom-control-label" for="extraStory_'+i+'">\n' +
             '未完成' +
             '   </label>\n' +
             '</div>';
@@ -588,8 +575,8 @@ function genExtraStory(list) {
         holder += input1;
         holder += '</div>';
 
-        var label2 = '<label class="col-8 col-sm-9 col-form-label pt-0 pb-0" for="extraStoryBook['+i+']">己取得詠夢之書獎勵 <span class="book-display">0</span> / '+row["夢書獎勵"]+ '本</label>\n';
-        var input2 = '<div class="col-4 col-sm-3 pt-1"><input type="range" class="custom-range" min="0" max="'+row["夢書獎勵"]+'" value="0" id=""extraStoryBook['+i+']"></div>\n';
+        var label2 = '<label class="col-8 col-sm-9 col-form-label pt-0 pb-0" for="extraStoryBook_'+i+'">己取得詠夢之書獎勵 <span class="book-display">0</span> / '+row["夢書獎勵"]+ '本</label>\n';
+        var input2 = '<div class="col-4 col-sm-3 pt-1"><input type="range" id="getYumeBook_'+i+'" class="custom-range" min="0" max="'+row["夢書獎勵"]+'" value="0" id=""extraStoryBook_'+i+'"></div>\n';
 
         var holder2 = '<div class="form-group row">';
         holder2 += label2;
@@ -615,7 +602,6 @@ function genExtraStory(list) {
             case 'range':
                 var label = $(this).closest('.form-group').find('.book-display');
                 $(label).html($(range).val());
-                console.log();
                 break;
             case 'checkbox':
                 var label = $(this).closest('.form-group').find('.custom-control-label');
@@ -626,9 +612,26 @@ function genExtraStory(list) {
                 $(label).html(map[$(checkbox).prop("checked")]);
                 break;
         }
+        saveExtraStory();
     });
 }
+function saveExtraStory() {
+   var inputs = $('.extra-story-item input');
+   var vals = $.map(inputs, function (input) {
+        var inputType = $(input).attr('type');
+        var eleId = $(input).attr('id');
 
+        switch (inputType) {
+            case 'range':
+                var val =  $(input).val();
+                return {id: eleId, val: val, type: 'range'};
+            case 'checkbox':
+                var val =  $(input).prop("checked");
+                return {id: eleId, val: val, type:'checkbox'};
+        }
+    });
+    $.myStorage.save('extraStory', vals);
+}
 
 
 function onWindowInitOrResize() {
@@ -653,6 +656,76 @@ var elementCellStyle = function (value, row, index) {
     };
 
 function star5tableHandle() {
+
+    $('body').on('click', '.dropdown-menu#weaponGroup .dropdown-item', function() {
+        var src = $(this).find('img').get(0);
+        var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
+        var img = $(btn).find('img').get(0);
+        var elementType = $(".dropdown-menu#elementGroup").find(".active");
+
+        if ($(this).hasClass('active')){
+            $(this).removeClass('active');
+            if (elementType.length){
+                elementType = $(elementType).data('elementType');
+                $('#char_table').bootstrapTable('filterBy',{element:elementType});
+            }else{
+                $('#char_table').bootstrapTable('filterBy',{});
+            }
+
+            $(btn).removeClass('btn-primary').addClass('btn-light');
+            $(img).attr('src', './images/icons/weapon/sword.png');
+        }else{
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+            var target = $(this).data('weaponType');
+
+
+            if (elementType.length){
+                elementType = $(elementType).data('elementType');
+                $('#char_table').bootstrapTable('filterBy',{element:elementType, weapon:target});
+            }else{
+                $('#char_table').bootstrapTable('filterBy',{weapon:target});
+            }
+
+            $(btn).removeClass('btn-light').addClass('btn-primary');
+            $(img).attr('src', $(src).attr('src'));
+
+        }
+    });
+
+    $('body').on('click', '.dropdown-menu#elementGroup .dropdown-item', function() {
+        var src = $(this).find('img').get(0);
+        var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
+        var img = $(btn).find('img').get(0);
+        var weaponType = $(".dropdown-menu#weaponGroup").find(".active");
+
+        if ($(this).hasClass('active')){
+            $(this).removeClass('active');
+            if (weaponType.length){
+                weaponType = $(weaponType).data('weaponType');
+                $('#char_table').bootstrapTable('filterBy',{weapon:weaponType});
+            }else{
+                $('#char_table').bootstrapTable('filterBy',{});
+            }
+            $(btn).removeClass('btn-primary').addClass('btn-light');
+            $(img).attr('src', './images/icons/element/none.png');
+        }else{
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+            var target = $(this).data('elementType');
+            if (weaponType.length){
+                weaponType = $(weaponType).data('weaponType');
+                $('#char_table').bootstrapTable('filterBy',{element:target, weapon:weaponType});
+            }else{
+                $('#char_table').bootstrapTable('filterBy',{element:target});
+            }
+
+            $(btn).removeClass('btn-light').addClass('btn-primary');
+            $(img).attr('src', $(src).attr('src'));
+        }
+
+    });
+
     // Table icon click events
     window.operateEvents = {
         'click .icon': function (e, value, row, index) {
@@ -694,7 +767,12 @@ function star5tableHandle() {
         }
 
     };
-
+    window.operateAsBooks = {
+        'change .as-book-input': function (e, value, row, index) {
+            row['q'] = $(e.target).val();
+            toSaveAsBook();
+        }
+    }
 
     // Star 5 Table Options
     var star5TableColums = [{
@@ -850,6 +928,7 @@ function star5tableHandle() {
             formatter: function (value, row, index) {
                 return '<input class="form-control as-book-input" value="' + value + '" type="number" min="0" max="255">';
             },
+            events: operateAsBooks
         }],
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
@@ -876,6 +955,16 @@ function toSaveStar5selections() {
 
     });
     $.myStorage.save('selectedStar5',save);
+}
+function toSaveAsBook() {
+    var data = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var save = $.map(data,function (row, i) {
+        return {
+                id: row['id'],
+                q: row['q']
+            };
+    });
+    $.myStorage.save('getAsBook',save);
 }
 
 function freeTableHandle() {
@@ -1072,6 +1161,7 @@ function star4TableHandle() {
             if (!row["had3"]){
                 row["had3"] = true;
             }else{
+                row["had3"] = false;
                 row["had4"] = false;
             }
             $('#star4_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
@@ -1206,42 +1296,28 @@ function spTableHandle() {
     // Table icon click events
     window.operateEventsSp = {
         'click .icon': function (e, value, row, index) {
-            $('#sp_table').bootstrapTable('toggleDetailView', index);
+
+        },
+        'click .had3': function (e, value, row, index) {
+            if (!row["had3"]){
+                row["had3"] = true;
+            }else{
+                row["had3"] = false;
+                row["had4"] = false;
+            }
+            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveSpselections();
         },
         'click .had4': function (e, value, row, index) {
             if (!row["had4"]){
+                row["had3"] = true;
                 row["had4"] = true;
             }else{
                 row["had4"] = false;
-                if(row["had5"] == true) row["had5"] = false;
-                row["lightShadow"] = 0;
             }
             $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
+            toSaveSpselections();
         },
-        'click .had5': function (e, value, row, index) {
-            if (!row["had5"]){
-                row["had5"] = true;
-                row["had4"] = true;
-            }else{
-                row["had5"] = false;
-            }
-            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'click .hadas': function (e, value, row, index) {
-            if (!row["hadas"]){
-                row["hadas"] = true;
-            }else{
-                row["hadas"] = false;
-            }
-            $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
-            // toSaveStar5selections();
-        },
-        'change .light-shadow': function (e, value, row, index) {
-            row['lightShadow'] = $(e.target).val();
-            // toSaveStar5selections();
-        }
 
     };
 
@@ -1253,8 +1329,7 @@ function spTableHandle() {
         field: 'element',
         width: 5,
         formatter: function () { return ''; },
-        cellStyle: elementCellStyle,
-        events: operateEvents
+        cellStyle: elementCellStyle
     },{
         field: 'name',
         title: '角色',
@@ -1285,9 +1360,9 @@ function spTableHandle() {
         align: "center",
         formatter: function(value, row, index){
             if(value){
-                return '<i class="fa fa-heart had4" style="color:red"></i>';
+                return '<i class="fa fa-heart had3" style="color:red"></i>';
             }else{
-                return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
+                return '<i class="fa fa-heart had3" style="color:#aaa"></i>';
             }
         },
         events: operateEventsSp
@@ -1312,6 +1387,23 @@ function spTableHandle() {
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark"
     });
+}
+function toSaveSpselections() {
+    var data = $('#sp_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var save = $.map(data,function (row, i) {
+        if (
+            row['had3'] === true ||
+            row['had4'] === true
+        ){
+            return {
+                id: row['id'],
+                had3: row['had3'],
+                had4: row['had4']
+            };
+        }
+
+    });
+    $.myStorage.save('selectedSp',save);
 }
 
 function genStar(num, exClass, isActive, isAsType) {
