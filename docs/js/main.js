@@ -1709,16 +1709,16 @@ function genText() {
                 }
             });
             var asBookQty = 0;
-            if (asBookRow) asBookQty = asBookRow[0]['qty'];
-            if (typeof asBookQty === "string" && parseInt(asBookQty) > 0){
+            if (asBookRow) asBookQty =  Math.ceil(parseInt(asBookRow[0]['qty']));
+            if (typeof asBookQty !== "undefined" && asBookQty > 0){
                 asBook = '<br>' + divide +
                     stringPad(row['as'] + "的異節", (nameMaxLength[0] + nameMaxLength[1] + 6), "<", "＞") +
-                    toFullWidthNumber(asBookQty, 2, 15, false) + '本' + divide;
+                    toFullWidthNumber(asBookQty, 2, 99, false) + '本' + divide;
             }
 
         }
-        var lightShadow = (typeof row['lightShadow'] === "string" && parseInt(row['lightShadow']) > 0 && (row['had4'] || row['had5'])) ? row['lightShadow'] : "";
-        return divide + toFixLength(row["name"], row["nickname"], nameMaxLength, true) + divide + toFullWidthNumber(lightShadow,3, 255, false) + divide + hoshi + divide + as + divide + asBook;
+        var lightShadow = (typeof row['lightShadow'] !== "undefined" && (row['lightShadow']) > 0 && (row['had4'] || row['had5'])) ? row['lightShadow'] : "";
+        return divide + toFixLength(row["name"], row["nickname"], nameMaxLength, true) + divide + toFullWidthNumber(Math.ceil(lightShadow),3, 255, false) + divide + hoshi + divide + as + divide + asBook;
     });
 
     var html = [
@@ -1774,8 +1774,8 @@ function genTable() {
                 }
             });
             var asBookQty = 0;
-            if (asBookRow) asBookQty = asBookRow[0]['qty'];
-            if (typeof asBookQty === "string" && parseInt(asBookQty) > 0){
+            if (asBookRow) asBookQty = Math.ceil(parseInt(asBookRow[0]['qty']));
+            if (typeof asBookQty !== "undefined" && asBookQty > 0){
                 asBook = [
                     '<tr height="20">',
                     '<td colspan="2" align="center">'+row['as'] + "的異節"+'</td>',
