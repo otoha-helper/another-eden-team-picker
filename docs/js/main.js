@@ -341,6 +341,12 @@ $(document).ready(function () {
     $('body').on('focus', 'input[type=number]', function() {
         $(this).select();
     });
+    $('body').on('focusout', 'input[type=number].light-shadow', function() {
+        var num = parseInt($(this).val());
+        if (num == "-") num = 0;
+        if (num > 255) num = 255;
+        $(this).val(num);
+    });
 
     setting();
 
@@ -1915,10 +1921,14 @@ function genExtarDetal() {
         var freeData = $('#free_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
 
         var freeStar5 = $.map(freeData, function (freeRow) {
-            if (freeRow['had5']){
+            if (freeRow['had5'] || freeRow['hadas']){
                 if (freeRow['useBook'] !== '-') useBook += parseInt(freeRow['useBook']);
                 var lightShadow = (freeRow['lightShadow'] > 0) ? '('+freeRow['lightShadow']+')' : '';
-                return freeRow['name'] + lightShadow;
+                var asName = '';
+                if (freeRow['hadas']) {
+                    asName = "&AS" + freeRow['asName'];
+                }
+                return freeRow['name'] + asName + lightShadow;
             }
         });
 
