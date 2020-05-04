@@ -341,12 +341,6 @@ $(document).ready(function () {
     $('body').on('focus', 'input[type=number]', function() {
         $(this).select();
     });
-    $('body').on('focusout', 'input[type=number].light-shadow', function() {
-        var num = parseInt($(this).val());
-        if (num == "-") num = 0;
-        if (num > 255) num = 255;
-        $(this).val(num);
-    });
 
     setting();
 
@@ -573,7 +567,12 @@ function onWindowInitOrResize() {
 function yumeBooks() {
 
     $("#yumeBooks").on('change', function () {
-        $.myStorage.save('yumeBooks', $(this).val());
+        var yumeBooks = $(this).val();
+        if (typeof yumeBooks !== "undefined") yumeBooks = Math.ceil(parseInt(yumeBooks));
+        if (yumeBooks > 999) yumeBooks = 999;
+        if (yumeBooks < 0 ) yumeBooks = 0;
+        $(this).val(yumeBooks);
+        $.myStorage.save('yumeBooks', yumeBooks);
     });
 
     if ($.myStorage.checkExist('yumeBooks')){
@@ -705,14 +704,24 @@ function star5tableHandle() {
             toSaveStar5selections();
         },
         'change .light-shadow': function (e, value, row, index) {
-            row['lightShadow'] = $(e.target).val();
+            if (typeof $(e.target).val() !== "undefined"){
+                value = parseInt($(e.target).val());
+                if (value > 255) value = 255;
+                if (value < 0) value = 0;
+                $(e.target).val(value);
+            }
+            row['lightShadow'] = value;
             toSaveStar5selections();
         }
 
     };
     window.operateAsBooks = {
         'change .as-book-input': function (e, value, row, index) {
-            row['qty'] = $(e.target).val();
+            if (typeof $(e.target).val() !== "undefined") value = Math.ceil(parseInt($(e.target).val()));
+            if (value > 999) value = 999;
+            if (value < 0) value = 0;
+            $(e.target).val(value);
+            row['qty'] = value;
             toSaveAsBook();
         }
     }
@@ -800,6 +809,11 @@ function star5tableHandle() {
         title: '天冥',
         width: 60,
         formatter: function (value, row, index) {
+            if (typeof value !== "undefined"){
+                value = parseInt(value);
+                if (value > 255) value = 255;
+                if (value < 0) value = 0;
+            }
             return '<input class="form-control light-shadow" value="' + value + '" type="number" min="0" max="255">';
         },
         events: operateEvents
@@ -869,6 +883,9 @@ function star5tableHandle() {
             title: '數量',
             width: 60,
             formatter: function (value, row, index) {
+                if (typeof value !== "undefined") value = Math.ceil(parseInt(value));
+                if (value > 999) value = 999;
+                if (value < 0) value = 0;
                 return '<input class="form-control as-book-input" value="' + value + '" type="number" min="0" max="999" aria-label="'+row['as']+'數量">';
             },
             events: operateAsBooks
@@ -887,6 +904,9 @@ function toSaveStar5selections() {
             row['hadas'] === true ||
             row['lightShadow'] > 0
         ){
+            row['lightShadow'] = parseInt(row['lightShadow']);
+            if (row['lightShadow'] > 255) row['lightShadow'] = 255;
+            if (row['lightShadow'] < 0 ) row['lightShadow'] = 0;
             return {
                 id: row['id'],
                 had4: row['had4'],
@@ -902,6 +922,9 @@ function toSaveStar5selections() {
 function toSaveAsBook() {
     var data = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     var save = $.map(data,function (row, i) {
+        row['qty'] = parseInt(row['qty']);
+        if (row['qty'] > 999) row['qty'] = 999;
+        if (row['qty'] < 0 ) row['qty'] = 0;
         return {
                 id: row['id'],
                 qty: row['qty']
@@ -1019,7 +1042,13 @@ function freeTableHandle() {
             toSaveFreeSelections();
         },
         'change .light-shadow': function (e, value, row, index) {
-            row['lightShadow'] = $(e.target).val();
+            if (typeof $(e.target).val() !== "undefined"){
+                value = parseInt($(e.target).val());
+                if (value > 255) value = 255;
+                if (value < 0) value = 0;
+                $(e.target).val(value);
+            }
+            row['lightShadow'] = value;
             toSaveFreeSelections();
         }
 
@@ -1038,7 +1067,7 @@ function freeTableHandle() {
     },{
         field: 'name',
         title: '角色',
-        width: 230,
+        width: 200,
         formatter: function (value, row, index) {
             var nickname = row['nickname'];
             if ($.trim(nickname) === ''){
@@ -1061,7 +1090,7 @@ function freeTableHandle() {
     }, {
         field: 'star',
         title: '★★★★★',
-        width: 120,
+        width: 150,
         align: "left",
         formatter: function(value, row, index){
             return genStarList(row['minStar'], row['maxStar'],
@@ -1151,6 +1180,10 @@ function toSaveFreeSelections() {
             row['hadas'] === true ||
             row['lightShadow'] > 0
         ){
+            row['lightShadow'] = parseInt(row['lightShadow']);
+            if (row['lightShadow'] > 255) row['lightShadow'] = 255;
+            if (row['lightShadow'] < 0 ) row['lightShadow'] = 0;
+
             return {
                 id: row['id'],
                 had1: row['had1'],
