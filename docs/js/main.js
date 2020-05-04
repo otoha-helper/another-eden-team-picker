@@ -1695,7 +1695,7 @@ function genText() {
         "<span>" + divide + toFixLength(strLoop("＿", nameMaxLength[0]), strLoop("＿", nameMaxLength[1]), nameMaxLength, true) +
         divide + "＿＿＿" + divide + "＿＿" + divide + "＿" + divide + "</span><br />",
         list.join("<br />"),
-        '<br><br><br><br>'
+        '<br><br>'
     ];
 
     html = html.concat(genExtarDetal());
@@ -1780,7 +1780,7 @@ function genTable() {
         tbody,
         '</tbody>',
         '</table>',
-        '<br><br><br><br>',
+        '<br><br>',
         genExtarDetal().join('\n')
     ].join("\n");
 
@@ -1813,10 +1813,10 @@ function genExtarDetal() {
         ]);
     }
 
-
-    if (showYumeBookQty){
+    var getYumeBooks = parseInt( $("#yumeBooks").val() );
+    if (showYumeBookQty && getYumeBooks){
         html = html.concat([
-            '持有詠夢之書 ' + $("#yumeBooks").val() + ' 本<br>',
+            '持有詠夢之書 ' + getYumeBooks + ' 本<br>',
             '<br>'
         ]);
     }
@@ -1853,7 +1853,11 @@ function genExtarDetal() {
             return storyType + '-' + storyTitle + yumeBookLabel;
         });
 
-        if (doneMissions < allMissions || getBook < allBook){
+        if (doneMissions == 0 && getBook == 0){
+            html = html.concat([
+                '<br />'
+            ]);
+        }else if (doneMissions < allMissions || getBook < allBook){
             if (missionsDone.length){
                 html = html.concat([
                     '己完成以下外傳/斷章<br />',
