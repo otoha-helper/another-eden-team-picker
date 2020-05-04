@@ -1717,8 +1717,16 @@ function genText() {
             }
 
         }
-        var lightShadow = (typeof row['lightShadow'] !== "undefined" && (row['lightShadow']) > 0 && (row['had4'] || row['had5'])) ? row['lightShadow'] : "";
-        return divide + toFixLength(row["name"], row["nickname"], nameMaxLength, true) + divide + toFullWidthNumber(Math.ceil(lightShadow),3, 255, false) + divide + hoshi + divide + as + divide + asBook;
+        var lightShadow = row['lightShadow'];
+
+        if (typeof lightShadow !== "undefined" && (row['had4'] || row['had5'] || row['hadas'])){
+            lightShadow = Math.ceil(parseInt(lightShadow));
+            lightShadow = (lightShadow === 0) ? '' : lightShadow;
+            lightShadow = toFullWidthNumber(lightShadow, 3, 255);
+        }else{
+            lightShadow = strLoop("＿",3);
+        }
+        return divide + toFixLength(row["name"], row["nickname"], nameMaxLength, true) + divide + lightShadow + divide + hoshi + divide + as + divide + asBook;
     });
 
     var html = [
@@ -1785,13 +1793,22 @@ function genTable() {
             }
 
         }
+        var lightShadow = row['lightShadow'];
+        var emptyText ='<font color="lightgray">-</font>';
 
-        var lightShadow = (typeof row['lightShadow'] === "string" && parseInt(row['lightShadow']) > 0 && (row['had4'] || row['had5'])) ? row['lightShadow'] : '<font color="lightgray">-</font>';
+        if (typeof lightShadow !== "undefined" && (row['had4'] || row['had5'] || row['hadas'])){
+            lightShadow = Math.ceil(parseInt(lightShadow));
+            lightShadow = (lightShadow === 0) ? '' : lightShadow;
+            lightShadow = toFullWidthNumber(lightShadow, 1, 255);
+        }else{
+            lightShadow = emptyText;
+        }
+
         return [
             '<tr height="20">',
             '<td width="80">'+row["name"]+'</td>',
             '<td align="right" width="90">'+row["nickname"]+'</td>',
-            '<td align="center">' + toFullWidthNumber(lightShadow, 1, 255) + '</td>',
+            '<td align="center">' + lightShadow + '</td>',
             '<td align="center">'+hoshi+'</td>',
             '<td align="center"'+(row["as"]?"":' bgcolor="lightgray"')+'>'+as+'</td>',
             '</tr>'+asBook,
