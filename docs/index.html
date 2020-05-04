@@ -75,13 +75,13 @@
                     生成純文字
                     <i class="fas fa-caret-right"></i>
                 </a>
-                <span class="dropdown-item-text"><small>純文字版本適合任何人使用，複製後直接貼上即可。</small><br>(建議)</span>
+                <span class="dropdown-item-text"><small>純文字版本適合任何人使用，複製後直接貼上即可。</small><br><strong>(建議)</strong></span>
                 <a class="dropdown-item mt-2" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">
                     <i class="fas fa-th-list"></i>
                     生成表格
                     <i class="fas fa-caret-right"></i>
                 </a>
-                <span class="dropdown-item-text"><small>生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</small></span>
+                <span class="dropdown-item-text"><small>生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</small><br><strong>(建議閱讀說明)</strong></b></span>
 
             </div>
         </li>
@@ -255,7 +255,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">持有</span>
                                             </div>
-                                            <input type="number" id="yumeBooks" class="form-control text-center" aria-label="詠夢之書數量">
+                                            <input type="number" id="yumeBooks" class="form-control text-center" aria-label="詠夢之書數量" value="0" min="0" max="999">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">本</span>
                                             </div>
@@ -329,12 +329,13 @@
 
                             <div class="pl-3 pr-3" id="extra_settings">
                                 <h4 class="pt-4">設定</h4>
+
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9">輸出表格包含未持有角色</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showYumeBookQty">輸出表格包含詠夢之書</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="checked">
-                                            <label class="custom-control-label" for="customSwitch1">
+                                            <input type="checkbox" class="custom-control-input" id="showYumeBookQty" checked="checked">
+                                            <label class="custom-control-label" for="showYumeBookQty" data-true-label="包含" data-false-label="不包含">
                                                 包含
                                             </label>
                                         </div>
@@ -342,11 +343,11 @@
                                 </div>
 
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9">輸出表格包含配佈角色</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showNotGet">輸出表格包含未持有角色</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch2" checked="checked">
-                                            <label class="custom-control-label" for="customSwitch2">
+                                            <input type="checkbox" class="custom-control-input" id="showNotGet" checked="checked">
+                                            <label class="custom-control-label" for="showNotGet" data-true-label="包含" data-false-label="不包含">
                                                 包含
                                             </label>
                                         </div>
@@ -354,11 +355,11 @@
                                 </div>
 
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9">輸出表格包含四星角色</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showAsBooks">輸出表格包含異節數量</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch3" checked="checked">
-                                            <label class="custom-control-label" for="customSwitch3">
+                                            <input type="checkbox" class="custom-control-input" id="showAsBooks" checked="checked">
+                                            <label class="custom-control-label" for="showAsBooks" data-true-label="包含" data-false-label="不包含">
                                                 包含
                                             </label>
                                         </div>
@@ -366,11 +367,24 @@
                                 </div>
 
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9">輸出表格包含斷章角色</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showMissions">輸出表格包含任務資料</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch4" checked="checked">
-                                            <label class="custom-control-label" for="customSwitch4">
+                                            <input type="checkbox" class="custom-control-input" id="showMissions" checked="checked">
+                                            <label class="custom-control-label" for="showMissions" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showFree">輸出表格包含配佈角色</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showFree" checked="checked">
+                                            <label class="custom-control-label" for="showFree" data-true-label="包含" data-false-label="不包含">
                                                 包含
                                             </label>
                                         </div>
@@ -378,11 +392,11 @@
                                 </div>
 
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9">輸出表格包含任務資料</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showSpData">輸出表格包含斷章角色</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch5" checked="checked">
-                                            <label class="custom-control-label" for="customSwitch5">
+                                            <input type="checkbox" class="custom-control-input" id="showSpData" checked="checked">
+                                            <label class="custom-control-label" for="showSpData" data-true-label="包含" data-false-label="不包含">
                                                 包含
                                             </label>
                                         </div>
@@ -390,16 +404,17 @@
                                 </div>
 
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9">輸出表格包含詠夢之書</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showStar4Data">輸出表格包含四星角色</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch6" checked="checked">
-                                            <label class="custom-control-label" for="customSwitch6">
+                                            <input type="checkbox" class="custom-control-input" id="showStar4Data" checked="checked">
+                                            <label class="custom-control-label" for="showStar4Data" data-true-label="包含" data-false-label="不包含">
                                                 包含
                                             </label>
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <div class="form-group row extra-setting-item">
                                     <div class="col-8 col-sm-9">清除己記錄資料</div>
@@ -429,7 +444,7 @@
                     <div class="">
                         <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
                         <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
-                        <div id="editor1" contentEditable="false"></div>
+                        <div class="result-editor" id="editor1" contentEditable="false"></div>
                     </div>
                 </div>
             </div>
@@ -442,7 +457,7 @@
                     <div class="">
                         <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
                         <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
-                        <div id="editor2" contentEditable="false"></div>
+                        <div class="result-editor" id="editor2" contentEditable="false"></div>
                     </div>
                 </div>
             </div>

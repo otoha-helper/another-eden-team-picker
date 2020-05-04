@@ -160,3 +160,8 @@ table input.light-shadow, table input.as-book-input {
 .star-as-type {
   color: cornflowerblue;
 }
+
+/* line 146, ../sass/_page.scss */
+.result-editor {
+  font-family: sans-serif;
+}
