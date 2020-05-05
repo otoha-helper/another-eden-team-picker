@@ -5,6 +5,14 @@ var spaceText = '＿';
 var divide = ' | ';
 
 $(document).ready(function () {
+
+    if (typeof window.dataLayer === "undefined"){
+        console.log('GA not init');
+        window.ga = function (type, hitType, eventCategory, eventAction, eventLabel) {
+            console.log('Dummy GA',type, [hitType, eventCategory, eventAction, eventLabel]);
+        };
+    }
+
     onWindowInitOrResize();
     window.addEventListener("orientationchange", function() {
         onWindowInitOrResize();
