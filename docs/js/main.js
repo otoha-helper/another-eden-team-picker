@@ -412,6 +412,7 @@ $(document).ready(function () {
         });
     });
 
+
 });
 
 function numberPad(number) {
@@ -689,6 +690,8 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
+            $("#clearFilter").removeClass('btn-light').addClass('btn-primary');
+
             gtag('event', 'filter', {
                 'event_category': 'weapon',
                 'event_label': 'select'
@@ -729,9 +732,30 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
+            $("#clearFilter").removeClass('btn-light').addClass('btn-primary');
             gtag('event', 'filter', {
                 'event_category': 'element',
                 'event_label': 'select'
+            });
+        }
+
+    });
+
+    $("button#clearFilter").on('click', function () {
+        var holder = $(this).closest('.panel-body');
+        var weapon = $("#weaponGroupDrop");
+        var element = $("#elementGroupDrop");
+        if ($(weapon).hasClass('btn-primary') || $(element).hasClass('btn-primary')){
+            $(this).removeClass('btn-primary').addClass('btn-light');
+            $(weapon).removeClass('btn-primary').addClass('btn-light');
+            $(element).removeClass('btn-primary').addClass('btn-light');
+            $(holder).find('.active').removeClass('active');
+            $(weapon).find('img').attr('src', './images/icons/weapon/sword.png');
+            $(element).find('img').attr('src', './images/icons/element/none.png');
+            $('#char_table').bootstrapTable('filterBy',{});
+            gtag('event', 'filter', {
+                'event_category': 'clear',
+                'event_label': 'filters'
             });
         }
 
