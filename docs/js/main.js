@@ -8,8 +8,8 @@ $(document).ready(function () {
 
     if (typeof window.dataLayer === "undefined"){
         console.log('GA not init');
-        window.ga = function (type, hitType, eventCategory, eventAction, eventLabel) {
-            console.log('Dummy GA',type, [hitType, eventCategory, eventAction, eventLabel]);
+        window.gtag = function (type, event, options) {
+            console.log('Dummy GA',type, event, options);
         };
     }
 
@@ -44,25 +44,41 @@ $(document).ready(function () {
     // Tab change events
     $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
         if (e.target.id === "list-tab"){
-            ga("send","event","tab change","tab","main list");
+            gtag('event', 'tab', {
+                'event_category': 'change',
+                'event_label': 'main list'
+            });
+
         }
 
         if (e.target.id === "gentext-tab"){
-            ga("send","event","tab change","tab","generate text result");
+            gtag('event', 'tab', {
+                'event_category': 'change',
+                'event_label': 'generate text result'
+            });
             $("#editor2").html(genText());
         }
 
         if (e.target.id === "gentable-tab"){
-            ga("send","event","tab change","tab","generate table result");
+            gtag('event', 'tab', {
+                'event_category': 'change',
+                'event_label': 'generate table result'
+            });
             $("#editor1").html(genTable());
         }
 
         if (e.target.id === "option-tab"){
-            ga("send","event","tab change","tab","options");
+            gtag('event', 'tab', {
+                'event_category': 'change',
+                'event_label': 'options'
+            });
         }
 
         if (e.target.id === "help-tab"){
-            ga("send","event","tab change","tab","help");
+            gtag('event', 'tab change', {
+                'event_category': 'change',
+                'event_label': 'help'
+            });
         }
 
     });
@@ -93,7 +109,10 @@ $(document).ready(function () {
             },
             function (result) {
                 console.log("All file loaded");
-                ga("send","event","file","load", 'finish');
+                gtag('event', 'file', {
+                    'event_category': 'load',
+                    'event_label': 'finish'
+                });
             },
             function (key, data) {
                 console.log("loaded",key);
@@ -356,7 +375,10 @@ $(document).ready(function () {
 
             },
             function (key) {
-                ga("send","event","file","load error",key);
+                gtag('event', 'file', {
+                    'event_category': 'load',
+                    'event_label': 'error with ' + key
+                });
                 $('#char_table').bootstrapTable('hideLoading');
                 console.log("error", key);
             });
@@ -373,7 +395,10 @@ $(document).ready(function () {
 
         var myWindow = window.open("", "_blank");
         myWindow.document.write(table);
-        ga("send","event","button","open window", 'table result');
+        gtag('event', 'button', {
+            'event_category': 'open window',
+            'event_label': 'table result'
+        });
     });
 
     $("button#gentext").on('click', function(){
@@ -381,7 +406,10 @@ $(document).ready(function () {
 
         var myWindow = window.open("", "_blank");
         myWindow.document.write(html);
-        ga("send","event","button","open window", 'text result');
+        gtag('event', 'button', {
+            'event_category': 'open window',
+            'event_label': 'text result'
+        });
     });
 
 });
@@ -642,6 +670,10 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-primary').addClass('btn-light');
             $(img).attr('src', './images/icons/weapon/sword.png');
+            gtag('event', 'filter', {
+                'event_category': 'weapon',
+                'event_label': 'unselect'
+            });
         }else{
             $(this).parent().find('.active').removeClass('active');
             $(this).addClass('active');
@@ -657,7 +689,10 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
-
+            gtag('event', 'filter', {
+                'event_category': 'weapon',
+                'event_label': 'select'
+            });
         }
     });
 
@@ -677,6 +712,10 @@ function star5tableHandle() {
             }
             $(btn).removeClass('btn-primary').addClass('btn-light');
             $(img).attr('src', './images/icons/element/none.png');
+            gtag('event', 'filter', {
+                'event_category': 'element',
+                'event_label': 'unselect'
+            });
         }else{
             $(this).parent().find('.active').removeClass('active');
             $(this).addClass('active');
@@ -690,6 +729,10 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
+            gtag('event', 'filter', {
+                'event_category': 'element',
+                'event_label': 'select'
+            });
         }
 
     });
@@ -871,7 +914,10 @@ function star5tableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#char_table').bootstrapTable('load', extend);
         toSaveStar5selections();
-        ga("send","event","select","select all", "star5");
+        gtag('event', 'select', {
+            'event_category': 'select all',
+            'event_label': 'star5'
+        });
     });
 
     $('#unselectAllStar5Listed').on('click', function () {
@@ -891,7 +937,10 @@ function star5tableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#char_table').bootstrapTable('load', extend);
         toSaveStar5selections();
-        ga("send","event","select","unselect all", "star5");
+        gtag('event', 'select', {
+            'event_category': 'unselect all',
+            'event_label': 'star5'
+        });
     });
 
     $('#as_book_table').bootstrapTable({
@@ -1179,7 +1228,10 @@ function freeTableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#free_table').bootstrapTable('load', extend);
         toSaveFreeSelections();
-        ga("send","event","select","select all", "free");
+        gtag('event', 'select', {
+            'event_category': 'select all',
+            'event_label': 'free'
+        });
     });
 
     $('#unselectAllFreeListed').on('click', function () {
@@ -1198,7 +1250,10 @@ function freeTableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#free_table').bootstrapTable('load', extend);
         toSaveFreeSelections();
-        ga("send","event","select","unselect all", "free");
+        gtag('event', 'select', {
+            'event_category': 'unselect all',
+            'event_label': 'free'
+        });
     });
 }
 function toSaveFreeSelections() {
@@ -1342,7 +1397,10 @@ function star4TableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#star4_table').bootstrapTable('load', extend);
         toSaveStar4selections();
-        ga("send","event","select","select all", "star4");
+        gtag('event', 'select', {
+            'event_category': 'select all',
+            'event_label': 'star4'
+        });
     });
 
     $('#unselectAllStar4Listed').on('click', function () {
@@ -1356,7 +1414,10 @@ function star4TableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#star4_table').bootstrapTable('load', extend);
         toSaveStar4selections();
-        ga("send","event","select","unselect all", "star4");
+        gtag('event', 'select', {
+            'event_category': 'unselect all',
+            'event_label': 'star4'
+        });
     });
 }
 function toSaveStar4selections() {
@@ -1520,7 +1581,10 @@ function toSaveSpselections() {
 
 function setting() {
     $("#cleanup").on("click", function () {
-        ga("send","event","setting","clean","confirm");
+        gtag('event', 'setting', {
+            'event_category': 'clean',
+            'event_label': 'confirm'
+        });
         bootbox.confirm({
             title: "清除已記錄資料",
             message: "進行清除後，將失去已選擇的資料。如點擊清除後再進行資料修改，該部份的資料將會再次記錄。",
@@ -1537,7 +1601,10 @@ function setting() {
             backdrop: true,
             callback: function (result) {
                 if (result){
-                    ga("send","event","setting","clean","clean");
+                    gtag('event', 'setting', {
+                        'event_category': 'clean',
+                        'event_label': 'clean'
+                    });
                     $.myStorage.clean();
                     bootbox.alert({
                         message: "資料已經清除!",
@@ -1583,8 +1650,10 @@ function setting() {
             false : $(label).attr('data-false-label')
         };
         $(label).html(labelVal[val]);
-
-        ga("send","event","setting","change", settingId + " - " + val);
+        gtag('event', 'setting', {
+            'event_category': 'change',
+            'event_label': settingId + " - " + val
+        });
 
         var settings = $.map($('#extra_settings input.custom-control-input'), function (settingInput) {
             return {
