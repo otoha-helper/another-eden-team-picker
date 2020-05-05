@@ -43,7 +43,7 @@ $(document).ready(function () {
             message: "小提示︰健檢表格請在置頂的集中串中回應喔♪"
         });
         e.clearSelection();
-        ga("send","click","clipboard","copy", 'success');
+        ga("send","event","clipboard","copy", 'success');
     });
     clipboard.on('error', function(e) {
         bootbox.alert({
@@ -51,31 +51,31 @@ $(document).ready(function () {
             message: "請手動進行複製"
         });
         console.error('Action:', e.action);
-        ga("send","click","clipboard","copy", 'error');
+        ga("send","event","clipboard","copy", 'error');
     });
 
     // Tab change events
     $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
         if (e.target.id === "list-tab"){
-            ga("send","click","tab change","tab","main list");
+            ga("send","event","tab change","tab","main list");
         }
 
         if (e.target.id === "gentext-tab"){
-            ga("send","click","tab change","tab","generate text result");
+            ga("send","event","tab change","tab","generate text result");
             $("#editor2").html(genText());
         }
 
         if (e.target.id === "gentable-tab"){
-            ga("send","click","tab change","tab","generate table result");
+            ga("send","event","tab change","tab","generate table result");
             $("#editor1").html(genTable());
         }
 
         if (e.target.id === "option-tab"){
-            ga("send","click","tab change","tab","options");
+            ga("send","event","tab change","tab","options");
         }
 
         if (e.target.id === "help-tab"){
-            ga("send","click","tab change","tab","help");
+            ga("send","event","tab change","tab","help");
         }
 
     });
@@ -106,7 +106,7 @@ $(document).ready(function () {
             },
             function (result) {
                 console.log("All file loaded");
-                ga("send","page","file","load", 'finish');
+                ga("send","event","file","load", 'finish');
             },
             function (key, data) {
                 console.log("loaded",key);
@@ -369,7 +369,7 @@ $(document).ready(function () {
 
             },
             function (key) {
-                ga("send","error","file","load",key);
+                ga("send","event","file","load error",key);
                 $('#char_table').bootstrapTable('hideLoading');
                 console.log("error", key);
             });
@@ -386,7 +386,7 @@ $(document).ready(function () {
 
         var myWindow = window.open("", "_blank");
         myWindow.document.write(table);
-        ga("send","click","button","open window", 'table result');
+        ga("send","event","button","open window", 'table result');
     });
 
     $("button#gentext").on('click', function(){
@@ -394,7 +394,7 @@ $(document).ready(function () {
 
         var myWindow = window.open("", "_blank");
         myWindow.document.write(html);
-        ga("send","click","button","open window", 'text result');
+        ga("send","event","button","open window", 'text result');
     });
 
 });
@@ -884,7 +884,7 @@ function star5tableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#char_table').bootstrapTable('load', extend);
         toSaveStar5selections();
-        ga("send","click","select","select all", "star5");
+        ga("send","event","select","select all", "star5");
     });
 
     $('#unselectAllStar5Listed').on('click', function () {
@@ -904,7 +904,7 @@ function star5tableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#char_table').bootstrapTable('load', extend);
         toSaveStar5selections();
-        ga("send","click","select","unselect all", "star5");
+        ga("send","event","select","unselect all", "star5");
     });
 
     $('#as_book_table').bootstrapTable({
@@ -1192,7 +1192,7 @@ function freeTableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#free_table').bootstrapTable('load', extend);
         toSaveFreeSelections();
-        ga("send","click","select","select all", "free");
+        ga("send","event","select","select all", "free");
     });
 
     $('#unselectAllFreeListed').on('click', function () {
@@ -1211,7 +1211,7 @@ function freeTableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#free_table').bootstrapTable('load', extend);
         toSaveFreeSelections();
-        ga("send","click","select","unselect all", "free");
+        ga("send","event","select","unselect all", "free");
     });
 }
 function toSaveFreeSelections() {
@@ -1355,7 +1355,7 @@ function star4TableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#star4_table').bootstrapTable('load', extend);
         toSaveStar4selections();
-        ga("send","click","select","select all", "star4");
+        ga("send","event","select","select all", "star4");
     });
 
     $('#unselectAllStar4Listed').on('click', function () {
@@ -1369,7 +1369,7 @@ function star4TableHandle() {
         var extend = $.extend({},rows,newRows);
         $('#star4_table').bootstrapTable('load', extend);
         toSaveStar4selections();
-        ga("send","click","select","unselect all", "star4");
+        ga("send","event","select","unselect all", "star4");
     });
 }
 function toSaveStar4selections() {
@@ -1533,7 +1533,7 @@ function toSaveSpselections() {
 
 function setting() {
     $("#cleanup").on("click", function () {
-        ga("send","click","setting","clean","confirm");
+        ga("send","event","setting","clean","confirm");
         bootbox.confirm({
             title: "清除已記錄資料",
             message: "進行清除後，將失去已選擇的資料。如點擊清除後再進行資料修改，該部份的資料將會再次記錄。",
@@ -1550,7 +1550,7 @@ function setting() {
             backdrop: true,
             callback: function (result) {
                 if (result){
-                    ga("send","click","setting","clean","clean");
+                    ga("send","event","setting","clean","clean");
                     $.myStorage.clean();
                     bootbox.alert({
                         message: "資料已經清除!",
@@ -1597,7 +1597,7 @@ function setting() {
         };
         $(label).html(labelVal[val]);
 
-        ga("send","click","setting","change", settingId + " - " + val);
+        ga("send","event","setting","change", settingId + " - " + val);
 
         var settings = $.map($('#extra_settings input.custom-control-input'), function (settingInput) {
             return {
