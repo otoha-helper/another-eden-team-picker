@@ -10,7 +10,7 @@ body {
 }
 /* line 3, ../sass/_page.scss */
 body h1, body h2, body h3, body h4, body h5 {
-  font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+  font-family: 'Noto Sans TC', "微軟正黑體", "Microsoft Sans Serif", serif;
 }
 
 /* line 8, ../sass/_page.scss */
@@ -115,7 +115,7 @@ table .media img {
 }
 /* line 102, ../sass/_page.scss */
 table .media h5 {
-  font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+  font-family: 'Noto Sans TC', "微軟正黑體", "Microsoft Sans Serif", serif;
   font-weight: bold;
   margin: 0px;
 }
@@ -163,5 +163,5 @@ table input.light-shadow, table input.as-book-input {
 
 /* line 146, ../sass/_page.scss */
 .result-editor {
-  font-family: sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
 }

@@ -1,7 +1,7 @@
 body{
   min-width: 320px;
   h1,h2,h3,h4,h5{
-    font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+    font-family: 'Noto Sans TC', "微軟正黑體", "Microsoft Sans Serif", serif;
   }
 }
 
@@ -100,7 +100,7 @@ table{
       height: 50px;
     }
     h5{
-      font-family: "微軟正黑體", "Microsoft Sans Serif", serif;
+      font-family: 'Noto Sans TC', "微軟正黑體", "Microsoft Sans Serif", serif;
       font-weight: bold;
       margin: 0px;
     }
@@ -144,5 +144,5 @@ table{
 }
 
 .result-editor{
-  font-family: sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
 }
