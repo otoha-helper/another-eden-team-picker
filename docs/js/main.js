@@ -2132,7 +2132,7 @@ function genExtarDetal() {
         });
 
         var freeStar4 = $.map(freeData, function (freeRow) {
-            if (freeRow['had4'] && !freeRow['had5']){
+            if (freeRow['had4'] && !freeRow['had5'] && !freeRow['hadas']){
                 var lightShadow = (freeRow['lightShadow'] > 0) ? '('+freeRow['lightShadow']+')' : '';
                 return freeRow['name'] + lightShadow;
             }
