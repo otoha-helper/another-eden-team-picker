@@ -130,6 +130,7 @@ $(document).ready(function () {
                         return {
                             'id': row["ID"],
                             'name': row["角色名"],
+                            'enName': row["英名"],
                             'nickname': nickname,
                             'asNickname': asNickname,
                             'as': row["AS名"],
@@ -243,6 +244,7 @@ $(document).ready(function () {
                         return {
                             'id': row["ID"],
                             'name': row["角色名"],
+                            'enName': row["英名"],
                             'nickname': row["暱稱"],
                             'asNickname': row["AS暱稱"],
                             'getByStory': row["取得"],
@@ -297,6 +299,7 @@ $(document).ready(function () {
                         return {
                             'id': row["ID"],
                             'name': row["角色名"],
+                            'enName': row["英名"],
                             'nickname': row["暱稱"],
                             'minStar': row["起始☆"],
                             'maxStar': row["最高★"],
@@ -341,6 +344,7 @@ $(document).ready(function () {
                         return {
                             'id': row["ID"],
                             'name': row["角色名"],
+                            'enName': row["英名"],
                             'nickname': row["暱稱"],
                             'element': row["主屬"],
                             'minStar': row["起始☆"],
@@ -411,6 +415,7 @@ $(document).ready(function () {
             'event_label': 'text result'
         });
     });
+
 
 });
 
@@ -689,6 +694,8 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
+            $("#clearFilter").removeClass('btn-light').addClass('btn-primary');
+
             gtag('event', 'filter', {
                 'event_category': 'weapon',
                 'event_label': 'select'
@@ -729,9 +736,30 @@ function star5tableHandle() {
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
+            $("#clearFilter").removeClass('btn-light').addClass('btn-primary');
             gtag('event', 'filter', {
                 'event_category': 'element',
                 'event_label': 'select'
+            });
+        }
+
+    });
+
+    $("button#clearFilter").on('click', function () {
+        var holder = $(this).closest('.panel-body');
+        var weapon = $("#weaponGroupDrop");
+        var element = $("#elementGroupDrop");
+        if ($(weapon).hasClass('btn-primary') || $(element).hasClass('btn-primary')){
+            $(this).removeClass('btn-primary').addClass('btn-light');
+            $(weapon).removeClass('btn-primary').addClass('btn-light');
+            $(element).removeClass('btn-primary').addClass('btn-light');
+            $(holder).find('.active').removeClass('active');
+            $(weapon).find('img').attr('src', './images/icons/weapon/sword.png');
+            $(element).find('img').attr('src', './images/icons/element/none.png');
+            $('#char_table').bootstrapTable('filterBy',{});
+            gtag('event', 'filter', {
+                'event_category': 'clear',
+                'event_label': 'filters'
             });
         }
 
@@ -818,8 +846,13 @@ function star5tableHandle() {
                 nickname +=  '/' + row['asNickname']
             }
 
+            var jumpToAS = "";
+            if (row['had5'] === "none"){
+                jumpToAS = "as/";
+            }
+
             var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <img src="./images/characters/' + jumpToAS + row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
                 '  <div class="media-body">\n' +
                 '    <h5 class="mt-0">'+ value +'</h5>\n' +
                 nickname +
@@ -890,6 +923,7 @@ function star5tableHandle() {
 
     $('#char_table').bootstrapTable({
         columns: star5TableColums,
+        locale: 'zh-TW',
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
@@ -967,6 +1001,7 @@ function star5tableHandle() {
             },
             events: operateAsBooks
         }],
+        locale: 'zh-TW',
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
@@ -1155,7 +1190,7 @@ function freeTableHandle() {
             }
 
             var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <img src="./images/characters/'+row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
                 '  <div class="media-body">\n' +
                 '    <h5 class="mt-0">'+ value +'</h5>\n' +
                 nickname +
@@ -1206,6 +1241,7 @@ function freeTableHandle() {
 
     $('#free_table').bootstrapTable({
         columns: freeTableColums,
+        locale: 'zh-TW',
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
@@ -1340,7 +1376,7 @@ function star4TableHandle() {
             }
 
             var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <img src="./images/characters/'+row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
                 '  <div class="media-body">\n' +
                 '    <h5 class="mt-0">'+ value +'</h5>\n' +
                 nickname +
@@ -1379,6 +1415,7 @@ function star4TableHandle() {
 
     $('#star4_table').bootstrapTable({
         columns: star4TableColums,
+        locale: 'zh-TW',
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
@@ -1502,7 +1539,7 @@ function spTableHandle() {
             }
 
             var html = '<div class="media">\n' +
-                '  <img src="./images/otoha_icon.png" class="mr-3 icon" width="50">\n' +
+                '  <img src="./images/characters/'+row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
                 '  <div class="media-body">\n' +
                 '    <h5 class="mt-0">'+ value +'</h5>\n' +
                 nickname +
@@ -1554,6 +1591,7 @@ function spTableHandle() {
 
     $('#sp_table').bootstrapTable({
         columns: spTableColums,
+        locale: 'zh-TW',
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark"
