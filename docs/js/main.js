@@ -4,27 +4,6 @@ var whiteText = '&emsp;';
 var spaceText = '＿';
 var divide = ' | ';
 
-/**
- *  A dummy GA function for dev mode
- */
-(function () {
-    if (typeof window.ga === "undefined"){
-        /**
-         * @description dummy function for dev mode
-         * @param type
-         * @param hitType
-         * @param eventCategory
-         * @param eventAction
-         * @param eventLabel
-         */
-        window.ga = function (type, hitType, eventCategory, eventAction, eventLabel) {
-            console.log('Dummy GA',type, [hitType, eventCategory, eventAction, eventLabel]);
-        };
-    }
-
-})();
-
-
 $(document).ready(function () {
     onWindowInitOrResize();
     window.addEventListener("orientationchange", function() {
