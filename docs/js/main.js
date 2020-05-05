@@ -2084,7 +2084,7 @@ function genExtarDetal() {
 
                 var yumeBookLabel = "";
                 if (maxYumeBook == yumeBook){
-                    yumeBookLabel = "及獎勵";
+                    yumeBookLabel = "及只取得獎勵";
                 }else if (yumeBook > 0){
                     yumeBookLabel = '<br />＞' + $(missionRow).find('[data-data-name="yumeBookLabel"]').html();
                 }
