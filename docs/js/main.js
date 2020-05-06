@@ -649,19 +649,18 @@ var imageCell = function (value, row, index) {
         nickname +=  '/' + row['asNickname']
     }
 
-    var jumpToAS = "";
-    if (row['had5'] === "none"){
-        jumpToAS = "as/";
-    }
-
     var asImage = '';
-    if (row['had5'] === "none"){
-        asImage = '  <img src="./images/characters/'+ jumpToAS + row["enName"]+'.jpg" class="mr-3 icon image-as" width="50">\n';
+    if (row['hadas'] === true){
+        var animation = ' element-animation';
+        if (row['had5'] === 'none') animation = '';
+        asImage = '  <img src="./images/characters/as/' + row["enName"]+'.jpg" class="icon image-as'+ animation +' width="50">\n';
     }
 
-    var html = '<div class="media character-image">\n' +
-        '  <img src="./images/characters/' + row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
+    var html = '<div class="media">\n' +
+        '<div class="character-image mr-1">'+
+        '  <img src="./images/characters/' + row["enName"]+'.jpg" class="icon" width="50">\n' +
         asImage +
+        '</div>'+
         '  <div class="media-body">\n' +
         '    <h5 class="mt-0">'+ value +'</h5>\n' +
         nickname +
