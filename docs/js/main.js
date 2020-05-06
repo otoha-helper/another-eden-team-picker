@@ -30,7 +30,10 @@ $(document).ready(function () {
             message: "小提示︰健檢表格請在置頂的集中串中回應喔♪"
         });
         e.clearSelection();
-        ga("send","event","clipboard","copy", 'success');
+        gtag('event', 'clipboard', {
+            'event_category': 'copy',
+            'event_label': 'success'
+        });
     });
     clipboard.on('error', function(e) {
         bootbox.alert({
@@ -38,7 +41,10 @@ $(document).ready(function () {
             message: "請手動進行複製"
         });
         console.error('Action:', e.action);
-        ga("send","event","clipboard","copy", 'error');
+        gtag('event', 'clipboard', {
+            'event_category': 'copy',
+            'event_label': 'error'
+        });
     });
 
     // Tab change events
