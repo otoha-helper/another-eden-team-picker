@@ -108,75 +108,147 @@ body h1, body h2, body h3, body h4, body h5 {
   left: 7px;
 }
 
-/* line 106, ../sass/_page.scss */
+/* line 104, ../sass/_page.scss */
+.element-animation {
+  animation: animationFrames linear 4s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  animation-fill-mode: forwards;
+  /*when the spec is finished*/
+  -webkit-animation: animationFrames linear 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-fill-mode: forwards;
+  /*Chrome 16+, Safari 4+*/
+  -moz-animation: animationFrames linear 4s;
+  -moz-animation-iteration-count: infinite;
+  -moz-transform-origin: 50% 50%;
+  -moz-animation-fill-mode: forwards;
+  /*FF 5+*/
+  -o-animation: animationFrames linear 4s;
+  -o-animation-iteration-count: infinite;
+  -o-transform-origin: 50% 50%;
+  -o-animation-fill-mode: forwards;
+  /*Not implemented yet*/
+  -ms-animation: animationFrames linear 4s;
+  -ms-animation-iteration-count: infinite;
+  -ms-transform-origin: 50% 50%;
+  -ms-animation-fill-mode: forwards;
+  /*IE 10+*/
+}
+
+@keyframes animationFrames {
+  0% , 45% , 100% {
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes animationFrames {
+  0% , 45% , 100% {
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes animationFrames {
+  0% , 45% , 100% {
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+@-o-keyframes animationFrames {
+  0% , 45% , 100% {
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+@-ms-keyframes animationFrames {
+  0% , 45% , 100% {
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+/* line 174, ../sass/_page.scss */
 table i {
   cursor: pointer;
 }
-/* line 110, ../sass/_page.scss */
-table .media.character-image {
+/* line 178, ../sass/_page.scss */
+table .media .character-image {
   position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
 }
-/* line 113, ../sass/_page.scss */
+/* line 184, ../sass/_page.scss */
 table .media img {
-  cursor: pointer;
   width: 50px;
   height: 50px;
 }
-/* line 117, ../sass/_page.scss */
+/* line 187, ../sass/_page.scss */
 table .media img.image-as {
   position: absolute;
   top: 0;
   left: 0;
 }
-/* line 123, ../sass/_page.scss */
+/* line 193, ../sass/_page.scss */
 table .media h5 {
   font-family: 'Noto Sans TC', "微軟正黑體", "Microsoft Sans Serif", serif;
   font-weight: bold;
   margin: 0px;
 }
-/* line 130, ../sass/_page.scss */
+/* line 200, ../sass/_page.scss */
 table input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-/* line 133, ../sass/_page.scss */
+/* line 203, ../sass/_page.scss */
 table input.light-shadow, table input.as-book-input {
   padding: 0;
   text-align: center;
 }
 
-/* line 140, ../sass/_page.scss */
+/* line 210, ../sass/_page.scss */
 .extra-story-item .custom-control-label, .extra-setting-item .custom-control-label {
   line-height: 20px;
 }
 
-/* line 146, ../sass/_page.scss */
+/* line 216, ../sass/_page.scss */
 .main-story-btn-group .btn {
   margin-bottom: 3px;
   border-radius: 0;
 }
-/* line 150, ../sass/_page.scss */
+/* line 220, ../sass/_page.scss */
 .main-story-btn-group .btn-secondary {
   background-color: lightgrey;
   border-color: lightgrey;
   color: black;
 }
 
-/* line 157, ../sass/_page.scss */
+/* line 227, ../sass/_page.scss */
 .star-gray {
   color: darkgray;
 }
 
-/* line 160, ../sass/_page.scss */
+/* line 230, ../sass/_page.scss */
 .star-red {
   color: red;
 }
 
-/* line 163, ../sass/_page.scss */
+/* line 233, ../sass/_page.scss */
 .star-as-type {
   color: cornflowerblue;
 }
 
-/* line 167, ../sass/_page.scss */
+/* line 237, ../sass/_page.scss */
 .result-editor {
+  font-weight: 300;
   font-family: 'Noto Sans TC', sans-serif;
 }

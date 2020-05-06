@@ -101,17 +101,87 @@ body{
   }
 }
 
+.element-animation{
+  animation: animationFrames linear 4s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  animation-fill-mode:forwards; /*when the spec is finished*/
+  -webkit-animation: animationFrames linear 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+  -moz-animation: animationFrames linear 4s;
+  -moz-animation-iteration-count: infinite;
+  -moz-transform-origin: 50% 50%;
+  -moz-animation-fill-mode:forwards; /*FF 5+*/
+  -o-animation: animationFrames linear 4s;
+  -o-animation-iteration-count: infinite;
+  -o-transform-origin: 50% 50%;
+  -o-animation-fill-mode:forwards; /*Not implemented yet*/
+  -ms-animation: animationFrames linear 4s;
+  -ms-animation-iteration-count: infinite;
+  -ms-transform-origin: 50% 50%;
+  -ms-animation-fill-mode:forwards; /*IE 10+*/
+}
+
+@keyframes animationFrames{
+  0% , 45% , 100%{
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes animationFrames{
+  0% , 45% , 100%{
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes animationFrames {
+  0% , 45% , 100%{
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes animationFrames {
+  0% , 45% , 100%{
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes animationFrames {
+  0% , 45% , 100%{
+    opacity: 0;
+  }
+  50%, 95% {
+    opacity: 1;
+  }
+}
+
 
 table{
   i{
     cursor: pointer;
   }
   .media{
-    &.character-image{
+    .character-image{
       position: relative;
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
     }
     img{
-      cursor: pointer;
       width: 50px;
       height: 50px;
       &.image-as{
@@ -165,5 +235,6 @@ table{
 }
 
 .result-editor{
+  font-weight: 300;
   font-family: 'Noto Sans TC', sans-serif;
 }
