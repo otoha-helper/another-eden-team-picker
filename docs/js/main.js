@@ -2213,11 +2213,10 @@ function genExtarDetal() {
 
         var star4 = $.map(star4Data, function (row) {
             if (row['had4']){
-                var pos = !!(row['pos']) ? " - " + row['pos'] : '';
                 if (!!row['pos']){
-                    return '【'+row['name'] + pos+'】';
+                    return '【'+row['name'] +  " - " + row['pos'] +'】';
                 }
-                return row['name'] + pos;
+                return row['name'];
             }
         });
 
