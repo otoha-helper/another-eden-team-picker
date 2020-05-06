@@ -640,6 +640,36 @@ function yumeBooks() {
 
 }
 
+var imageCell = function (value, row, index) {
+    var nickname = row['nickname'];
+    if ($.trim(nickname) === ''){
+        nickname = "-"
+    }
+    if ($.trim(row['asNickname'])){
+        nickname +=  '/' + row['asNickname']
+    }
+
+    var jumpToAS = "";
+    if (row['had5'] === "none"){
+        jumpToAS = "as/";
+    }
+
+    var asImage = '';
+    if (row['had5'] === "none"){
+        asImage = '  <img src="./images/characters/'+ jumpToAS + row["enName"]+'.jpg" class="mr-3 icon image-as" width="50">\n';
+    }
+
+    var html = '<div class="media character-image">\n' +
+        '  <img src="./images/characters/' + row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
+        asImage +
+        '  <div class="media-body">\n' +
+        '    <h5 class="mt-0">'+ value +'</h5>\n' +
+        nickname +
+        '  </div>\n' +
+        '</div>';
+    return html;
+};
+
 var elementCellStyle = function (value, row, index) {
         switch (value) {
             case "地":
@@ -768,7 +798,7 @@ function star5tableHandle() {
     // Table icon click events
     window.operateEvents = {
         'click .icon': function (e, value, row, index) {
-            $('#char_table').bootstrapTable('toggleDetailView', index);
+
         },
         'click .had4': function (e, value, row, index) {
             if (!row["had4"]){
@@ -837,29 +867,7 @@ function star5tableHandle() {
         field: 'name',
         title: '角色',
         width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var jumpToAS = "";
-            if (row['had5'] === "none"){
-                jumpToAS = "as/";
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/characters/' + jumpToAS + row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
+        formatter: imageCell,
         events: operateEvents
     }, {
         field: 'had4',
@@ -1049,7 +1057,7 @@ function freeTableHandle() {
     // Table icon click events
     window.operateEventsFree = {
         'click .icon': function (e, value, row, index) {
-            $('#free_table').bootstrapTable('toggleDetailView', index);
+
         },
         'click .had1': function (e, value, row, index) {
             if (!row["had1"]){
@@ -1180,24 +1188,7 @@ function freeTableHandle() {
         field: 'name',
         title: '角色',
         width: 200,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/characters/'+row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
+        formatter: imageCell,
         events: operateEventsFree
     }, {
         field: 'star',
@@ -1366,24 +1357,7 @@ function star4TableHandle() {
         field: 'name',
         title: '角色',
         width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/characters/'+row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
+        formatter: imageCell,
         events: operateEventsStar4
     }, {
         field: 'had3',
@@ -1530,24 +1504,7 @@ function spTableHandle() {
         field: 'name',
         title: '角色',
         width: 230,
-        formatter: function (value, row, index) {
-            var nickname = row['nickname'];
-            if ($.trim(nickname) === ''){
-                nickname = "-"
-            }
-            if ($.trim(row['asNickname'])){
-                nickname +=  '/' + row['asNickname']
-            }
-
-            var html = '<div class="media">\n' +
-                '  <img src="./images/characters/'+row["enName"]+'.jpg" class="mr-3 icon" width="50">\n' +
-                '  <div class="media-body">\n' +
-                '    <h5 class="mt-0">'+ value +'</h5>\n' +
-                nickname +
-                '  </div>\n' +
-                '</div>';
-            return html;
-        },
+        formatter: imageCell,
         events: operateEventsSp
     }, {
         field: 'had3',
