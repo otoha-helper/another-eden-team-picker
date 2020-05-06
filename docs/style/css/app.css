@@ -113,59 +113,70 @@ table i {
   cursor: pointer;
 }
 /* line 110, ../sass/_page.scss */
+table .media.character-image {
+  position: relative;
+}
+/* line 113, ../sass/_page.scss */
 table .media img {
+  cursor: pointer;
   width: 50px;
   height: 50px;
 }
-/* line 114, ../sass/_page.scss */
+/* line 117, ../sass/_page.scss */
+table .media img.image-as {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 123, ../sass/_page.scss */
 table .media h5 {
   font-family: 'Noto Sans TC', "微軟正黑體", "Microsoft Sans Serif", serif;
   font-weight: bold;
   margin: 0px;
 }
-/* line 121, ../sass/_page.scss */
+/* line 130, ../sass/_page.scss */
 table input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-/* line 124, ../sass/_page.scss */
+/* line 133, ../sass/_page.scss */
 table input.light-shadow, table input.as-book-input {
   padding: 0;
   text-align: center;
 }
 
-/* line 131, ../sass/_page.scss */
+/* line 140, ../sass/_page.scss */
 .extra-story-item .custom-control-label, .extra-setting-item .custom-control-label {
   line-height: 20px;
 }
 
-/* line 137, ../sass/_page.scss */
+/* line 146, ../sass/_page.scss */
 .main-story-btn-group .btn {
   margin-bottom: 3px;
   border-radius: 0;
 }
-/* line 141, ../sass/_page.scss */
+/* line 150, ../sass/_page.scss */
 .main-story-btn-group .btn-secondary {
   background-color: lightgrey;
   border-color: lightgrey;
   color: black;
 }
 
-/* line 148, ../sass/_page.scss */
+/* line 157, ../sass/_page.scss */
 .star-gray {
   color: darkgray;
 }
 
-/* line 151, ../sass/_page.scss */
+/* line 160, ../sass/_page.scss */
 .star-red {
   color: red;
 }
 
-/* line 154, ../sass/_page.scss */
+/* line 163, ../sass/_page.scss */
 .star-as-type {
   color: cornflowerblue;
 }
 
-/* line 158, ../sass/_page.scss */
+/* line 167, ../sass/_page.scss */
 .result-editor {
   font-family: 'Noto Sans TC', sans-serif;
 }
