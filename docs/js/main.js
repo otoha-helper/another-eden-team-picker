@@ -1487,6 +1487,7 @@ function spTableHandle() {
             }else{
                 row["had3"] = false;
                 row["had4"] = false;
+                row["had5"] = false;
             }
             $('#sp_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
             toSaveSpselections();
