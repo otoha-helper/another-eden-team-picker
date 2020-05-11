@@ -508,6 +508,18 @@ function toFixLength(i, j, target, hadDivide){
     return name + divideText + nickname;
 }
 
+function getNickname(rowName, rowNickname, rowAsNickname, had5){
+    console.log(rowName, rowNickname, rowAsNickname, had5);
+    if (typeof had5 !== "undefined" && had5 === "none" && typeof rowAsNickname !== "undefined" && rowAsNickname !== ""){
+        return rowAsNickname;
+    }else if ((typeof rowNickname === "undefined" || rowNickname === "") && (typeof rowAsNickname !== "undefined" && rowAsNickname !== "")){
+        return rowAsNickname;
+    }else if (typeof rowNickname !== "undefined" && rowNickname !== ""){
+        return rowNickname;
+    }
+    return rowName;
+}
+
 function genMainStoryBtn() {
     var storyTo = $('#mainStory').data('newest');
     var storyBtnHolder = $('#mainStoryBtnGroup');
@@ -1835,7 +1847,7 @@ function genText() {
         }else{
             lightShadow = strLoop("＿",3);
         }
-        return divide + toFixLength(row["name"], row["nickname"], nameMaxLength, true) + divide + lightShadow + divide + hoshi + divide + as + divide + asBook;
+        return divide + toFixLength(row["name"], getNickname(row["name"], row["nickname"], row["asNickname"], row["had5"]), nameMaxLength, true) + divide + lightShadow + divide + hoshi + divide + as + divide + asBook;
     });
 
     var html = [
@@ -1919,7 +1931,7 @@ function genTable() {
         return [
             '<tr height="20">',
             '<td width="80">'+row["name"]+'</td>',
-            '<td align="right" width="90">'+row["nickname"]+'</td>',
+            '<td align="right" width="80">'+getNickname(row["name"], row["nickname"], row["asNickname"], row["had5"])+'</td>',
             '<td align="center">' + lightShadow + '</td>',
             '<td align="center">'+hoshi+'</td>',
             '<td align="center"'+(row["as"]?"":' bgcolor="lightgray"')+'>'+as+'</td>',
@@ -1938,7 +1950,7 @@ function genTable() {
         '<table border=1 style="border-style: solid; border-collapse: collapse;">',
         '<thead>',
         '<tr height="20">',
-        '<th width="170" colspan="2"><strong>角色</strong></th>',
+        '<th width="160" colspan="2"><strong>角色</strong></th>',
         '<th width="60"><strong>天冥值</strong></th>',
         '<th width="50"><strong>原版</strong></th>',
         '<th width="50"><strong>AS版</strong></th>',
