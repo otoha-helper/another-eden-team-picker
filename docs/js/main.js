@@ -849,7 +849,7 @@ function star5tableHandle() {
         },
         'change .light-shadow': function (e, value, row, index) {
             if (typeof $(e.target).val() !== "undefined"){
-                value = parseInt($(e.target).val());
+                value = ($(e.target).val()) ? parseInt($(e.target).val()) : 0;
                 if (value > 255) value = 255;
                 if (value < 0) value = 0;
                 $(e.target).val(value);
@@ -1180,7 +1180,7 @@ function freeTableHandle() {
         },
         'change .light-shadow': function (e, value, row, index) {
             if (typeof $(e.target).val() !== "undefined"){
-                value = parseInt($(e.target).val());
+                value = ($(e.target).val()) ? parseInt($(e.target).val()) : 0;
                 if (value > 255) value = 255;
                 if (value < 0) value = 0;
                 $(e.target).val(value);
@@ -1840,7 +1840,7 @@ function genText() {
         }
         var lightShadow = row['lightShadow'];
 
-        if (typeof lightShadow !== "undefined" && (row['had4'] || row['had5'] || row['hadas'])){
+        if (typeof lightShadow !== "undefined" && lightShadow && (row['had4'] || row['had5'] || row['hadas'])){
             lightShadow = Math.ceil(parseInt(lightShadow));
             lightShadow = (lightShadow === 0) ? '' : lightShadow;
             lightShadow = toFullWidthNumber(lightShadow, 3, 255);
