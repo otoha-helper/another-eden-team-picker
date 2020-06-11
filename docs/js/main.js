@@ -1,5 +1,4 @@
 'use strict';
-var $ = $ || window.$;
 var whiteText = '&emsp;';
 var spaceText = '＿';
 var divide = ' | ';
@@ -88,7 +87,6 @@ $(document).ready(function () {
         }
 
     });
-
 
     // Handle tables
     star5tableHandle();
