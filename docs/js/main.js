@@ -2206,7 +2206,7 @@ function genExtarDetal() {
 
         if (spStar4.length){
             html = html.concat([
-                '☆4斷章角色<br />',
+                '☆4斷章 / 任務升星角色<br />',
                 spStar4.join(', '),
                 '<br />',
                 '<br />'
@@ -2215,7 +2215,7 @@ function genExtarDetal() {
 
         if (spStar3.length){
             html = html.concat([
-                '☆3斷章角色<br />',
+                '☆3斷章 / 任務升星角色<br />',
                 spStar3.join(', '),
                 '<br />',
                 '<br />'
