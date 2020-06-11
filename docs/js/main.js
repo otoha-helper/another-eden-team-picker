@@ -2187,7 +2187,7 @@ function genExtarDetal() {
 
         if (spStar5.length){
             html = html.concat([
-                '★5斷章角色<br />',
+                '★5斷章 / 任務升星角色<br />',
                 spStar5.join(', ')
             ]);
             if (useBook){
