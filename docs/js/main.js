@@ -1,5 +1,4 @@
 'use strict';
-var $ = $ || window.$;
 var whiteText = '&emsp;';
 var spaceText = '＿';
 var divide = ' | ';
@@ -88,7 +87,6 @@ $(document).ready(function () {
         }
 
     });
-
 
     // Handle tables
     star5tableHandle();
@@ -849,7 +847,7 @@ function star5tableHandle() {
         },
         'change .light-shadow': function (e, value, row, index) {
             if (typeof $(e.target).val() !== "undefined"){
-                value = parseInt($(e.target).val());
+                value = ($(e.target).val()) ? parseInt($(e.target).val()) : 0;
                 if (value > 255) value = 255;
                 if (value < 0) value = 0;
                 $(e.target).val(value);
@@ -1180,7 +1178,7 @@ function freeTableHandle() {
         },
         'change .light-shadow': function (e, value, row, index) {
             if (typeof $(e.target).val() !== "undefined"){
-                value = parseInt($(e.target).val());
+                value = ($(e.target).val()) ? parseInt($(e.target).val()) : 0;
                 if (value > 255) value = 255;
                 if (value < 0) value = 0;
                 $(e.target).val(value);
@@ -1840,7 +1838,7 @@ function genText() {
         }
         var lightShadow = row['lightShadow'];
 
-        if (typeof lightShadow !== "undefined" && (row['had4'] || row['had5'] || row['hadas'])){
+        if (typeof lightShadow !== "undefined" && lightShadow && (row['had4'] || row['had5'] || row['hadas'])){
             lightShadow = Math.ceil(parseInt(lightShadow));
             lightShadow = (lightShadow === 0) ? '' : lightShadow;
             lightShadow = toFullWidthNumber(lightShadow, 3, 255);
@@ -2189,7 +2187,7 @@ function genExtarDetal() {
 
         if (spStar5.length){
             html = html.concat([
-                '★5斷章角色<br />',
+                '★5斷章 / 任務升星角色<br />',
                 spStar5.join(', ')
             ]);
             if (useBook){
@@ -2208,7 +2206,7 @@ function genExtarDetal() {
 
         if (spStar4.length){
             html = html.concat([
-                '☆4斷章角色<br />',
+                '☆4斷章 / 任務升星角色<br />',
                 spStar4.join(', '),
                 '<br />',
                 '<br />'
@@ -2217,7 +2215,7 @@ function genExtarDetal() {
 
         if (spStar3.length){
             html = html.concat([
-                '☆3斷章角色<br />',
+                '☆3斷章 / 任務升星角色<br />',
                 spStar3.join(', '),
                 '<br />',
                 '<br />'
