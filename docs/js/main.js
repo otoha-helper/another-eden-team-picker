@@ -669,7 +669,7 @@ var imageCell = function (value, row, index) {
     if (row['hadas'] === true){
         var animation = ' element-animation';
         if (row['had5'] === 'none') animation = '';
-        asImage = '  <img src="./images/characters/as/' + row["enName"]+'.jpg" class="icon image-as'+ animation +' width="50">\n';
+        asImage = '  <img src="./images/characters/as/' + row["enName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
     }
 
     var html = '<div class="media">\n' +
