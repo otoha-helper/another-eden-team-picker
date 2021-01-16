@@ -2246,11 +2246,12 @@ function genExtarDetal() {
 
         var freeStar5 = $.map(freeData, function (freeRow) {
             if (freeRow['had5'] || freeRow['hadas']){
-                if (freeRow['useBook'] !== '-') useBook += parseInt(freeRow['useBook']);
+                if (freeRow['useBook'] !== '-' && freeRow['had5']) useBook += parseInt(freeRow['useBook']);
                 var lightShadow = (freeRow['lightShadow'] > 0) ? '('+freeRow['lightShadow']+')' : '';
                 var asName = '';
                 if (freeRow['hadas']) {
                     asName = "&AS" + freeRow['asName'];
+                    if (freeRow['useBook'] !== '-' && freeRow['hadas']) useBook += parseInt(freeRow['useBook']);
                 }
                 return freeRow['name'] + asName + lightShadow;
             }
