@@ -1086,6 +1086,7 @@ function star5tableHandle() {
             $(this).toggleClass("active");
             $("#orderByType").toggleClass("active");
             $('#char_table').bootstrapTable('refreshOptions', {sortName : "id"});
+            $('#char_table').bootstrapTable('filterBy', getFilters());
         }
 
     });
@@ -1095,6 +1096,7 @@ function star5tableHandle() {
             $(this).toggleClass("active");
             $("#orderByTime").toggleClass("active");
             $('#char_table').bootstrapTable('refreshOptions', {sortName : "element"});
+            $('#char_table').bootstrapTable('filterBy', getFilters());
         }
     });
 
