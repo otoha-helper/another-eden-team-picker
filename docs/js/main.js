@@ -48,6 +48,7 @@ $(document).ready(function () {
 
     // Tab change events
     $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+
         if (e.target.id === "list-tab"){
             gtag('event', 'tab', {
                 'event_category': 'change',
@@ -85,6 +86,8 @@ $(document).ready(function () {
                 'event_label': 'help'
             });
         }
+
+        $("html, body").animate({ scrollTop: 0 }, 600);
 
     });
 
@@ -507,7 +510,7 @@ function toFixLength(i, j, target, hadDivide){
 }
 
 function getNickname(rowName, rowNickname, rowAsNickname, had5){
-    console.log(rowName, rowNickname, rowAsNickname, had5);
+    // console.log(rowName, rowNickname, rowAsNickname, had5);
     if (typeof had5 !== "undefined" && had5 === "none" && typeof rowAsNickname !== "undefined" && rowAsNickname !== ""){
         return rowAsNickname;
     }else if ((typeof rowNickname === "undefined" || rowNickname === "") && (typeof rowAsNickname !== "undefined" && rowAsNickname !== "")){
@@ -636,7 +639,7 @@ function saveExtraStory() {
 
 function onWindowInitOrResize() {
     var windowHeight = $(window).height();
-    $(".story-scroll-panel").height(windowHeight - 80 - 56);
+    $(".story-scroll-panel").height(windowHeight - 40 - 56);
 }
 
 function yumeBooks() {
@@ -688,18 +691,74 @@ var imageCell = function (value, row, index) {
 var elementCellStyle = function (value, row, index) {
         switch (value) {
             case "地":
-                return {css: {'background-color': '#dca485'}};
+                return {css: {'background-color': '#d7a186'}};
             case "水":
-                return {css: {'background-color': '#62b3ff'}};
+                return {css: {'background-color': '#479eff'}};
             case "風":
-                return {css: {'background-color': '#50e250'}};
+                return {css: {'background-color': '#45c145'}};
             case "火":
-                return {css: {'background-color': 'red'}};
+                return {css: {'background-color': '#ff0500'}};
             case "無":
-                return {css: {'background-color': 'gray'}};
+                return {css: {'background-color': '#909090'}};
+            case "雷":
+                return {css: {'background-color': '#ffff00'}};
+            case "陰":
+                return {css: {'background-color': '#a08afc'}};
+            case "晶":
+                return {css: {'background-color': '#94f0ff'}};
+            default:
+                if (value.indexOf("地") > -1) return {css: {'background-color': '#8c6255'}};
+                if (value.indexOf("水") > -1) return {css: {'background-color': '#306cae'}};
+                if (value.indexOf("風") > -1) return {css: {'background-color': '#349134'}};
+                if (value.indexOf("火") > -1) return {css: {'background-color': '#a50200'}};
+                if (value.indexOf("無") > -1) return {css: {'background-color': '#484848'}};
         }
         return {css: {'background-color': 'white'}};
     };
+
+var customSearchRows = function (data, text, filterBy){
+    return data.filter(function(row){
+        if (filterBy){
+            var hit = [];
+            Object.keys(filterBy).forEach(function (key) {
+                if (filterBy[key].indexOf(",") > -1){
+                    var mtext = filterBy[key].split(",");
+                    hit[key] = mtext.every(function (value) {
+                        return row[key].indexOf(value) > -1;
+                    });
+                }else{
+                    hit[key] = row[key].indexOf(filterBy[key]) > -1;
+                }
+            });
+            return Object.values(hit).every(function (value) {
+                return value;
+            });
+        }
+        return text === undefined || row.name.indexOf(text) > -1;
+    });
+};
+
+function getFilters(){
+    var weaponType = $(".dropdown-menu#weaponGroup").find(".active");
+    var elementType = $(".dropdown-menu#elementGroup").find(".active");
+    var westernElementType = $(".dropdown-menu#westernElementGroup").find(".active");
+
+    var filters = {};
+
+    if (weaponType.length && weaponType.data("weaponType") !== "顯示全部"){
+        filters.weapon = weaponType.data("weaponType");
+    }
+
+    if ((elementType.length && elementType.data("elementType") !== "顯示全部") && (westernElementType.length && westernElementType.data("elementType") !== "顯示全部")){
+        filters.element = [elementType.data("elementType"), westernElementType.data("elementType")].join(",");
+    }else if(elementType.length && elementType.data("elementType") !== "顯示全部"){
+        filters.element = elementType.data("elementType");
+    }else if(westernElementType.length && westernElementType.data("elementType") !== "顯示全部"){
+        filters.element = westernElementType.data("elementType");
+    }
+
+    return filters;
+}
 
 function star5tableHandle() {
 
@@ -707,35 +766,23 @@ function star5tableHandle() {
         var src = $(this).find('img').get(0);
         var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
         var img = $(btn).find('img').get(0);
-        var elementType = $(".dropdown-menu#elementGroup").find(".active");
 
-        if ($(this).hasClass('active')){
-            $(this).removeClass('active');
-            if (elementType.length){
-                elementType = $(elementType).data('elementType');
-                $('#char_table').bootstrapTable('filterBy',{element:elementType});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{});
-            }
-
-            $(btn).removeClass('btn-primary').addClass('btn-light');
-            $(img).attr('src', './images/icons/weapon/sword.png');
-            gtag('event', 'filter', {
-                'event_category': 'weapon',
-                'event_label': 'unselect'
-            });
-        }else{
+        if (!$(this).hasClass('active') && $(this).data("weaponType") === "顯示全部"){
             $(this).parent().find('.active').removeClass('active');
             $(this).addClass('active');
-            var target = $(this).data('weaponType');
+            $(btn).removeClass('btn-primary').addClass('btn-light');
+            $(btn).parent().find(".icon").find('img').attr('src', './images/icons/weapon/sword.png');
+            $('#char_table').bootstrapTable('filterBy', getFilters());
+            gtag('event', 'filter', {
+                'event_category': 'clear',
+                'event_label': 'filters'
+            });
 
+        }else if (!$(this).hasClass('active')){
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
 
-            if (elementType.length){
-                elementType = $(elementType).data('elementType');
-                $('#char_table').bootstrapTable('filterBy',{element:elementType, weapon:target});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{weapon:target});
-            }
+            $('#char_table').bootstrapTable('filterBy', getFilters());
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
@@ -752,32 +799,23 @@ function star5tableHandle() {
         var src = $(this).find('img').get(0);
         var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
         var img = $(btn).find('img').get(0);
-        var weaponType = $(".dropdown-menu#weaponGroup").find(".active");
 
-        if ($(this).hasClass('active')){
-            $(this).removeClass('active');
-            if (weaponType.length){
-                weaponType = $(weaponType).data('weaponType');
-                $('#char_table').bootstrapTable('filterBy',{weapon:weaponType});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{});
-            }
-            $(btn).removeClass('btn-primary').addClass('btn-light');
-            $(img).attr('src', './images/icons/element/none.png');
-            gtag('event', 'filter', {
-                'event_category': 'element',
-                'event_label': 'unselect'
-            });
-        }else{
+        if (!$(this).hasClass('active') && $(this).data("elementType") === "顯示全部"){
             $(this).parent().find('.active').removeClass('active');
             $(this).addClass('active');
-            var target = $(this).data('elementType');
-            if (weaponType.length){
-                weaponType = $(weaponType).data('weaponType');
-                $('#char_table').bootstrapTable('filterBy',{element:target, weapon:weaponType});
-            }else{
-                $('#char_table').bootstrapTable('filterBy',{element:target});
-            }
+            $(btn).removeClass('btn-primary').addClass('btn-light');
+            $(btn).parent().find(".icon").find('img').attr('src', './images/icons/element/none.png');
+            $('#char_table').bootstrapTable('filterBy', getFilters());
+            gtag('event', 'filter', {
+                'event_category': 'clear',
+                'event_label': 'filters'
+            });
+
+        }else if (!$(this).hasClass('active')){
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+
+            $('#char_table').bootstrapTable('filterBy', getFilters());
 
             $(btn).removeClass('btn-light').addClass('btn-primary');
             $(img).attr('src', $(src).attr('src'));
@@ -787,27 +825,37 @@ function star5tableHandle() {
                 'event_label': 'select'
             });
         }
-
     });
 
-    $("button#clearFilter").on('click', function () {
-        var holder = $(this).closest('.panel-body');
-        var weapon = $("#weaponGroupDrop");
-        var element = $("#elementGroupDrop");
-        if ($(weapon).hasClass('btn-primary') || $(element).hasClass('btn-primary')){
-            $(this).removeClass('btn-primary').addClass('btn-light');
-            $(weapon).removeClass('btn-primary').addClass('btn-light');
-            $(element).removeClass('btn-primary').addClass('btn-light');
-            $(holder).find('.active').removeClass('active');
-            $(weapon).find('img').attr('src', './images/icons/weapon/sword.png');
-            $(element).find('img').attr('src', './images/icons/element/none.png');
-            $('#char_table').bootstrapTable('filterBy',{});
+    $('body').on('click', '.dropdown-menu#westernElementGroup .dropdown-item', function() {
+        var src = $(this).find('img').get(0);
+        var btn = $(this).closest('.btn-group').find('.dropdown-toggle');
+        var img = $(btn).find('img').get(0);
+        if (!$(this).hasClass('active') && $(this).data("elementType") === "顯示全部"){
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+            $(btn).removeClass('btn-primary').addClass('btn-light');
+            $(btn).parent().find(".icon").find('img').attr('src', './images/icons/element/none.png');
+            $('#char_table').bootstrapTable('filterBy', getFilters());
             gtag('event', 'filter', {
                 'event_category': 'clear',
                 'event_label': 'filters'
             });
-        }
 
+        }else if (!$(this).hasClass('active')){
+            $(this).parent().find('.active').removeClass('active');
+            $(this).addClass('active');
+
+            $('#char_table').bootstrapTable('filterBy', getFilters());
+
+            $(btn).removeClass('btn-light').addClass('btn-primary');
+            $(img).attr('src', $(src).attr('src'));
+            $("#clearFilter").removeClass('btn-light').addClass('btn-primary');
+            gtag('event', 'filter', {
+                'event_category': 'element',
+                'event_label': 'select'
+            });
+        }
     });
 
     // Table icon click events
@@ -866,7 +914,7 @@ function star5tableHandle() {
             row['qty'] = value;
             toSaveAsBook();
         }
-    }
+    };
 
     // Star 5 Table Options
     var star5TableColums = [{
@@ -951,7 +999,8 @@ function star5tableHandle() {
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
         toolbar: "#toolbar",
-        toolbarAlign: "right"
+        toolbarAlign: "right",
+        customSearch: customSearchRows
     });
 
     $('#selectAllStar5Listed').on('click', function () {
@@ -1028,6 +1077,60 @@ function star5tableHandle() {
         uniqueId: "id",
         classes: "table table-bordered table-striped table-sm table-borderless",
         theadClasses: "thead-dark",
+    });
+
+
+    $('#orderByTime').on('click', function () {
+        var activeStatus = $(this).hasClass("active");
+        if (!activeStatus){
+            $(this).toggleClass("active");
+            $("#orderByType").toggleClass("active");
+            $('#char_table').bootstrapTable('refreshOptions', {sortName : "id"});
+            $('#char_table').bootstrapTable('filterBy', getFilters());
+        }
+
+    });
+    $('#orderByType').on('click', function () {
+        var activeStatus = $(this).hasClass("active");
+        if (!activeStatus){
+            $(this).toggleClass("active");
+            $("#orderByTime").toggleClass("active");
+            $('#char_table').bootstrapTable('refreshOptions', {sortName : "element"});
+            $('#char_table').bootstrapTable('filterBy', getFilters());
+        }
+    });
+
+    $('#textOrderByTime').on('click', function () {
+        var activeStatus = $(this).hasClass("active");
+        if (!activeStatus){
+            $(this).toggleClass("active");
+            $("#textOrderByType").toggleClass("active");
+            $("#editor2").html(genText());
+        }
+    });
+    $('#textOrderByType').on('click', function () {
+        var activeStatus = $(this).hasClass("active");
+        if (!activeStatus){
+            $(this).toggleClass("active");
+            $("#textOrderByTime").toggleClass("active");
+            $("#editor2").html(genText());
+        }
+    });
+    $('#tableOrderByTime').on('click', function () {
+        var activeStatus = $(this).hasClass("active");
+        if (!activeStatus){
+            $(this).toggleClass("active");
+            $("#tableOrderByType").toggleClass("active");
+            $("#editor1").html(genTable());
+        }
+    });
+    $('#tableOrderByType').on('click', function () {
+        var activeStatus = $(this).hasClass("active");
+        if (!activeStatus){
+            $(this).toggleClass("active");
+            $("#tableOrderByTime").toggleClass("active");
+            $("#editor1").html(genTable());
+        }
     });
 }
 function toSaveStar5selections() {
@@ -1799,6 +1902,22 @@ function genText() {
     var showAsBooks = settings['showAsBooks']['val'];
     var showNotGet = settings['showNotGet']['val'];
 
+    var options = $('#char_table').bootstrapTable('getOptions');
+
+    var genByType = $("#textOrderByType").hasClass("active");
+
+    if (options.sortName === "element" && !genByType){
+        data = data.slice();
+        data = data.sort(function (a,b) {
+            return parseInt(a.id) > parseInt(b.id) ? 1 : -1;
+        });
+    }else if (genByType){
+        data = data.slice();
+        data = data.sort(function (a,b) {
+            return a.element.localeCompare(b.element);
+        });
+    }
+
     var asData = [];
     if (showAsBooks){
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
@@ -1807,6 +1926,13 @@ function genText() {
     var list = $.map(data, function(row, i){
         if (!showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'])){
             return;
+        }
+
+        var element = "";
+        if (genByType){
+            if (i === 0 || (i > 0 && row.element !== data[i-1].element)){
+                element = ((i > 0) ? "<br>":"") + divide + "■" + stringPad(row.element + "屬性", (nameMaxLength[0] + nameMaxLength[1] + 8), ">" , "◇") + divide + "<br>";
+            }
         }
 
         var hoshi = spaceText + spaceText;
@@ -1845,7 +1971,7 @@ function genText() {
         }else{
             lightShadow = strLoop("＿",3);
         }
-        return divide + toFixLength(row["name"], getNickname(row["name"], row["nickname"], row["asNickname"], row["had5"]), nameMaxLength, true) + divide + lightShadow + divide + hoshi + divide + as + divide + asBook;
+        return element + divide + toFixLength(row["name"], getNickname(row["name"], row["nickname"], row["asNickname"], row["had5"]), nameMaxLength, true) + divide + lightShadow + divide + hoshi + divide + as + divide + asBook;
     });
 
     var html = [
@@ -1876,12 +2002,40 @@ function genTable() {
     var showAsBooks = settings['showAsBooks']['val'];
     var showNotGet = settings['showNotGet']['val'];
 
+    var options = $('#char_table').bootstrapTable('getOptions');
+
+    var genByType = $("#tableOrderByType").hasClass("active");
+
+    if (options.sortName === "element" && !genByType){
+        data = data.slice();
+        data = data.sort(function (a,b) {
+            return parseInt(a.id) > parseInt(b.id) ? 1 : -1;
+        });
+    }else if (genByType){
+        data = data.slice();
+        data = data.sort(function (a,b) {
+            return a.element.localeCompare(b.element);
+        });
+    }
+
     var asData = [];
     if (showAsBooks){
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     }
 
     var tbody = $.map(data, function(row, i){
+
+        var element = "";
+        if (genByType){
+            if (i === 0 || (i > 0 && row.element !== data[i-1].element)){
+                element = [
+                    '<tr height="20">',
+                    '<td colspan="5" align="left"><strong>' + "■" + row.element + "屬性" + '</strong></td>',
+                    '</tr>'
+                ].join('\n');
+            }
+        }
+
         var hoshi = '<font color="lightgray">-</font>';
         if (row["had5"] === true){
             hoshi = "<strong>★5</strong>";
@@ -1927,7 +2081,7 @@ function genTable() {
         }
 
         return [
-            '<tr height="20">',
+            element + '<tr height="20">',
             '<td width="80">'+row["name"]+'</td>',
             '<td align="right" width="80">'+getNickname(row["name"], row["nickname"], row["asNickname"], row["had5"])+'</td>',
             '<td align="center">' + lightShadow + '</td>',
@@ -2094,11 +2248,12 @@ function genExtarDetal() {
 
         var freeStar5 = $.map(freeData, function (freeRow) {
             if (freeRow['had5'] || freeRow['hadas']){
-                if (freeRow['useBook'] !== '-') useBook += parseInt(freeRow['useBook']);
+                if (freeRow['useBook'] !== '-' && freeRow['had5']) useBook += parseInt(freeRow['useBook']);
                 var lightShadow = (freeRow['lightShadow'] > 0) ? '('+freeRow['lightShadow']+')' : '';
                 var asName = '';
                 if (freeRow['hadas']) {
                     asName = "&AS" + freeRow['asName'];
+                    if (freeRow['useBook'] !== '-' && freeRow['hadas']) useBook += parseInt(freeRow['useBook']);
                 }
                 return freeRow['name'] + asName + lightShadow;
             }

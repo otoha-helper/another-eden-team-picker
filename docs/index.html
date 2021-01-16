@@ -127,17 +127,29 @@
 
         <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
             <div class="container-fluid">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mb-5">
+
                     <div class="" id="toolbar">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="select order type">
+                            <button type="button" class="btn active-switch active" id="orderByTime">
+                                <i class="fas fa-clock active-show"></i>
+                                <i class="far fa-clock active-hide"></i>
+                                時序
+                            </button>
+                            <button type="button" class="btn active-switch" id="orderByType">
+                                <i class="fas fa-id-badge active-show"></i>
+                                <i class="far fa-id-badge active-hide"></i>
+                                屬性
+                            </button>
+                        </div>
                         <div class="btn-group btn-group-sm" role="group" aria-label="Select all">
                             <button type="button" class="btn" id="selectAllStar5Listed">
                                 <i class="fas fa-check-square"></i> 選擇全部
                             </button>
                             <button type="button" class="btn" id="unselectAllStar5Listed">
-                                <i class="far fa-square"></i> 取消選擇
+                                <i class="far fa-square"></i> 清除已選
                             </button>
                         </div>
-
                     </div>
                     <table id="char_table" class="table table-bordered table-striped table-sm table-borderless"></table>
                 </div>
@@ -159,6 +171,10 @@
                                 </span>
                             </button>
                             <div id="weaponGroup" class="dropdown-menu" aria-labelledby="weaponGroupDrop">
+                                <a class="dropdown-item active" href="#" data-weapon-type="顯示全部">
+                                    <img src="images/icons/weapon/sword.png" alt="showall" height="32" width="32"/>
+                                    顯示全部
+                                </a>
                                 <a class="dropdown-item" href="#" data-weapon-type="劍">
                                     <img src="images/icons/weapon/sword.png" alt="sword" height="32" width="32"/>
                                     劍
@@ -202,6 +218,10 @@
                                 </span>
                             </button>
                             <div id="elementGroup" class="dropdown-menu" aria-labelledby="elementGroupDrop">
+                                <a class="dropdown-item active" href="#" data-element-type="顯示全部">
+                                    <img src="images/icons/element/none.png" alt="showall" height="32" width="32"/>
+                                    顯示全部
+                                </a>
                                 <a class="dropdown-item" href="#" data-element-type="地">
                                     <img src="images/icons/element/earth.png" alt="earth" height="32" width="32"/>
                                     地屬性
@@ -222,14 +242,32 @@
                                     <img src="images/icons/element/none.png" alt="none" height="32" width="32"/>
                                     無屬性
                                 </a>
-
                             </div>
                         </div>
                         <div class="btn-group dropup mr-2" role="group">
-                            <button id="clearFilter" type="button" class="btn btn-light">
-                                <i class="fas fa-filter"></i>
-                                <i class="fas fa-eraser"></i>
+                            <button id="westernElementGroupDrop" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon">
+                                    <img src="images/icons/element/none.png" alt="none element" />
+                                </span>
                             </button>
+                            <div id="westernElementGroup" class="dropdown-menu" aria-labelledby="elementGroupDrop">
+                                <a class="dropdown-item active" href="#" data-element-type="顯示全部">
+                                    <img src="images/icons/element/none.png" alt="showall" height="32" width="32"/>
+                                    顯示全部
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="雷">
+                                    <img src="images/icons/element/thunder.png" alt="thunder" height="32" width="32"/>
+                                    雷屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="陰">
+                                    <img src="images/icons/element/shade.png" alt="shade" height="32" width="32"/>
+                                    陰屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="晶">
+                                    <img src="images/icons/element/crystal.png" alt="crystal" height="32" width="32"/>
+                                    晶屬性
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -318,7 +356,7 @@
                                             <i class="fas fa-check-square"></i> 選擇全部
                                         </button>
                                         <button type="button" class="btn" id="unselectAllOtherStoryListed">
-                                            <i class="far fa-square"></i> 取消選擇
+                                            <i class="far fa-square"></i> 清除已選
                                         </button>
                                     </div>
                                     <div class="clearfix"></div>
@@ -337,7 +375,7 @@
                                             <i class="fas fa-check-square"></i> 選擇全部
                                         </button>
                                         <button type="button" class="btn" id="unselectAllFreeListed">
-                                            <i class="far fa-square"></i> 取消選擇
+                                            <i class="far fa-square"></i> 清除已選
                                         </button>
                                     </div>
 
@@ -354,7 +392,7 @@
                                             <i class="fas fa-check-square"></i> 選擇全部
                                         </button>
                                         <button type="button" class="btn" id="unselectAllStar4Listed">
-                                            <i class="far fa-square"></i> 取消選擇
+                                            <i class="far fa-square"></i> 清除已選
                                         </button>
                                     </div>
 
@@ -476,8 +514,24 @@
 
         <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
             <div class="container">
-                <div class="row justify-content-center no-gutters">
-                    <div class="">
+                <div class="row">
+                    <div class="col-12">
+                        <h5>排序方式</h5>
+                        <div class="btn-group btn-group-sm btn-block mb-2" role="group" aria-label="select order type">
+                            <button type="button" class="btn active-switch active" id="tableOrderByTime">
+                                <i class="fas fa-clock active-show"></i>
+                                <i class="far fa-clock active-hide"></i>
+                                時序
+                            </button>
+                            <button type="button" class="btn active-switch" id="tableOrderByType">
+                                <i class="fas fa-id-badge active-show"></i>
+                                <i class="far fa-id-badge active-hide"></i>
+                                屬性
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
                         <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
                         <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
                         <div class="result-editor" id="editor1" contentEditable="false"></div>
@@ -490,7 +544,22 @@
         <div class="tab-pane fade" id="gentexttable" role="tabpanel" aria-labelledby="gentext-tab">
             <div class="container">
                 <div class="row justify-content-center no-gutters">
-                    <div class="">
+                    <div class="col-12">
+                        <h5>排序方式</h5>
+                        <div class="btn-group btn-group-sm btn-block mb-2" role="group" aria-label="select order type">
+                            <button type="button" class="btn active-switch active" id="textOrderByTime">
+                                <i class="fas fa-clock active-show"></i>
+                                <i class="far fa-clock active-hide"></i>
+                                時序
+                            </button>
+                            <button type="button" class="btn active-switch" id="textOrderByType">
+                                <i class="fas fa-id-badge active-show"></i>
+                                <i class="far fa-id-badge active-hide"></i>
+                                屬性
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12">
                         <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
                         <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
                         <div class="result-editor" id="editor2" contentEditable="false"></div>

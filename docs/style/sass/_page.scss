@@ -30,7 +30,6 @@ body{
   padding-top: 40px;
 }
 .tab-content{
-  padding-bottom: 40px;
   .story-scroll-nav{
     .nav-item{
       padding-right: 2px;
@@ -97,6 +96,24 @@ body{
       position: absolute;
       top: 4px;
       left: 7px;
+    }
+  }
+  &.active-switch {
+    .active-show {
+      display: none;
+    }
+    .active-hide {
+      display: inline;
+    }
+    &.active{
+      background-color: #007bff;
+      color: white;
+      .active-show{
+        display: inline;
+      }
+      .active-hide{
+        display: none;
+      }
     }
   }
 }
