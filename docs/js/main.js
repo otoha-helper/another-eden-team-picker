@@ -261,6 +261,7 @@ $(document).ready(function () {
                             'asName': row["AS名"],
                             'minStory': row["最低加入章節"],
                             'useBook': row["消耗夢書"],
+                            'asUseBook': row["AS消耗夢書"],
                             'presonal': row["專武"],
                             'element': row["主屬"],
                             'had1': false,
@@ -2253,7 +2254,7 @@ function genExtarDetal() {
                 var asName = '';
                 if (freeRow['hadas']) {
                     asName = "&AS" + freeRow['asName'];
-                    if (freeRow['useBook'] !== '-' && freeRow['hadas']) useBook += parseInt(freeRow['useBook']);
+                    if (freeRow['asUseBook'] !== '-' && freeRow['hadas']) useBook += parseInt(freeRow['asUseBook']);
                 }
                 return freeRow['name'] + asName + lightShadow;
             }
