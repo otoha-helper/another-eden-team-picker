@@ -13,7 +13,7 @@
             var element = $(this).get(0);
             if(element){
                 html2canvas(element, {
-                    scale: 1,
+                    scale: 0.7,
                     onclone: function () {
                         if (startCallback !== undefined && typeof startCallback === "function") startCallback(element);
                     }
@@ -81,6 +81,7 @@
             return this.each(function () {
                 var target = checkTarget_(this);
                 var btn = $(this);
+                $(this).unbind( "click" );
                 $(this).on("click", function () {
                     $(this).buttonLoading("loading");
                     setTimeout(function () {

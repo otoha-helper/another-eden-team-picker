@@ -2532,12 +2532,13 @@ function genTeamCheckCanvas() {
                     genStar("",true,0,true) + " " +
                     genStar("",true,0,true);
                 as = [
-                    '<div class="card m-1 float-left' + border + '" style="width: 130px; border-width: 5px;' + ((row.hadas === true) ? "": opacity+";" ) + '">',
+                    '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.hadas === true) ? "": opacity+";" ) + '">',
                     '   <img class="card-img-top" src="./images/characters/as/' + row["enName"]+'.jpg">',
-                    '   <div class="card-body p-1">',
-                    '       <div class="text-info">' + stars + '</div>',
-                    '       <strong class="card-title m-0">' + row["name"] + 'AS</strong>',
+                    '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
+                    '   <div class="card-body p-0 m-0 bg-white position-absolute" style="bottom: 0px;">',
+                    '       <h5 class="card-title m-0">' + row["name"] + 'AS</h5>',
                     '       <p class="card-text m-0">' + asNickname + '</p>',
+
                     '   </div>',
                     '</div>',
                 ].join('\n');
@@ -2571,12 +2572,13 @@ function genTeamCheckCanvas() {
             }
             if (row.had5 !== true && row.had4 !== true) border = " border-light bg-transparent text-secondary";
             return [
-                '<div class="card m-1 float-left' + border + '" style="width: 130px; border-width: 5px;' + ((row.had5 === true || row.had4 === true) ? "": opacity+";" ) + '">',
+                '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.had5 === true || row.had4 === true) ? "": opacity+";" ) + '">',
                 '   <img class="card-img-top" src="./images/characters/' + row["enName"]+'.jpg">',
-                '   <div class="card-body p-1">',
-                '   <div>' + stars + '</div>',
-                '       <strong class="card-title m-0">' + row["name"] + '</strong>',
+                '   <div class="ml-1 position-absolute">' + stars + '</div>',
+                '   <div class="card-body p-0 m-0 bg-white position-absolute" style="bottom: 0px;">',
+                '       <h5 class="card-title m-0">' + row["name"] + '</h5>',
                 '       <p class="card-text m-0">' + nickname + '</p>',
+
                 '   </div>',
                 '</div>',
                 as
