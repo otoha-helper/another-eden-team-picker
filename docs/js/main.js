@@ -91,6 +91,17 @@ $(document).ready(function () {
 
     });
 
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        if (e.target.id === "gencanvas-tab"){
+            gtag('event', 'tab', {
+                'event_category': 'change',
+                'event_label': 'generate canvas result'
+            });
+
+            genTeamCheckCanvas();
+        }
+    });
+
     // Handle tables
     star5tableHandle();
     freeTableHandle();
@@ -1819,8 +1830,12 @@ function genStar(exClass, isActive, num, isAsType) {
     var starColor = ' star-gray';
     if (active) starColor = ' star-red';
 
-    if (asType){
+    if (asType && num == null){
         return '<i class="fa fa-user-friends' + exClassName + starColor +'"></i>';
+    }
+
+    if (asType){
+        starColor = ' star-as';
     }
 
     var star = '<i class="fas fa-star'+ starColor + exClassName +'"></i>';
@@ -2421,7 +2436,189 @@ function genExtarDetal() {
     return html;
 }
 function genTeamCheckCanvas() {
-    // TODO Gen canvas
+    // TODO Gen canvas not plugin
     // $("#canvas").size(200,800).canvasAdd();
     // $("#download").downloadCanvas();
+
+    $("#download_canvas").buttonLoading("loading");
+    $("#canvas").html("").hide();
+    $("#imageOutput").html("");
+    $("#html_canvas").show();
+
+    var dialog = bootbox.dialog({
+        message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i>   正在取得牛棚...</p>',
+        closeButton: false
+    });
+
+
+    var data = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var settings = getSettings();
+    var showAsBooks = settings['showAsBooks']['val'];
+    var showNotGet = settings['showNotGet']['val'];
+
+    data = data.slice();
+    data = data.sort(function (a,b) {
+        return a.element.localeCompare(b.element);
+    });
+
+    var asData = [];
+    if (showAsBooks){
+        asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    }
+
+    var result = data.reduce(function (r, a) {
+            r[a.element] = r[a.element] || [];
+            r[a.element].push(a);
+            return r;
+        }, Object.create(null));
+
+    var image = $.map(result, function (rows, elementType) {
+        var element = "";
+        var imageAndName = "";
+        var css = elementCellStyle(elementType);
+        var bg = css.css["background-color"];
+
+        var getted = rows.filter(function(r){return (r.had5 || r.had4);}).length;
+
+        element = [
+            '<div class="w-100 p-2 mb-2" ' + 'style="background-color:' + bg + ';">',
+            '<h5 class="d-inline">' + "■" + elementType + '屬性 </h5><strong>' + getted + " / " + rows.length + "</strong>",
+            '</div>'
+        ].join('\n');
+
+        rows.sort(function(a, b) {
+            var ac = 0;
+            var bc = 0;
+            if (a.had5 === true) ac = ac+1;
+            if (a.had4 === true) ac = ac+1;
+            if (a.hadas === true) ac = ac+1;
+            if (b.had5 === true) bc = bc+1;
+            if (b.had4 === true) bc = bc+1;
+            if (b.hadas === true) bc = bc+1;
+            if (ac > bc) return -1;
+            if (ac < bc) return 1;
+            return 0;
+        });
+
+        imageAndName = $.map(rows,function (row) {
+            var nickname = row['nickname'];
+            if ($.trim(nickname) === ''){
+                nickname = "-"
+            }
+            var asNickname = row['nickname'];
+            if ($.trim(row['asNickname'])){
+                asNickname = row['asNickname'];
+            }
+
+            var stars = genStarList(4, 5,
+                {
+                    '1':false,
+                    '2':false,
+                    '3':false,
+                    '4':false,
+                    '5':false
+                });
+
+            var border = " border-warning";
+
+            var opacity = 'opacity: 0.4';
+
+            var as = "";
+            if ($.trim(row.as) !== ''){
+                if (row.hadas !== true) border = " border-light bg-transparent text-secondary";
+                if (row.hadas === true) stars = genStar("",true,0,true) +
+                    genStar("",true,0,true) + " " +
+                    genStar("",true,0,true) + " " +
+                    genStar("",true,0,true) + " " +
+                    genStar("",true,0,true);
+                as = [
+                    '<div class="card m-1 float-left' + border + '" style="width: 130px; border-width: 5px;' + ((row.hadas === true) ? "": opacity+";" ) + '">',
+                    '   <img class="card-img-top" src="./images/characters/as/' + row["enName"]+'.jpg">',
+                    '   <div class="card-body p-1">',
+                    '       <div class="text-info">' + stars + '</div>',
+                    '       <strong class="card-title m-0">' + row["name"] + 'AS</strong>',
+                    '       <p class="card-text m-0">' + asNickname + '</p>',
+                    '   </div>',
+                    '</div>',
+                ].join('\n');
+            }
+
+
+
+            if (row.had5 === true) {
+                border = " border-warning";
+                stars = genStarList(4, 5,
+                    {
+                        '1':true,
+                        '2':true,
+                        '3':true,
+                        '4':true,
+                        '5':true
+                    });
+            }
+            if (row.had5 !== true && row.had4 === true) {
+                border = " border-secondary";
+                var max = 5;
+                if (row.had5 === "none") max = 4;
+                stars = genStarList(4, max,
+                    {
+                        '1':true,
+                        '2':true,
+                        '3':true,
+                        '4':true,
+                        '5':false
+                    });
+            }
+            if (row.had5 !== true && row.had4 !== true) border = " border-light bg-transparent text-secondary";
+            return [
+                '<div class="card m-1 float-left' + border + '" style="width: 130px; border-width: 5px;' + ((row.had5 === true || row.had4 === true) ? "": opacity+";" ) + '">',
+                '   <img class="card-img-top" src="./images/characters/' + row["enName"]+'.jpg">',
+                '   <div class="card-body p-1">',
+                '   <div>' + stars + '</div>',
+                '       <strong class="card-title m-0">' + row["name"] + '</strong>',
+                '       <p class="card-text m-0">' + nickname + '</p>',
+                '   </div>',
+                '</div>',
+                as
+            ].join('\n');
+        }).join('\n');
+
+        return '<div class="d-block mb-2 bg-light">' + element + '<div class="d-block clearfix">' + imageAndName + '</div>' + '</div>';
+    });
+
+
+    $("#html_canvas").html(image);
+    var canvasHeight = $("#html_canvas").height();
+
+    setTimeout(function () {
+        dialog.init(function(){
+            dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 開始建立圖片...</p>');
+        });
+
+        $("#html_canvas").html2canvas(
+            function (ele) {
+                dialog.init(function(){
+                    dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在建立...</p>');
+                });
+            },
+            function (canvas, ele) {
+                dialog.init(function(){
+                    dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在完成...</p>');
+                });
+
+                $("#canvas").html($(canvas).attr("id", "team_canvas"));
+                $("#download_canvas").buttonLoading("reset");
+                $("#download_canvas").downloadCanvas("team_canvas");
+
+                $("#canvas").hide();
+                var image = canvas.toDataURL("image/jpg");
+                $(ele).hide();
+                $("#imageOutput").html($("<img>").attr("src", image).css("width", "100%"));
+
+                dialog.modal('hide');
+            });
+    }, 3000);
+
+
+
 }
