@@ -65,7 +65,7 @@
     $.fn.extend({
         downloadCanvas: function (eleId, filename) {
             function checkTarget_(element) {
-                var downloadFilename = filename || $(element).data('download') || "team_member_" + (new Date().getTime()) + ".jpg";
+                var downloadFilename = filename || $(element).data('download') || "team_member_" + (new Date().getTime()) + ".png";
                 var canvasTarget = eleId || $(element).data('canvas-target') || "canvas";
 
                 if (!$(element).data('download')){
@@ -76,7 +76,7 @@
                 }
 
                 var canvas = document.getElementById(canvasTarget);
-                var image = canvas.toDataURL("image/jpg");
+                var image = canvas.toDataURL("image/png");
                 return {'image':image, 'filename': downloadFilename};
             }
             return this.each(function () {
