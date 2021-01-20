@@ -2483,7 +2483,8 @@ function genTeamCheckCanvas() {
         element = [
             '<div class="w-100 p-0 mb-2" ' + 'style="background-color:' + bg + ';">',
             '   <strong class="ml-2" style="font-size: 25px;">' + " ■" + elementType + '屬性 ' + getted + " / " + rows.length + "</strong>",
-            '</div>'
+            '</div>',
+            '<div style="clear: left;"></div>'
         ].join('\n');
 
         rows.sort(function(a, b) {
@@ -2539,7 +2540,7 @@ function genTeamCheckCanvas() {
                     '       <p class="card-title m-0"><strong>' + row["name"] + 'AS</strong></p>',
                     // '       <p class="card-text m-0">' + asNickname + '</p>',
                     '   </div>',
-                    '</div>',
+                    '</div>'
                 ].join('\n');
             }
 
@@ -2583,7 +2584,7 @@ function genTeamCheckCanvas() {
             ].join('\n');
         }).join('\n');
 
-        return '<div class="d-block mb-2 bg-light">' + element + '<div class="d-block clearfix">' + imageAndName + '</div>' + '</div>';
+        return '<div class="d-block mb-2 bg-light">' + element + '<div class="d-block clearfix">' + imageAndName + '</div>' + '</div>' + '<div style="clear: left;"></div>';
     });
 
 
