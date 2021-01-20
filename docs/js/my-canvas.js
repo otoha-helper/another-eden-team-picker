@@ -9,11 +9,12 @@
     'use strict';
 
     $.fn.extend({
-        html2canvas: function(startCallback, doneCallback, errorCallback){
+        html2canvas: function(startCallback, doneCallback, errorCallback, scaleOption){
             var element = $(this).get(0);
+            var myScaleOption = scaleOption || 0.7;
             if(element){
                 html2canvas(element, {
-                    scale: 0.7,
+                    scale: myScaleOption,
                     onclone: function () {
                         if (startCallback !== undefined && typeof startCallback === "function") startCallback(element);
                     }

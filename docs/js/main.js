@@ -2446,7 +2446,7 @@ function genTeamCheckCanvas() {
     $("#html_canvas").show();
 
     var dialog = bootbox.dialog({
-        message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i>   正在取得牛棚...</p>',
+        message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 正在取得牛棚...</p>',
         closeButton: false
     });
 
@@ -2481,8 +2481,8 @@ function genTeamCheckCanvas() {
         var getted = rows.filter(function(r){return (r.had5 || r.had4);}).length;
 
         element = [
-            '<div class="w-100 p-2 mb-2" ' + 'style="background-color:' + bg + ';">',
-            '<h5 class="d-inline">' + "■" + elementType + '屬性 </h5><strong>' + getted + " / " + rows.length + "</strong>",
+            '<div class="w-100 p-0 mb-2" ' + 'style="background-color:' + bg + ';">',
+            '   <strong class="ml-2" style="font-size: 25px;">' + " ■" + elementType + '屬性 ' + getted + " / " + rows.length + "</strong>",
             '</div>'
         ].join('\n');
 
@@ -2535,10 +2535,9 @@ function genTeamCheckCanvas() {
                     '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.hadas === true) ? "": opacity+";" ) + '">',
                     '   <img class="card-img-top" src="./images/characters/as/' + row["enName"]+'.jpg">',
                     '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
-                    '   <div class="card-body p-0 m-0 bg-white position-absolute" style="bottom: 0px;">',
-                    '       <h5 class="card-title m-0">' + row["name"] + 'AS</h5>',
-                    '       <p class="card-text m-0">' + asNickname + '</p>',
-
+                    '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
+                    '       <p class="card-title m-0"><strong>' + row["name"] + 'AS</strong></p>',
+                    // '       <p class="card-text m-0">' + asNickname + '</p>',
                     '   </div>',
                     '</div>',
                 ].join('\n');
@@ -2575,10 +2574,9 @@ function genTeamCheckCanvas() {
                 '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.had5 === true || row.had4 === true) ? "": opacity+";" ) + '">',
                 '   <img class="card-img-top" src="./images/characters/' + row["enName"]+'.jpg">',
                 '   <div class="ml-1 position-absolute">' + stars + '</div>',
-                '   <div class="card-body p-0 m-0 bg-white position-absolute" style="bottom: 0px;">',
-                '       <h5 class="card-title m-0">' + row["name"] + '</h5>',
-                '       <p class="card-text m-0">' + nickname + '</p>',
-
+                '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
+                '       <p class="card-title m-0"><strong>' + row["name"] + '</strong></p>',
+                // '       <p class="card-text m-0">' + nickname + '</p>',
                 '   </div>',
                 '</div>',
                 as
@@ -2620,6 +2618,48 @@ function genTeamCheckCanvas() {
                 dialog.modal('hide');
             });
     }, 3000);
+
+    $("#imageSize").on("change", function (ele) {
+        var scaleOption = $(this).val();
+        $("#canvas").html("").hide();
+        $("#imageOutput").html("");
+        $("#html_canvas").show();
+        $("#download_canvas").buttonLoading("loading");
+
+        dialog = bootbox.dialog({
+            message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 正在重新建立...</p>',
+            closeButton: false
+        });
+
+        setTimeout(function () {
+            $("#html_canvas").html2canvas(
+                function (ele) {
+                    dialog.init(function(){
+                        dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在建立...</p>');
+                    });
+                },
+                function (canvas, ele) {
+                    dialog.init(function(){
+                        dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在完成...</p>');
+                    });
+
+                    $("#canvas").html($(canvas).attr("id", "team_canvas"));
+                    $("#download_canvas").buttonLoading("reset");
+                    $("#download_canvas").downloadCanvas("team_canvas");
+
+                    $("#canvas").hide();
+                    var image = canvas.toDataURL("image/jpg");
+                    $(ele).hide();
+                    $("#imageOutput").html($("<img>").attr("src", image).css("width", "100%"));
+
+                    dialog.modal('hide');
+                },
+                null,
+                scaleOption
+            );
+        }, 300);
+
+    });
 
 
 
