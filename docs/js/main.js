@@ -2043,7 +2043,7 @@ function genTable() {
     }else if (genByType){
         data = data.slice();
         data = data.sort(function (a,b) {
-            return a.element.localeCompare(b.element);
+            return a.element.localeCompare(b.element,'zh-TW');
         });
     }
 
@@ -2471,7 +2471,7 @@ function genTeamCheckCanvas() {
 
     data = data.slice();
     data = data.sort(function (a,b) {
-        return a.element.localeCompare(b.element);
+        return a.element.localeCompare(b.element,'zh-TW');
     });
 
     var asData = [];
