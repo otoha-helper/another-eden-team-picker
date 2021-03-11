@@ -2,6 +2,7 @@
  *  jQuery Local Storage and file Controller
  * Designed for Another eden team picker, used to read local file and storage.
  * Copyrighted AlexWong
+ * https://github.com/otoha-helper
  */
 
 
@@ -60,8 +61,12 @@
             readLink: [],
             failedLink: [],
             loading: false,
-            addFile: function (key, link) {
-                this.fileList[key] = {'link':link, 'data':null};
+            options:{
+                type: 'get',
+                dataType: 'text'
+            },
+            addFile: function (key, link, dataProcessCallback) {
+                this.fileList[key] = {'link':link, 'data':null, process:dataProcessCallback};
                 return this;
             },
             run: function (startCallback, finishCallback, doneCallback, errorCallback) {
@@ -88,9 +93,12 @@
                         url: row.link,
                         dataType: 'text',
                         success:function (data) {
-                            fileList[key]['data'] = data;
                             readLink.push(key);
                             var status = calcJob(reader);
+                            if (typeof row.process === "function"){
+                                data = row.process(data)
+                            }
+                            fileList[key]['data'] = data;
                             if (typeof doneCallback === "function"){
                                 doneCallback(key, data);
                             }
@@ -123,7 +131,7 @@
                         return true;
                     }else if (length === processed){
                         reader.loading = false;
-                        return false
+                        return false;
                     }
                 }
 
