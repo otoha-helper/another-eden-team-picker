@@ -2602,36 +2602,55 @@ function genTeamCheckCanvas() {
 
 
     $("#html_canvas").html(image);
-    var canvasHeight = $("#html_canvas").height();
 
-    setTimeout(function () {
-        dialog.init(function(){
-            dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 開始建立圖片...</p>');
-        });
+    var imagesLength = $("#html_canvas img.card-img-top").length;
+    var imagesLoaded = 0;
 
-        $("#html_canvas").html2canvas(
-            function (ele) {
-                dialog.init(function(){
-                    dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在建立...</p>');
-                });
-            },
-            function (canvas, ele) {
-                dialog.init(function(){
-                    dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在完成...</p>');
-                });
+    $('#html_canvas').imagesLoaded()
+        .always( function( instance ) {
+            console.log('images loaded');
+            var canvasHeight = $("#html_canvas").height();
 
-                $("#canvas").html($(canvas).attr("id", "team_canvas"));
-                $("#download_canvas").buttonLoading("reset");
-                $("#download_canvas").downloadCanvas("team_canvas");
-
-                $("#canvas").hide();
-                var image = canvas.toDataURL("image/jpg");
-                $(ele).hide();
-                $("#imageOutput").html($("<img>").attr("src", image).css("width", "100%"));
-
-                dialog.modal('hide');
+            dialog.init(function(){
+                dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 牛棚處理中...</p>');
             });
-    }, 3000);
+
+            setTimeout(function () {
+                dialog.init(function(){
+                    dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 開始建立圖片...</p>');
+                });
+                $("#html_canvas").html2canvas(
+                    function (ele) {
+                        dialog.init(function(){
+                            dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在建立...</p>');
+                        });
+                    },
+                    function (canvas, ele) {
+                        dialog.init(function(){
+                            dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 圖片正在完成...</p>');
+                        });
+
+                        $("#canvas").html($(canvas).attr("id", "team_canvas"));
+                        $("#download_canvas").buttonLoading("reset");
+                        $("#download_canvas").downloadCanvas("team_canvas");
+
+                        $("#canvas").hide();
+                        var image = canvas.toDataURL("image/jpg");
+                        $(ele).hide();
+                        $("#imageOutput").html($("<img>").attr("src", image).css("width", "100%"));
+
+                        dialog.modal('hide');
+                    });
+            }, 1000);
+
+        })
+        .progress( function( instance, image ) {
+            var result = image.isLoaded ? 'loaded' : 'broken';
+            imagesLoaded = imagesLoaded + 1;
+            dialog.init(function(){
+                dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 正在取得牛棚 ' + imagesLoaded + ' / ' + imagesLength + '</p>');
+            });
+        });
 
     $("#imageSize").unbind('change').on("change", function (ele) {
         var scaleOption = $(this).val();

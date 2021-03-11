@@ -62,8 +62,20 @@
             failedLink: [],
             loading: false,
             options:{
-                type: 'get',
-                dataType: 'text'
+                type: 'GET',
+                dataType: 'text',
+                cache: false // Appends _={timestamp} to the request query string
+            },
+            setOptions: function(type, dataType, cache){
+                if (typeof type !== "undefined"){
+                    this.options.type = type;
+                }
+                if (typeof dataType !== "undefined"){
+                    this.options.dataType = dataType;
+                }
+                if (typeof cache){
+                    this.options.cache = cache
+                }
             },
             addFile: function (key, link, dataProcessCallback) {
                 this.fileList[key] = {'link':link, 'data':null, process:dataProcessCallback};
@@ -87,16 +99,29 @@
                     startCallback();
                 }
 
+                var dataType = this.options.dataType;
+
+                $.ajaxSetup({
+                    type: this.options.type,
+                    dataType: dataType,
+                    cache: this.options.cache
+                });
+
                 $.each(fileList, function (key, row) {
                     $.ajax({
-                        type: 'get',
                         url: row.link,
-                        dataType: 'text',
                         success:function (data) {
                             readLink.push(key);
                             var status = calcJob(reader);
+
                             if (typeof row.process === "function"){
                                 data = row.process(data)
+                            }else if (dataType === 'json'){
+                                try{
+                                    data = JSON.parse(data);
+                                }catch (e) {
+                                    errorCallback(key, e);
+                                }
                             }
                             fileList[key]['data'] = data;
                             if (typeof doneCallback === "function"){
@@ -119,7 +144,6 @@
                     });
                 });
 
-
                 function calcJob (reader) {
                     var length = Object.keys(reader.fileList).length;
                     if (length === 0){
@@ -135,6 +159,12 @@
                     }
                 }
 
+            },
+            reset: function () {
+                this.fileList = {};
+                this.readLink = [];
+                this.failedLink = [];
+                this.loading = false;
             }
         }
 
