@@ -2,6 +2,7 @@
  *  jQuery canvas editor
  * Designed for Another eden team picker, used to draw canvas.
  * Copyrighted AlexWong
+ * https://github.com/otoha-helper
  */
 
 

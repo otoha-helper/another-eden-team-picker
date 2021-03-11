@@ -2,6 +2,7 @@
  *  jQuery Local Storage and file Controller
  * Designed for Another eden team picker, used to read local file and storage.
  * Copyrighted AlexWong
+ * https://github.com/otoha-helper
  */
 
 
@@ -60,8 +61,24 @@
             readLink: [],
             failedLink: [],
             loading: false,
-            addFile: function (key, link) {
-                this.fileList[key] = {'link':link, 'data':null};
+            options:{
+                type: 'GET',
+                dataType: 'text',
+                cache: false // Appends _={timestamp} to the request query string
+            },
+            setOptions: function(type, dataType, cache){
+                if (typeof type !== "undefined"){
+                    this.options.type = type;
+                }
+                if (typeof dataType !== "undefined"){
+                    this.options.dataType = dataType;
+                }
+                if (typeof cache){
+                    this.options.cache = cache
+                }
+            },
+            addFile: function (key, link, dataProcessCallback) {
+                this.fileList[key] = {'link':link, 'data':null, process:dataProcessCallback};
                 return this;
             },
             run: function (startCallback, finishCallback, doneCallback, errorCallback) {
@@ -82,15 +99,31 @@
                     startCallback();
                 }
 
+                var dataType = this.options.dataType;
+
+                $.ajaxSetup({
+                    type: this.options.type,
+                    dataType: dataType,
+                    cache: this.options.cache
+                });
+
                 $.each(fileList, function (key, row) {
                     $.ajax({
-                        type: 'get',
                         url: row.link,
-                        dataType: 'text',
                         success:function (data) {
-                            fileList[key]['data'] = data;
                             readLink.push(key);
                             var status = calcJob(reader);
+
+                            if (typeof row.process === "function"){
+                                data = row.process(data)
+                            }else if (dataType === 'json'){
+                                try{
+                                    data = JSON.parse(data);
+                                }catch (e) {
+                                    errorCallback(key, e);
+                                }
+                            }
+                            fileList[key]['data'] = data;
                             if (typeof doneCallback === "function"){
                                 doneCallback(key, data);
                             }
@@ -111,7 +144,6 @@
                     });
                 });
 
-
                 function calcJob (reader) {
                     var length = Object.keys(reader.fileList).length;
                     if (length === 0){
@@ -123,10 +155,16 @@
                         return true;
                     }else if (length === processed){
                         reader.loading = false;
-                        return false
+                        return false;
                     }
                 }
 
+            },
+            reset: function () {
+                this.fileList = {};
+                this.readLink = [];
+                this.failedLink = [];
+                this.loading = false;
             }
         }
 
