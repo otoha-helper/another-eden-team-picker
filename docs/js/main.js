@@ -115,11 +115,128 @@ $(document).ready(function () {
 
     // Read csv in table
     $.myFileReader
-        .addFile('5star','./csv/5star.csv')
+        .addFile('5star','./csv/5star.csv', function (data) {
+            var obj = $.csv.toObjects(data);
+            var dataRows = $.map(obj, function (row) {
+                var nickname = row["暱稱"];
+                var asNickname = row["AS暱稱"];
+                if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
+                    nickname = row["角色名"];
+                } else if ($.trim(nickname) === "") {
+                    nickname = row["角色名"];
+                }
+
+                return {
+                    'id': row["ID"],
+                    'name': row["角色名"],
+                    'enName': row["英名"],
+                    'nickname': nickname,
+                    'asNickname': asNickname,
+                    'as': row["AS名"],
+                    'had5': (row["★5"] === "TRUE")? false:'none',
+                    'hadas': '',
+                    'element': row["主屬"],
+                    'weapon': row["武器"],
+                    'lightShadow' : 0,
+                    'personal': row['專武'],
+                    'book4': row['職業書'],
+                    'book5': row['五星書'],
+                    'pos': row['特殊地位'],
+                    'asPos': row['AS特殊地位']
+                };
+            });
+
+            var asBookRows = $.map(obj, function (row) {
+                if ($.trim(row['AS名']) === '') return;
+                var nickname = row["暱稱"];
+                var asNickname = row["AS暱稱"];
+                if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
+                    nickname = row["角色名"];
+                } else if ($.trim(nickname) === "") {
+                    nickname = row["角色名"];
+                }
+                return {
+                    'id': row['ID'],
+                    'enName': row["英名"],
+                    'name': row["角色名"],
+                    'asNickname': asNickname,
+                    'as': row['AS名'] + '的異節',
+                    'qty': 0
+                }
+            });
+
+            return {rows:dataRows, asBook:asBookRows};
+        })
         .addFile('extra','./csv/extra.csv')
-        .addFile('free','./csv/free.csv')
-        .addFile('5star_sp','./csv/5star_sp.csv')
-        .addFile('4star','./csv/4star.csv')
+        .addFile('free','./csv/free.csv',function (data) {
+            return $.map($.csv.toObjects(data), function (row) {
+                if (row["角色名"].charAt(0) === '*') return;
+                return {
+                    'id': row["ID"],
+                    'name': row["角色名"],
+                    'enName': row["英名"],
+                    'nickname': row["暱稱"],
+                    'asNickname': row["AS暱稱"],
+                    'getByStory': row["取得"],
+                    'minStar': row["起始☆"],
+                    'maxStar': row["最高★"],
+                    'as': (row["AS"] === "TRUE")? true : false,
+                    'asName': row["AS名"],
+                    'minStory': row["最低加入章節"],
+                    'useBook': row["消耗夢書"],
+                    'asUseBook': row["AS消耗夢書"],
+                    'presonal': row["專武"],
+                    'element': row["主屬"],
+                    'had1': false,
+                    'had2': false,
+                    'had3': false,
+                    'had4': false,
+                    'had5': false,
+                    'hadas': false,
+                    'lightShadow': 0
+                };
+            });
+        })
+        .addFile('5star_sp','./csv/5star_sp.csv', function (data) {
+            return $.map($.csv.toObjects(data), function (row) {
+                if (row["角色名"].charAt(0) === '*') return;
+                return {
+                    'id': row["ID"],
+                    'name': row["角色名"],
+                    'enName': row["英名"],
+                    'nickname': row["暱稱"],
+                    'minStar': row["起始☆"],
+                    'maxStar': row["最高★"],
+                    'useBook': row["消耗夢書"],
+                    'presonal': row["專武"],
+                    'element': row["主屬"],
+                    'had3': false,
+                    'had4': false,
+                    'had5': false
+                };
+            });
+        })
+        .addFile('4star','./csv/4star.csv', function (data) {
+            return $.map($.csv.toObjects(data), function (row) {
+                if (
+                    row["角色名"].charAt(0) === '*' ||
+                    row["升職"] === '已升'
+                ) return;
+
+                return {
+                    'id': row["ID"],
+                    'name': row["角色名"],
+                    'enName': row["英名"],
+                    'nickname': row["暱稱"],
+                    'element': row["主屬"],
+                    'minStar': row["起始☆"],
+                    'maxStar': row["最高★"],
+                    'pos': row["特殊地位"],
+                    'had3': false,
+                    'had4': false
+                };
+            });
+        })
         .run(
             function (key) {
                 console.log("Starting ");
@@ -135,53 +252,9 @@ $(document).ready(function () {
             function (key, data) {
                 console.log("loaded",key);
                 if (key === "5star") {
-                    var obj = $.csv.toObjects(data);
-                    var rows = $.map(obj, function (row) {
-                        var nickname = row["暱稱"];
-                        var asNickname = row["AS暱稱"];
-                        if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
-                            nickname = row["角色名"];
-                        } else if ($.trim(nickname) === "") {
-                            nickname = row["角色名"];
-                        }
+                    var rows = data.rows;
+                    var asBook = data.asBook;
 
-                        return {
-                            'id': row["ID"],
-                            'name': row["角色名"],
-                            'enName': row["英名"],
-                            'nickname': nickname,
-                            'asNickname': asNickname,
-                            'as': row["AS名"],
-                            'had5': (row["★5"] === "TRUE")? false:'none',
-                            'hadas': '',
-                            'element': row["主屬"],
-                            'weapon': row["武器"],
-                            'lightShadow' : 0,
-                            'personal': row['專武'],
-                            'book4': row['職業書'],
-                            'book5': row['五星書'],
-                            'pos': row['特殊地位'],
-                            'asPos': row['AS特殊地位']
-                        };
-                    });
-
-                    var asBook = $.map(obj, function (row) {
-                        if ($.trim(row['AS名']) === '') return;
-                        var nickname = row["暱稱"];
-                        var asNickname = row["AS暱稱"];
-                        if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
-                            nickname = row["角色名"];
-                        } else if ($.trim(nickname) === "") {
-                            nickname = row["角色名"];
-                        }
-                        return {
-                            'id': row['ID'],
-                            'name': row["角色名"],
-                            'asNickname': asNickname,
-                            'as': row['AS名'] + '的異節',
-                            'qty': 0
-                        }
-                    });
                     $('#as_book_table').bootstrapTable('load', asBook);
 
                     if ($.myStorage.checkExist('selectedStar5')){
@@ -257,33 +330,7 @@ $(document).ready(function () {
                     }
                 }
                 if (key === "free"){
-                    var freeRows = $.map($.csv.toObjects(data), function (row) {
-                        if (row["角色名"].charAt(0) === '*') return;
-                        return {
-                            'id': row["ID"],
-                            'name': row["角色名"],
-                            'enName': row["英名"],
-                            'nickname': row["暱稱"],
-                            'asNickname': row["AS暱稱"],
-                            'getByStory': row["取得"],
-                            'minStar': row["起始☆"],
-                            'maxStar': row["最高★"],
-                            'as': (row["AS"] === "TRUE")? true : false,
-                            'asName': row["AS名"],
-                            'minStory': row["最低加入章節"],
-                            'useBook': row["消耗夢書"],
-                            'asUseBook': row["AS消耗夢書"],
-                            'presonal': row["專武"],
-                            'element': row["主屬"],
-                            'had1': false,
-                            'had2': false,
-                            'had3': false,
-                            'had4': false,
-                            'had5': false,
-                            'hadas': false,
-                            'lightShadow': 0
-                        };
-                    });
+                    var freeRows = data;
 
                     if ($.myStorage.checkExist('selectedFree')){
                         var saveFree = $.myStorage.get('selectedFree');
@@ -313,23 +360,7 @@ $(document).ready(function () {
                 }
 
                 if (key === "5star_sp"){
-                    var spRows = $.map($.csv.toObjects(data), function (row) {
-                        if (row["角色名"].charAt(0) === '*') return;
-                        return {
-                            'id': row["ID"],
-                            'name': row["角色名"],
-                            'enName': row["英名"],
-                            'nickname': row["暱稱"],
-                            'minStar': row["起始☆"],
-                            'maxStar': row["最高★"],
-                            'useBook': row["消耗夢書"],
-                            'presonal': row["專武"],
-                            'element': row["主屬"],
-                            'had3': false,
-                            'had4': false,
-                            'had5': false,
-                        };
-                    });
+                    var spRows = data;
 
                     if ($.myStorage.checkExist('selectedSp')){
                         var saveSp = $.myStorage.get('selectedSp');
@@ -354,25 +385,7 @@ $(document).ready(function () {
                     }
                 }
                 if (key === "4star"){
-                    var star4Rows = $.map($.csv.toObjects(data), function (row) {
-                        if (
-                            row["角色名"].charAt(0) === '*' ||
-                            row["升職"] === '已升'
-                        ) return;
-
-                        return {
-                            'id': row["ID"],
-                            'name': row["角色名"],
-                            'enName': row["英名"],
-                            'nickname': row["暱稱"],
-                            'element': row["主屬"],
-                            'minStar': row["起始☆"],
-                            'maxStar': row["最高★"],
-                            'pos': row["特殊地位"],
-                            'had3': false,
-                            'had4': false
-                        };
-                    });
+                    var star4Rows = data;
 
                     if ($.myStorage.checkExist('selectedStar4')){
                         var saveStar4 = $.myStorage.get('selectedStar4');
@@ -2620,16 +2633,16 @@ function genTeamCheckCanvas() {
             });
     }, 3000);
 
-    $("#imageSize").on("change", function (ele) {
+    $("#imageSize").unbind('change').on("change", function (ele) {
         var scaleOption = $(this).val();
         $("#canvas").html("").hide();
         $("#imageOutput").html("");
         $("#html_canvas").show();
         $("#download_canvas").buttonLoading("loading");
 
-        dialog = bootbox.dialog({
-            message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 正在重新建立...</p>',
-            closeButton: false
+        dialog.modal('show');
+        dialog.init(function(){
+            dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 正在重新建立...</p>');
         });
 
         setTimeout(function () {
