@@ -95,6 +95,25 @@
                         }
                         return value;
                     });
+                }else{
+                    selectedRow = $.map(Object.values(row), function (value, index) {
+                        if (typeof value === "number"){
+                            value = $.toFullWidthNumber(value,options.colsMaxLength[index],options.numberMax);
+                        }
+                        if (options.colsMaxLength){
+                            var align = '<';
+                            if (typeof options.align === "string"){
+                                align = options.align;
+                            }else if (typeof options.align === "object"){
+                                align = options.align[index];
+                                if (typeof align === "number"){
+                                    return $.stringPad(value, options.align[index],undefined, options.spaceText);
+                                }
+                            }
+                            return $.stringPad(value, options.colsMaxLength[index], align, options.spaceText);
+                        }
+                        return value;
+                    });
                 }
                 return options.divide + Object.values(selectedRow).join(options.divide) + options.divide;
             },
@@ -163,10 +182,26 @@
                         }
                         return maxLength;
                     });
+                }else{
+                    options.colsMaxLength = $.map(Object.values(data[0]), function (value, index) {
+                        var maxLength = 0;
+                        if (header.length){
+                            maxLength = $.findLength(header[index]);
+                        }
+                        $.map(data, function(row){
+                            var keys = Object.keys(row);
+                            var length = $.findLength(String(row[keys[index]]));
+                            if (length > maxLength) maxLength = length;
+                        });
+                        if (typeof options.align[index] === "number"){
+                            maxLength = options.align[index];
+                        }
+                        return maxLength;
+                    });
                 }
 
                 var headerRows = [];
-                if (cols && header && options.colsMaxLength){
+                if (cols.length && header.length && options.colsMaxLength){
                     var headerString = options.divide + $.map(header, function (value, index) {
                         var align = '<';
                         if (typeof options.align === "string"){
