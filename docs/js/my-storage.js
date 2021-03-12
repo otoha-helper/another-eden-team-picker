@@ -76,6 +76,7 @@
                 if (typeof cache){
                     this.options.cache = cache
                 }
+                return this;
             },
             addFile: function (key, link, dataProcessCallback) {
                 this.fileList[key] = {'link':link, 'data':null, process:dataProcessCallback};
