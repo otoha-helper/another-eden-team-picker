@@ -36,11 +36,9 @@
              *  Save item to this key
              * @param key
              * @param item
-             * @returns {myStorage}
              */
             save: function (key, item) {
                 localStorage.setItem(key, JSON.stringify(item));
-                return this;
             },
             /**
              *  Remove item
@@ -49,12 +47,15 @@
             remove: function (key) {
                 localStorage.removeItem(key);
             },
+            /**
+             *  Clear local storage
+             */
             clean: function () {
                 localStorage.clear();
             }
         },
         /**
-         *  Function to reader file
+         *  Function to read files
          */
         myFileReader:{
             fileList: {},
@@ -66,6 +67,12 @@
                 dataType: 'text',
                 cache: false // Appends _={timestamp} to the request query string
             },
+            /**
+             * Setup ajax options
+             * @param {string} [type = GET]
+             * @param {string} [dataType = text]
+             * @param {boolean} [cache = false]
+             */
             setOptions: function(type, dataType, cache){
                 if (typeof type !== "undefined"){
                     this.options.type = type;
@@ -78,15 +85,31 @@
                 }
                 return this;
             },
+            /**
+             *
+             * @param {string} key
+             * @param {string} link
+             * @param {function} [dataProcessCallback(data)]
+             */
             addFile: function (key, link, dataProcessCallback) {
                 this.fileList[key] = {'link':link, 'data':null, process:dataProcessCallback};
                 return this;
             },
-            run: function (startCallback, finishCallback, doneCallback, errorCallback) {
+            /**
+             *
+             * @param {function} startCallback
+             * @param {function} finishCallback(fileList)
+             * @param {function} [doneCallback(key, data)] callback when one file get result data
+             * @param {function} [errorCallback(key, errorThrown)] callback when error happened
+             */
+            do: function (startCallback, finishCallback, doneCallback, errorCallback) {
                 var length = Object.keys(this.fileList).length;
 
                 if (length === 0){
-                    return -1;
+                    if (typeof errorCallback === "function"){
+                        errorCallback(null, 'no file added');
+                    }
+                    return this;
                 }
 
                 var reader = this;
@@ -132,14 +155,14 @@
                                 finishCallback(fileList);
                             }
                         },
-                        error:function () {
+                        error:function (xhr, textStatus, errorThrown) {
                             failedLink.push(key);
                             var status = calcJob(reader);
                             if (typeof errorCallback === "function"){
-                                errorCallback(key);
+                                errorCallback(key, errorThrown);
                             }
                             if (status && typeof finishCallback === "function"){
-                                finishCallback();
+                                finishCallback(fileList);
                             }
                         }
                     });
@@ -159,8 +182,11 @@
                         return false;
                     }
                 }
-
+                return this;
             },
+            /**
+             *  Reset file reader to run new files
+             */
             reset: function () {
                 this.fileList = {};
                 this.readLink = [];

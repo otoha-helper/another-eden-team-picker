@@ -4,7 +4,6 @@ var spaceText = '＿';
 var divide = ' | ';
 
 $(document).ready(function () {
-
     if (typeof window.dataLayer === "undefined"){
         console.log('GA not init');
         window.gtag = function (type, event, options) {
@@ -115,6 +114,7 @@ $(document).ready(function () {
 
     // Read csv in table
     $.myFileReader
+        .setOptions('GET', 'text' ,false)
         .addFile('5star','./csv/5star.csv', function (data) {
             var obj = $.csv.toObjects(data);
             var dataRows = $.map(obj, function (row) {
@@ -237,7 +237,7 @@ $(document).ready(function () {
                 };
             });
         })
-        .run(
+        .do(
             function (key) {
                 console.log("Starting ");
                 $('#char_table').bootstrapTable('showLoading');
@@ -410,13 +410,13 @@ $(document).ready(function () {
                 }
 
             },
-            function (key) {
+            function (key, error) {
                 gtag('event', 'file', {
                     'event_category': 'load',
                     'event_label': 'error with ' + key
                 });
                 $('#char_table').bootstrapTable('hideLoading');
-                console.log("error", key);
+                console.log("error", key, error);
             });
 
 
