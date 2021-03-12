@@ -175,6 +175,9 @@
                         }
                         $.map(data, function(row){
                             var length = $.findLength(String(row[key]));
+                            if (typeof row[key] === "number"){
+                                length = $.findLength( $.toFullWidthNumber(row[key],undefined, options.numberMax));
+                            }
                             if (length > maxLength) maxLength = length;
                         });
                         if (typeof options.align[index] === "number"){
@@ -191,6 +194,9 @@
                         $.map(data, function(row){
                             var keys = Object.keys(row);
                             var length = $.findLength(String(row[keys[index]]));
+                            if (typeof row[keys[index]] === "number"){
+                                length = $.findLength( $.toFullWidthNumber(row[keys[index]],undefined, options.numberMax));
+                            }
                             if (length > maxLength) maxLength = length;
                         });
                         if (typeof options.align[index] === "number"){
