@@ -1954,6 +1954,7 @@ function genText() {
 
 
     var list = $.textTable
+        .setType("text")
         .setList(data)
         .setHeader(['角色','暱稱','天冥值','原版','AS'],['>','<','<',2,1])
         .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas'])
@@ -2063,100 +2064,88 @@ function genTable() {
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     }
 
-    var tbody = $.map(data, function(row, i){
-
-        var element = "";
-        if (genByType){
-            if (i === 0 || (i > 0 && row.element !== data[i-1].element)){
-                element = [
-                    '<tr height="20">',
-                    '<td colspan="5" align="left"><strong>' + "■" + row.element + "屬性" + '</strong></td>',
-                    '</tr>'
-                ].join('\n');
-            }
-        }
-
-        var hoshi = '<font color="lightgray">-</font>';
-        if (row["had5"] === true){
-            hoshi = "<strong>★5</strong>";
-        }else if(row["had4"]){
-            hoshi = '<font color="gray">☆4</font>';
-        }
-        var as = row["hadas"]?"<strong>✓</strong>":'<font color="lightgray">-</font>';
-
-        var asBook = '';
-        if (!!(row['as']) && showAsBooks){
-            var asBookRow = $.map(asData,function (asRow, i) {
-                if (row['id'] == asRow['id']){
-                    return {
-                        id: asRow['id'],
-                        qty: asRow['qty']
-                    };
-                }
-            });
-            var asBookQty = 0;
-            if (asBookRow) asBookQty = Math.ceil(parseInt(asBookRow[0]['qty']));
-            if (typeof asBookQty !== "undefined" && asBookQty > 0){
-                asBook = [
-                    '<tr height="20">',
-                    '<td colspan="2" align="center">'+row['as'] + "的異節"+'</td>',
-                    '<td colspan="3" align="center">' + toFullWidthNumber(asBookQty,1, 99,true) + '本' +'</td>',
-                    '</tr>',
-                ].join('\n')
+    var list = $.textTable
+        .setList(data)
+        .setType('table')
+        .setHeader(['角色','暱稱','天冥值','原版','AS'],['>','<',3,2.5,2])
+        .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas'])
+        .setOptions({'textWidth':20,'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData)})
+        .setBeforeRow(function (row, index, data, cols, options) {
+            if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'])){
+                return;
             }
 
-        }
-        var lightShadow = row['lightShadow'];
-        var emptyText ='<font color="lightgray">-</font>';
-
-        if (typeof lightShadow !== "undefined" && (row['had4'] || row['had5'] || row['hadas'])){
-            lightShadow = Math.ceil(parseInt(lightShadow));
-            if (lightShadow === 0){
-                lightShadow = emptyText;
+            if (row['lightShadow'] === ''){
+                row['lightShadow'] = '<font color="lightgray">-</font>';
+            }else if (parseInt(row['lightShadow']) < 1){
+                row['lightShadow'] = '<font color="lightgray">-</font>';
             }else{
-                lightShadow = toFullWidthNumber(lightShadow, 1, 255);
+                row['lightShadow'] = parseInt(row['lightShadow']);
             }
-        }else{
-            lightShadow = emptyText;
-        }
+            if (row["had5"] === true){
+                row["had5"] = "<strong>★5</strong>";
+            }else if(row["had4"]){
+                row["had5"] = '<font color="gray">☆４</font>';
+            }else{
+                row["had5"] = '<font color="lightgray">-</font>';
+            }
+            if (row["hadas"] === true){
+                row["hadas"] = "✓";
+            }else if (row["as"]){
+                row["hadas"] = '<font color="lightgray">-</font>';
+            }else{
+                row["hadas"] = undefined;
+            }
 
-        return [
-            element + '<tr height="20">',
-            '<td width="80">'+row["name"]+'</td>',
-            '<td align="right" width="80">'+getNickname(row["name"], row["nickname"], row["asNickname"], row["had5"])+'</td>',
-            '<td align="center">' + lightShadow + '</td>',
-            '<td align="center">'+hoshi+'</td>',
-            '<td align="center"'+(row["as"]?"":' bgcolor="lightgray"')+'>'+as+'</td>',
-            '</tr>'+asBook,
-        ].join('\n');
+            var element = "";
+            if (genByType){
+                if (index === '0' || index === 0 || (index > 0 && row.element !== data[index-1].element)){
+                    element = '<tr height="' + options.textWidth + '">\n<td colspan="5" align="left">\n' +
+                        "■" + row.element + "屬性" + "\n</td>\n</tr>\n";
+                }
+                return {updatedRow: row, prependString: element}
+            }
 
-    }).join('\n');
+            return row;
+        })
+        .setAfterRow(function (row, index, data, cols, options) {
+            var asBook = '';
+            if (!!(data[index]['as']) && options.showAsBooks){
+                var asBookRow = $.map(options.asData,function (asRow, i) {
+                    if (data[index]['id'] == asRow['id']){
+                        return {
+                            id: asRow['id'],
+                            qty: asRow['qty']
+                        };
+                    }
+                });
+                var asBookQty = 0;
+                if (asBookRow) asBookQty =  Math.ceil(parseInt(asBookRow[0]['qty']));
+                if (typeof asBookQty !== "undefined" && asBookQty > 0){
+                    asBook = '<tr height="' + options.textWidth +'">\n<td colspan="2" align="center">\n' +
+                        row['as'] + "的異節" + "\n</td>" +
+                        '\n<td colspan="3" align="center">' +
+                        $.toFullWidthNumber(asBookQty, 0, 99, options.spaceText, options.halfSpaceText) + '本' + "\n</td>\n</tr>";
+                }
+
+            }
+
+            return asBook;
+        });
 
     var table = [
         '<!DOCTYPE html>',
         '<html lang="zh-tw">',
         '<head><title>貓神健檢小幫手</title></head>',
-        '<style>th,td{padding:2px;}</style>',
+        '<style>th,td{padding:2px 4px; word-break: keep-all;}</style>',
         '<body>',
         '<br><br><br>',
         '<table border=1 style="border-style: solid; border-collapse: collapse;">',
-        '<thead>',
-        '<tr height="20">',
-        '<th width="160" colspan="2"><strong>角色</strong></th>',
-        '<th width="60"><strong>天冥值</strong></th>',
-        '<th width="50"><strong>原版</strong></th>',
-        '<th width="50"><strong>AS版</strong></th>',
-        '</tr>',
-        '</thead>',
-        '<tbody>',
-        tbody,
-        '</tbody>',
+        list.generate().join('\n'),
         '</table>',
         '<br><br>',
         genExtarDetal().join('\n')
     ].join("\n");
-
-
 
     return table;
 }
