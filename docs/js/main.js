@@ -2011,7 +2011,7 @@ function genText() {
                 if (typeof asBookQty !== "undefined" && asBookQty > 0){
                     asBook = '<br>' + options.divide +
                         $.stringPad(row['as'] + "的異節", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
-                        $.toFullWidthNumber(asBookQty, 2, 99, false) + '本' + options.divide;
+                        $.toFullWidthNumber(asBookQty, 2, 99, options.spaceText, options.halfSpaceText) + '本' + options.divide;
                 }
 
             }

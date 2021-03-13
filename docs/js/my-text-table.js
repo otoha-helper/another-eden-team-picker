@@ -8,7 +8,9 @@
 (function ($) {
     'use strict';
     $.extend({
-        toFullWidthNumber: function(number, target, max, addPlus) {
+        toFullWidthNumber: function(number, target, max, userSpaceText, userHalfSpaceText, addPlus) {
+            var space = (typeof userSpaceText !== 'undefined') ?  userSpaceText : '＿';
+            var halfSpace = (typeof userHalfSpaceText !== 'undefined') ?  userHalfSpaceText : '_';
             max = (typeof max !== 'undefined') ?  max : 99;
             target = (typeof target !== 'undefined') ?  target : 2;
             addPlus = (typeof addPlus !== 'undefined') ?  addPlus : false;
@@ -18,21 +20,25 @@
             if (number === max && addPlus) number = number + "＋";
             number = "" + number;
             number = number.replace(/[0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
-            return stringPad(number, target, '<');
+            return stringPad(number, target, '<', space, halfSpace);
         },
-        stringPad: function(str, target, type, userSpaceText) {
+        stringPad: function(str, target, type, userSpaceText, userHalfSpaceText) {
             str = (typeof str !== 'undefined') ?  str : '';
-            var strLength = 0;
+            var strLength;
             var space = (typeof userSpaceText !== 'undefined') ?  userSpaceText : '＿';
+            var halfSpace = (typeof userHalfSpaceText !== 'undefined') ?  userHalfSpaceText : '_';
             var userType = (typeof type !== 'undefined') ? type : '<';
             strLength = $.findLength(String(str));
             if (strLength < target){
                 var pad = "";
-                for (var i = 0; i < (target - Math.ceil(strLength)); i++){
+                for (var i = 0; i < (Math.floor(target) - Math.floor(strLength)); i++){
                     pad += space;
                 }
+                if (target - Math.floor(strLength) === 0.5 || (strLength === 0 && (target - Math.floor(target) === 0.5))){
+                    pad += halfSpace;
+                }
                 if (userType === "<"){
-                    return ((Math.ceil(strLength) - Math.floor(strLength))?" ":"") + pad + str;
+                    return ((Math.ceil(strLength) - Math.floor(strLength))?"&ensp;":"") + pad + str;
                 }else if (userType === ">"){
                     return str + pad + ((Math.ceil(strLength) - Math.floor(strLength))?"&ensp;":"");
                 }
@@ -50,7 +56,7 @@
         findLength: function(str){
             var half, full, chi, star;
             half = str.match(/[\u0000-\u00ff]/g) || [];	//半形
-            chi = str.match(/[\u4e00-\u9fa5]/g) || [];	//中文
+            chi = str.match(/[\u4e00-\u9fa5]/g) || [];	//中日韓
             full = str.match(/[\uff00-\uffff]/g) || [];	//全形
             star = str.match(/[\u2605-\u2606]/g) || [];  //★☆
 
@@ -69,52 +75,40 @@
             _options: {
                 'whiteText':'&emsp;',
                 'spaceText':'＿',
+                'halfSpaceText':'_',
                 'divide':' | ',
                 'numberMax':255
             },
             _beforeRow: false,
             _processRow: function(row, index, data, cols, options){
+                var firstRow;
                 var selectedRow = row;
                 if (cols.length){
-                    selectedRow = $.map(cols, function (key, index) {
-                        var value = row[key];
-                        if (typeof value === "number"){
-                            value = $.toFullWidthNumber(value,options.colsMaxLength[index],options.numberMax);
-                        }
-                        if (options.colsMaxLength){
-                            var align = '<';
-                            if (typeof options.align === "string"){
-                                align = options.align;
-                            }else if (typeof options.align === "object"){
-                                align = options.align[index];
-                                if (typeof align === "number"){
-                                    return $.stringPad(value, options.align[index],undefined, options.spaceText);
-                                }
-                            }
-                            return $.stringPad(value, options.colsMaxLength[index], align, options.spaceText);
-                        }
-                        return value;
-                    });
+                    firstRow = cols;
                 }else{
-                    selectedRow = $.map(Object.values(row), function (value, index) {
-                        if (typeof value === "number"){
-                            value = $.toFullWidthNumber(value,options.colsMaxLength[index],options.numberMax);
-                        }
-                        if (options.colsMaxLength){
-                            var align = '<';
-                            if (typeof options.align === "string"){
-                                align = options.align;
-                            }else if (typeof options.align === "object"){
-                                align = options.align[index];
-                                if (typeof align === "number"){
-                                    return $.stringPad(value, options.align[index],undefined, options.spaceText);
-                                }
-                            }
-                            return $.stringPad(value, options.colsMaxLength[index], align, options.spaceText);
-                        }
-                        return value;
-                    });
+                    firstRow = Object.values(row);
                 }
+                selectedRow = $.map(firstRow, function (value, index) {
+                    if (cols.length){
+                        value = row[value];
+                    }
+                    if (typeof value === "number"){
+                        value = $.toFullWidthNumber(value, options. colsMaxLength[index], options.numberMax, options.spaceText, options.halfSpaceText);
+                    }
+                    if (options.colsMaxLength){
+                        var align = '<';
+                        if (typeof options.align === "string"){
+                            align = options.align;
+                        }else if (typeof options.align === "object"){
+                            align = options.align[index];
+                            if (typeof align === "number"){
+                                return $.stringPad(value, options.align[index],undefined, options.spaceText, options.halfSpaceText);
+                            }
+                        }
+                        return $.stringPad(value, options.colsMaxLength[index], align, options.spaceText, options.halfSpaceText);
+                    }
+                    return value;
+                });
                 return options.divide + Object.values(selectedRow).join(options.divide) + options.divide;
             },
             _afterRow: false,
@@ -167,44 +161,37 @@
                 var cols = this._cols;
                 var options = this._options;
                 options.align = this._align;
+                var headerRow;
                 if (cols.length){
-                    options.colsMaxLength = $.map(cols, function (key, index) {
-                        var maxLength = 0;
-                        if (header.length){
-                            maxLength = $.findLength(header[index]);
-                        }
-                        $.map(data, function(row){
-                            var length = $.findLength(String(row[key]));
-                            if (typeof row[key] === "number"){
-                                length = $.findLength( $.toFullWidthNumber(row[key],undefined, options.numberMax));
-                            }
-                            if (length > maxLength) maxLength = length;
-                        });
-                        if (typeof options.align[index] === "number"){
-                            maxLength = options.align[index];
-                        }
-                        return maxLength;
-                    });
+                    headerRow = cols;
                 }else{
-                    options.colsMaxLength = $.map(Object.values(data[0]), function (value, index) {
-                        var maxLength = 0;
-                        if (header.length){
-                            maxLength = $.findLength(header[index]);
-                        }
-                        $.map(data, function(row){
-                            var keys = Object.keys(row);
-                            var length = $.findLength(String(row[keys[index]]));
-                            if (typeof row[keys[index]] === "number"){
-                                length = $.findLength( $.toFullWidthNumber(row[keys[index]],undefined, options.numberMax));
-                            }
-                            if (length > maxLength) maxLength = length;
-                        });
-                        if (typeof options.align[index] === "number"){
-                            maxLength = options.align[index];
-                        }
-                        return maxLength;
-                    });
+                    headerRow = Object.values(data[0]);
                 }
+                options.colsMaxLength = $.map(headerRow, function (key, index) {
+                    var maxLength = 0;
+                    var value = key;
+                    if (header.length){
+                        maxLength = $.findLength(header[index]);
+                    }
+                    $.map(data, function(row){
+                        var length;
+                        if (cols.length){
+                            value = row[key];
+                        }else{
+                            var keys = Object.keys(row);
+                            value = row[keys[index]];
+                        }
+                        length = $.findLength(String(value));
+                        if (typeof value === "number"){
+                            length = $.findLength( $.toFullWidthNumber(value,undefined, options.numberMax, options.spaceText, options.halfSpaceText));
+                        }
+                        if (length > maxLength) maxLength = length;
+                    });
+                    if (typeof options.align[index] === "number"){
+                        maxLength = options.align[index];
+                    }
+                    return maxLength;
+                });
 
                 var headerRows = [];
                 if (cols.length && header.length && options.colsMaxLength){
@@ -215,11 +202,10 @@
                         }else if (typeof options.align === "object"){
                             align = options.align[index];
                         }
-                        return $.stringPad(value, options.colsMaxLength[index], align, options.spaceText);
+                        return $.stringPad(value, options.colsMaxLength[index], align, options.spaceText, options.halfSpaceText);
                     }).join(options.divide) + options.divide;
-
-                    var headerLineRow = options.divide + $.map(options.colsMaxLength, function (value) {
-                        return $.strLoop(options.spaceText, value);
+                    var headerLineRow = options.divide + $.map(options.colsMaxLength, function (maxLength) {
+                        return $.stringPad('', maxLength, undefined, options.spaceText, options.halfSpaceText);
                     }).join(options.divide) + options.divide;
 
                     headerRows = [headerString, headerLineRow];
