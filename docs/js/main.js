@@ -1029,49 +1029,87 @@ function star5tableHandle() {
     });
 
     $('#selectAllStar5Listed').on('click', function () {
-        var data = $('#char_table').bootstrapTable('getData');
-        var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-        var newRows = $.map(data,function (row, i) {
-            row['had4'] = true;
-            if (row['had5'] !== "none"){
-                row['had5'] = true;
+        bootbox.confirm({
+            title: '選擇全部',
+            message: "是否選擇目前顯示中的全部角色?",
+            buttons: {
+                confirm: {
+                    label: '選擇全部',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-secondary float-left'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    var data = $('#char_table').bootstrapTable('getData');
+                    var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+                    var newRows = $.map(data,function (row, i) {
+                        row['had4'] = true;
+                        if (row['had5'] !== "none"){
+                            row['had5'] = true;
+                        }
+                        if ($.trim(row['as']) !== ''){
+                            row['hadas'] = true;
+                        }
+                        row['lightShadow'] = data[i]['lightShadow'];
+                        return row;
+                    });
+                    var extend = $.extend({},rows,newRows);
+                    $('#char_table').bootstrapTable('load', extend);
+                    toSaveStar5selections();
+                    gtag('event', 'select', {
+                        'event_category': 'select all',
+                        'event_label': 'star5'
+                    });
+                }
             }
-            if ($.trim(row['as']) !== ''){
-                row['hadas'] = true;
-            }
-            row['lightShadow'] = data[i]['lightShadow'];
-            return row;
         });
-        var extend = $.extend({},rows,newRows);
-        $('#char_table').bootstrapTable('load', extend);
-        toSaveStar5selections();
-        gtag('event', 'select', {
-            'event_category': 'select all',
-            'event_label': 'star5'
-        });
+
     });
 
     $('#unselectAllStar5Listed').on('click', function () {
-        var data = $('#char_table').bootstrapTable('getData');
-        var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
-        var newRows = $.map(data,function (row) {
-            row['had4'] = false;
-            if (row['had5'] !== "none"){
-                row['had5'] = false;
+        bootbox.confirm({
+            title: '清除選擇',
+            message: "是否清除選擇目前顯示中的全部角色?",
+            buttons: {
+                confirm: {
+                    label: '清除選擇全部',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-secondary'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    var data = $('#char_table').bootstrapTable('getData');
+                    var rows = $('#char_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+                    var newRows = $.map(data,function (row) {
+                        row['had4'] = false;
+                        if (row['had5'] !== "none"){
+                            row['had5'] = false;
+                        }
+                        if ($.trim(row['as']) !== ''){
+                            row['hadas'] = false;
+                        }
+                        row['lightShadow'] = 0;
+                        return row;
+                    });
+                    var extend = $.extend({},rows,newRows);
+                    $('#char_table').bootstrapTable('load', extend);
+                    toSaveStar5selections();
+                    gtag('event', 'select', {
+                        'event_category': 'unselect all',
+                        'event_label': 'star5'
+                    });
+                }
             }
-            if ($.trim(row['as']) !== ''){
-                row['hadas'] = false;
-            }
-            row['lightShadow'] = 0;
-            return row;
         });
-        var extend = $.extend({},rows,newRows);
-        $('#char_table').bootstrapTable('load', extend);
-        toSaveStar5selections();
-        gtag('event', 'select', {
-            'event_category': 'unselect all',
-            'event_label': 'star5'
-        });
+
     });
 
     $('#as_book_table').bootstrapTable({
@@ -2586,6 +2624,12 @@ function genTeamCheckCanvas() {
                         '4':true,
                         '5':false
                     });
+            }else if (row.hadas === true && row.had5 === "none"){
+                stars = genStar("",true,0,true) +
+                    genStar("",true,0,true) + " " +
+                    genStar("",true,0,true) + " " +
+                    genStar("",true,0,true) + " " +
+                    genStar("",false,-1);
             }else if (row.had5 === "none"){
                 stars = genStar("star-gray",true,0,true) +
                     genStar("star-gray",true,0,true) + " " +
