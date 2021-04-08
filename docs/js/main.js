@@ -2587,11 +2587,11 @@ function genTeamCheckCanvas() {
                         '5':false
                     });
             }else if (row.had5 === "none"){
-                stars = genStar("",true,0,true) +
-                    genStar("",true,0,true) + " " +
-                    genStar("",true,0,true) + " " +
-                    genStar("",true,0,true) + " " +
-                    genStar("",false,-1);
+                stars = genStar("star-gray",true,0,true) +
+                    genStar("star-gray",true,0,true) + " " +
+                    genStar("star-gray",true,0,true) + " " +
+                    genStar("star-gray",true,0,true) + " " +
+                    genStar("star-gray",false,-1);
             }
             if (row.had5 !== true && row.had4 !== true) border = " border-light bg-transparent text-secondary";
             return [
