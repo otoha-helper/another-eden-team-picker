@@ -2491,7 +2491,7 @@ function genTeamCheckCanvas() {
         var css = elementCellStyle(elementType);
         var bg = css.css["background-color"];
 
-        var getted = rows.filter(function(r){return (r.had5 === true || r.had4 === true);}).length;
+        var getted = rows.filter(function(r){return (r.had5 === true || r.had4 === true || r.hadas);}).length;
 
         element = [
             '<div class="w-100 p-0 mb-2" ' + 'style="background-color:' + bg + ';">',
