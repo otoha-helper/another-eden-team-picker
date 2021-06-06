@@ -2309,7 +2309,7 @@ function genTable() {
             var element = "";
             if (genByType){
                 if (index === '0' || index === 0 || (index > 0 && row.element !== data[index-1].element)){
-                    element = '<tr height="' + options.textWidth + '">\n<td colspan="5" align="left">\n' +
+                    element = '<tr height="' + options.textWidth + '">\n<td colspan="6" align="left">\n' +
                         "■" + row.element + "屬性" + "\n</td>\n</tr>\n";
                 }
                 return {updatedRow: row, prependString: element}
