@@ -227,7 +227,7 @@ table input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 /* line 220, ../sass/_page.scss */
-table input.light-shadow, table input.as-book-input {
+table input.light-shadow, table input.as-book-input, table input.es-book-input {
   padding: 0;
   text-align: center;
 }

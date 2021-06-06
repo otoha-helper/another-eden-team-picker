@@ -133,8 +133,10 @@ $(document).ready(function () {
                     'nickname': nickname,
                     'asNickname': asNickname,
                     'as': row["AS名"],
+                    'es': row["ES名"],
                     'had5': (row["★5"] === "TRUE")? false:'none',
                     'hadas': '',
+                    'hades': '',
                     'element': row["主屬"],
                     'weapon': row["武器"],
                     'lightShadow' : 0,
@@ -142,7 +144,8 @@ $(document).ready(function () {
                     'book4': row['職業書'],
                     'book5': row['五星書'],
                     'pos': row['特殊地位'],
-                    'asPos': row['AS特殊地位']
+                    'asPos': row['AS特殊地位'],
+                    'lightShadowType': row["天冥"]
                 };
             });
 
@@ -165,7 +168,26 @@ $(document).ready(function () {
                 }
             });
 
-            return {rows:dataRows, asBook:asBookRows};
+            var esBookRows = $.map(obj, function (row) {
+                if ($.trim(row['ES名']) === '') return;
+                var nickname = row["暱稱"];
+                var asNickname = row["AS暱稱"];
+                if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
+                    nickname = row["角色名"];
+                } else if ($.trim(nickname) === "") {
+                    nickname = row["角色名"];
+                }
+                return {
+                    'id': row['ID'],
+                    'enName': row["英名"],
+                    'name': row["角色名"],
+                    'asNickname': asNickname,
+                    'as': row['ES名'] + '的改典',
+                    'qty': 0
+                }
+            });
+
+            return {rows:dataRows, asBook:asBookRows, esBook:esBookRows};
         })
         .addFile('extra','./csv/extra.csv')
         .addFile('free','./csv/free.csv',function (data) {
@@ -193,7 +215,8 @@ $(document).ready(function () {
                     'had4': false,
                     'had5': false,
                     'hadas': false,
-                    'lightShadow': 0
+                    'lightShadow': 0,
+                    'lightShadowType': row["天冥"]
                 };
             });
         })
@@ -254,8 +277,10 @@ $(document).ready(function () {
                 if (key === "5star") {
                     var rows = data.rows;
                     var asBook = data.asBook;
+                    var esBook = data.esBook;
 
                     $('#as_book_table').bootstrapTable('load', asBook);
+                    $('#es_book_table').bootstrapTable('load', esBook);
 
                     if ($.myStorage.checkExist('selectedStar5')){
                         var save = $.myStorage.get('selectedStar5');
@@ -271,6 +296,7 @@ $(document).ready(function () {
                                 row['had4'] = getRow[0]['had4'];
                                 row['had5'] = getRow[0]['had5'];
                                 row['hadas'] = getRow[0]['hadas'];
+                                row['hades'] = getRow[0]['hades'];
                                 row['lightShadow'] = getRow[0]['lightShadow'];
                             }
                             return row;
@@ -298,6 +324,24 @@ $(document).ready(function () {
                             return row;
                         });
                         $('#as_book_table').bootstrapTable('load', restore);
+                    }
+
+                    if ($.myStorage.checkExist('getEsBook')){
+                        var save = $.myStorage.get('getEsBook');
+
+                        var restore = $.map(esBook,function (row) {
+                            var getRow = $.map(save, function (saveRow) {
+                                if (row['id'] === saveRow['id']){
+                                    return saveRow;
+                                }
+                            });
+
+                            if (getRow.length){
+                                row['qty'] = getRow[0]['qty'];
+                            }
+                            return row;
+                        });
+                        $('#es_book_table').bootstrapTable('load', restore);
                     }
 
 
@@ -918,6 +962,15 @@ function star5tableHandle() {
             $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
             toSaveStar5selections();
         },
+        'click .hades': function (e, value, row, index) {
+            if (!row["hades"]){
+                row["hades"] = true;
+            }else{
+                row["hades"] = false;
+            }
+            $('#char_table').bootstrapTable('updateByUniqueId', {id: row['id'], row: row});
+            toSaveStar5selections();
+        },
         'change .light-shadow': function (e, value, row, index) {
             if (typeof $(e.target).val() !== "undefined"){
                 value = ($(e.target).val()) ? parseInt($(e.target).val()) : 0;
@@ -938,6 +991,17 @@ function star5tableHandle() {
             $(e.target).val(value);
             row['qty'] = value;
             toSaveAsBook();
+        }
+    };
+
+    window.operateEsBooks = {
+        'change .es-book-input': function (e, value, row, index) {
+            if (typeof $(e.target).val() !== "undefined") value = Math.ceil(parseInt($(e.target).val()));
+            if (value > 999) value = 999;
+            if (value < 0) value = 0;
+            $(e.target).val(value);
+            row['qty'] = value;
+            toSaveEsBook();
         }
     };
 
@@ -1003,6 +1067,23 @@ function star5tableHandle() {
         },
         events: operateEvents
     }, {
+        field: 'hades',
+        title: 'ES',
+        width: 40,
+        align: "center",
+        formatter: function(value, row, index){
+            if ($.trim(row["es"])) {
+                if(value){
+                    return '<i class="fa fa-users hades" style="color:red"></i>';
+                }else{
+                    return '<i class="fa fa-users hades" style="color:#aaa"></i>';
+                }
+            }else{
+                return '<font color="gray">-</font>';
+            }
+        },
+        events: operateEvents
+    }, {
         field: 'lightShadow',
         title: '天冥',
         width: 60,
@@ -1054,6 +1135,9 @@ function star5tableHandle() {
                         if ($.trim(row['as']) !== ''){
                             row['hadas'] = true;
                         }
+                        if ($.trim(row['es']) !== ''){
+                            row['hades'] = true;
+                        }
                         row['lightShadow'] = data[i]['lightShadow'];
                         return row;
                     });
@@ -1096,6 +1180,9 @@ function star5tableHandle() {
                         if ($.trim(row['as']) !== ''){
                             row['hadas'] = false;
                         }
+                        if ($.trim(row['es']) !== ''){
+                            row['hades'] = false;
+                        }
                         row['lightShadow'] = 0;
                         return row;
                     });
@@ -1135,6 +1222,36 @@ function star5tableHandle() {
                 return '<input class="form-control as-book-input" value="' + value + '" type="number" min="0" max="999" aria-label="'+row['as']+'數量">';
             },
             events: operateAsBooks
+        }],
+        locale: 'zh-TW',
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+    });
+
+    $('#es_book_table').bootstrapTable({
+        columns: [{
+            field: 'id',
+            visible: false
+        },{
+            field: 'name',
+            title: '名稱',
+            width: 100
+        },{
+            field: 'as',
+            title: '改典',
+            width: 160
+        },{
+            field: 'qty',
+            title: '數量',
+            width: 60,
+            formatter: function (value, row, index) {
+                if (typeof value !== "undefined") value = Math.ceil(parseInt(value));
+                if (value > 999) value = 999;
+                if (value < 0) value = 0;
+                return '<input class="form-control es-book-input" value="' + value + '" type="number" min="0" max="999" aria-label="'+row['es']+'數量">';
+            },
+            events: operateEsBooks
         }],
         locale: 'zh-TW',
         uniqueId: "id",
@@ -1203,6 +1320,7 @@ function toSaveStar5selections() {
             row['had4'] === true ||
             row['had5'] === true ||
             row['hadas'] === true ||
+            row['hades'] === true ||
             row['lightShadow'] > 0
         ){
             row['lightShadow'] = parseInt(row['lightShadow']);
@@ -1213,6 +1331,7 @@ function toSaveStar5selections() {
                 had4: row['had4'],
                 had5: row['had5'],
                 hadas: row['hadas'],
+                hades: row['hades'],
                 lightShadow: row['lightShadow']
             };
         }
@@ -1232,6 +1351,20 @@ function toSaveAsBook() {
             };
     });
     $.myStorage.save('getAsBook',save);
+}
+
+function toSaveEsBook() {
+    var data = $('#es_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var save = $.map(data,function (row, i) {
+        row['qty'] = parseInt(row['qty']);
+        if (row['qty'] > 999) row['qty'] = 999;
+        if (row['qty'] < 0 ) row['qty'] = 0;
+        return {
+            id: row['id'],
+            qty: row['qty']
+        };
+    });
+    $.myStorage.save('getEsBook',save);
 }
 
 function freeTableHandle() {
@@ -1986,19 +2119,21 @@ function genText() {
     }
 
     var asData = [];
+    var esData = [];
     if (showAsBooks){
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        esData = $('#es_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     }
 
 
     var list = $.textTable
         .setType("text")
         .setList(data)
-        .setHeader(['角色','暱稱','天冥值','原版','AS'],['>','<','<',2,1])
-        .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas'])
-        .setOptions({'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData)})
+        .setHeader(['角色','暱稱','天冥值','原版','AS','ES'],['>','<','<',2,1,1])
+        .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas', 'hades'])
+        .setOptions({'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData), 'esData':jQuery.extend(true, {}, esData)})
         .setBeforeRow(function (row, index, data, cols, options) {
-            if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'])){
+            if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'] || row['hades'])){
                 return;
             }
 
@@ -2023,6 +2158,13 @@ function genText() {
             }else{
                 row["hadas"] = '／';
             }
+            if (row["hades"] === true){
+                row["hades"] = "★";
+            }else if (row["es"]){
+                row["hades"] = '';
+            }else{
+                row["hades"] = '／';
+            }
 
             var element = "";
             if (genByType){
@@ -2036,6 +2178,7 @@ function genText() {
         })
         .setAfterRow(function (row, index, data, cols, options) {
             var asBook = '';
+            var esBook = '';
             if (!!(data[index]['as']) && options.showAsBooks){
                 var asBookRow = $.map(options.asData,function (asRow, i) {
                     if (data[index]['id'] == asRow['id']){
@@ -2055,7 +2198,26 @@ function genText() {
 
             }
 
-            return asBook;
+            if (!!(data[index]['es']) && options.showAsBooks){
+                var esBookRow = $.map(options.esData,function (esRow, i) {
+                    if (data[index]['id'] == esRow['id']){
+                        return {
+                            id: esRow['id'],
+                            qty: esRow['qty']
+                        };
+                    }
+                });
+                var esBookQty = 0;
+                if (esBookRow) esBookQty =  Math.ceil(parseInt(esBookRow[0]['qty']));
+                if (typeof esBookQty !== "undefined" && esBookQty > 0){
+                    esBook = '<br>' + options.divide +
+                        $.stringPad(row['es'] + "的改典", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
+                        $.toFullWidthNumber(esBookQty, 2, 99, options.spaceText, options.halfSpaceText) + '本' + options.divide;
+                }
+
+            }
+
+            return asBook + esBook;
         });
 
     var html = [
@@ -2098,18 +2260,20 @@ function genTable() {
     }
 
     var asData = [];
+    var esData = [];
     if (showAsBooks){
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        esData = $('#es_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     }
 
     var list = $.textTable
         .setList(data)
         .setType('table')
-        .setHeader(['角色','暱稱','天冥值','原版','AS'],['>','<',3,2.5,2])
-        .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas'])
-        .setOptions({'textWidth':20,'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData)})
+        .setHeader(['角色','暱稱','天冥值','原版','AS','ES'],['>','<',3,2.5,2,2])
+        .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas', 'hades'])
+        .setOptions({'textWidth':20,'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData), 'esData':jQuery.extend(true, {}, esData)})
         .setBeforeRow(function (row, index, data, cols, options) {
-            if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'])){
+            if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'] || row['hades'])){
                 return;
             }
 
@@ -2134,6 +2298,13 @@ function genTable() {
             }else{
                 row["hadas"] = undefined;
             }
+            if (row["hades"] === true){
+                row["hades"] = "✓";
+            }else if (row["es"]){
+                row["hades"] = '<font color="lightgray">-</font>';
+            }else{
+                row["hades"] = undefined;
+            }
 
             var element = "";
             if (genByType){
@@ -2148,6 +2319,7 @@ function genTable() {
         })
         .setAfterRow(function (row, index, data, cols, options) {
             var asBook = '';
+            var esBook = '';
             if (!!(data[index]['as']) && options.showAsBooks){
                 var asBookRow = $.map(options.asData,function (asRow, i) {
                     if (data[index]['id'] == asRow['id']){
@@ -2162,13 +2334,32 @@ function genTable() {
                 if (typeof asBookQty !== "undefined" && asBookQty > 0){
                     asBook = '<tr height="' + options.textWidth +'">\n<td colspan="2" align="center">\n' +
                         row['as'] + "的異節" + "\n</td>" +
-                        '\n<td colspan="3" align="center">' +
+                        '\n<td colspan="4" align="center">' +
                         $.toFullWidthNumber(asBookQty, 0, 99, options.spaceText, options.halfSpaceText) + '本' + "\n</td>\n</tr>";
                 }
 
             }
 
-            return asBook;
+            if (!!(data[index]['es']) && options.showAsBooks){
+                var esBookRow = $.map(options.esData,function (esRow, i) {
+                    if (data[index]['id'] == esRow['id']){
+                        return {
+                            id: esRow['id'],
+                            qty: esRow['qty']
+                        };
+                    }
+                });
+                var esBookQty = 0;
+                if (esBookRow) esBookQty =  Math.ceil(parseInt(esBookRow[0]['qty']));
+                if (typeof esBookQty !== "undefined" && esBookQty > 0){
+                    esBook = '<tr height="' + options.textWidth +'">\n<td colspan="2" align="center">\n' +
+                        row['es'] + "的改典" + "\n</td>" +
+                        '\n<td colspan="4" align="center">' +
+                        $.toFullWidthNumber(esBookQty, 0, 99, options.spaceText, options.halfSpaceText) + '本' + "\n</td>\n</tr>";
+                }
+            }
+
+            return asBook + esBook;
         });
 
     var table = [
@@ -2529,7 +2720,7 @@ function genTeamCheckCanvas() {
         var css = elementCellStyle(elementType);
         var bg = css.css["background-color"];
 
-        var getted = rows.filter(function(r){return (r.had5 === true || r.had4 === true || r.hadas);}).length;
+        var getted = rows.filter(function(r){return (r.had5 === true || r.had4 === true || r.hadas || r.hades);}).length;
 
         element = [
             '<div class="w-100 p-0 mb-2" ' + 'style="background-color:' + bg + ';">',
@@ -2544,9 +2735,11 @@ function genTeamCheckCanvas() {
             if (a.had5 === true) ac = ac+1;
             if (a.had4 === true) ac = ac+1;
             if (a.hadas === true) ac = ac+1;
+            if (a.hades === true) ac = ac+1;
             if (b.had5 === true) bc = bc+1;
             if (b.had4 === true) bc = bc+1;
             if (b.hadas === true) bc = bc+1;
+            if (b.hades === true) bc = bc+1;
             if (ac > bc) return -1;
             if (ac < bc) return 1;
             return 0;
@@ -2593,7 +2786,30 @@ function genTeamCheckCanvas() {
                     '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
                     '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
                     '       <p class="card-title m-0"><strong>' + row["name"] + 'AS</strong></p>',
-                    // '       <p class="card-text m-0">' + asNickname + '</p>',
+                    '   </div>',
+                    '</div>'
+                ].join('\n');
+            }
+
+            border = " border-warning";
+            var es = "";
+            if ($.trim(row.es) !== ''){
+                if (row.hades !== true) {
+                    border = " border-light bg-transparent text-secondary";
+                }
+                if (row.hades === true) {
+                    stars = genStar("",true,0,true) +
+                        genStar("",true,0,true) + " " +
+                        genStar("",true,0,true) + " " +
+                        genStar("",true,0,true) + " " +
+                        genStar("",true,0,true);
+                }
+                es = [
+                    '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.hades === true) ? "": opacity+";" ) + '">',
+                    '   <img class="card-img-top" src="./images/characters/es/' + row["enName"]+'.jpg">',
+                    '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
+                    '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
+                    '       <p class="card-title m-0"><strong>' + row["name"] + 'ES</strong></p>',
                     '   </div>',
                     '</div>'
                 ].join('\n');
@@ -2643,11 +2859,12 @@ function genTeamCheckCanvas() {
                 '   <img class="card-img-top" src="./images/characters/' + row["enName"]+'.jpg">',
                 '   <div class="ml-1 position-absolute">' + stars + '</div>',
                 '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
+                ((row.had4 || row.had5 || row.hadas || row.hades) && row["lightShadow"] > 0 && row["lightShadow"] <= 255) ? '       <p class="card-text m-0">' + row["lightShadowType"] + " " + row["lightShadow"]  + '</p>' : '',
                 '       <p class="card-title m-0"><strong>' + row["name"] + '</strong></p>',
-                // '       <p class="card-text m-0">' + nickname + '</p>',
                 '   </div>',
                 '</div>',
-                as
+                as,
+                es
             ].join('\n');
         }).join('\n');
 
@@ -2668,6 +2885,8 @@ function genTeamCheckCanvas() {
             dialog.init(function(){
                 dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 牛棚處理中...</p>');
             });
+
+            var scaleOption = $("#imageSize").val();
 
             setTimeout(function () {
                 dialog.init(function(){
@@ -2694,7 +2913,10 @@ function genTeamCheckCanvas() {
                         $("#imageOutput").html($("<img>").attr("src", image).css("width", "100%"));
 
                         dialog.modal('hide');
-                    });
+                    },
+                    null,
+                    scaleOption
+                );
             }, 1000);
 
         })
