@@ -2886,6 +2886,8 @@ function genTeamCheckCanvas() {
                 dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 牛棚處理中...</p>');
             });
 
+            var scaleOption = $("#imageSize").val();
+
             setTimeout(function () {
                 dialog.init(function(){
                     dialog.find('.bootbox-body').html('<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> 開始建立圖片...</p>');
@@ -2911,7 +2913,10 @@ function genTeamCheckCanvas() {
                         $("#imageOutput").html($("<img>").attr("src", image).css("width", "100%"));
 
                         dialog.modal('hide');
-                    });
+                    },
+                    null,
+                    scaleOption
+                );
             }, 1000);
 
         })
