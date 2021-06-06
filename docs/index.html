@@ -80,11 +80,11 @@
     <script src="./js/my-storage.js?_=2021032101"></script>
     <script src="./js/my-text-table.js?_=2021032101"></script>
     <script src="./js/my-canvas.js?_=2021032101"></script>
-    <script src="./js/main.js?_=2021040802"></script>
+    <script src="./js/main.js?_=2021060601"></script>
     <script src="./lib/bootstrap-table/locale/bootstrap-table-zh-TW.js"></script>
 
     <!-- User css -->
-    <link rel="stylesheet" href="./style/css/app.css?_=2021032101" media="screen" type="text/css">
+    <link rel="stylesheet" href="./style/css/app.css?_=2021060601" media="screen" type="text/css">
     <!--[if IE]><link href="./style/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" ><![endif]-->
     <!--[if lt IE 9]><link href="./style/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" ><![endif]-->
 
@@ -298,7 +298,7 @@
                         <nav id="navbar-story" class="navbar navbar-light bg-light story-scroll-nav">
                             <a class="navbar-brand" href="#">補充</a>
                             <ul class="nav nav-pills">
-                                <li class="nav-item">
+                                <li class="nav-item dropdown">
                                     <a class="nav-link" href="#select_as_book">異節</a>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -355,6 +355,11 @@
                             <div class="" id="select_as_book">
                                 <h4 class="pl-3 pr-3 pt-2">異節</h4>
                                 <table id="as_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                            </div>
+
+                            <div class="" id="select_es_book">
+                                <h4 class="pl-3 pr-3 pt-2">改典</h4>
+                                <table id="es_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
                             </div>
 
                             <div class="pl-3" id="mainStory" data-newest="74">
@@ -443,7 +448,7 @@
                                 </div>
 
                                 <div class="form-group row extra-setting-item">
-                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showAsBooks">輸出表格包含異節數量</div>
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showAsBooks">輸出表格包含異節和改典數量</div>
                                     <div class="col-3 col-sm-3 pr-0">
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" id="showAsBooks" checked="checked">
