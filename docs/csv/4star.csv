@@ -1,5 +1,5 @@
 ﻿ID,角色名,日名,英名,暱稱,主屬,天冥,特殊地位,升職,未來★,未來AS,治療,緩補,屬盾,全屬盾,解異常,解狀態,物耐,挑釁
-1,普萊,プライ,Prai,,火,天,治療;緩補;解異常,暫無,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE
+1,普萊,プライ,Prai,,火,天,治療;緩補;解異常,已升,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE
 2,克利霍,クレルヴォ,Krervo,,水,天,治療;解異常;解狀態,暫無,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,FALSE
 3,波姆,ポム,Pom,,火,天,治療;解異常,暫無,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE
 4,蕾蕾,レレ,Lele,,水,天,水AOE魔中,暫無,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE
