@@ -120,6 +120,7 @@ $(document).ready(function () {
             var dataRows = $.map(obj, function (row) {
                 var nickname = row["暱稱"];
                 var asNickname = row["AS暱稱"];
+                if (row["角色名"].charAt(0) === '*') return;
                 if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
                     nickname = row["角色名"];
                 } else if ($.trim(nickname) === "") {
@@ -134,6 +135,7 @@ $(document).ready(function () {
                     'asNickname': asNickname,
                     'as': row["AS名"],
                     'es': row["ES名"],
+                    'ac': row["異時層"],
                     'had5': (row["★5"] === "TRUE")? false:'none',
                     'hadas': '',
                     'hades': '',
@@ -153,6 +155,7 @@ $(document).ready(function () {
                 if ($.trim(row['AS名']) === '') return;
                 var nickname = row["暱稱"];
                 var asNickname = row["AS暱稱"];
+                if (row["角色名"].charAt(0) === '*') return;
                 if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
                     nickname = row["角色名"];
                 } else if ($.trim(nickname) === "") {
@@ -172,6 +175,7 @@ $(document).ready(function () {
                 if ($.trim(row['ES名']) === '') return;
                 var nickname = row["暱稱"];
                 var asNickname = row["AS暱稱"];
+                if (row["角色名"].charAt(0) === '*') return;
                 if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
                     nickname = row["角色名"];
                 } else if ($.trim(nickname) === "") {
@@ -182,12 +186,32 @@ $(document).ready(function () {
                     'enName': row["英名"],
                     'name': row["角色名"],
                     'asNickname': asNickname,
-                    'as': row['ES名'] + '的改典',
+                    'es': row['ES名'] + '的改典',
                     'qty': 0
                 }
             });
 
-            return {rows:dataRows, asBook:asBookRows, esBook:esBookRows};
+            var parallelTimeLayerBookRows = $.map(obj, function (row) {
+                if ($.trim(row['異時層']) === '') return;
+                var nickname = row["暱稱"];
+                var asNickname = row["AS暱稱"];
+                if (row["角色名"].charAt(0) === '*') return;
+                if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
+                    nickname = row["角色名"];
+                } else if ($.trim(nickname) === "") {
+                    nickname = row["角色名"];
+                }
+                return {
+                    'id': row['ID'],
+                    'enName': row["英名"],
+                    'name': row["角色名"],
+                    'asNickname': asNickname,
+                    'ac': row['異時層'] + '的典錄',
+                    'qty': 0
+                }
+            });
+
+            return {rows:dataRows, asBook:asBookRows, esBook:esBookRows, parallelTimeLayerBook:parallelTimeLayerBookRows};
         })
         .addFile('extra','./csv/extra.csv')
         .addFile('free','./csv/free.csv',function (data) {
@@ -278,9 +302,11 @@ $(document).ready(function () {
                     var rows = data.rows;
                     var asBook = data.asBook;
                     var esBook = data.esBook;
+                    var parallelTimeLayerBook = data.parallelTimeLayerBook;
 
                     $('#as_book_table').bootstrapTable('load', asBook);
                     $('#es_book_table').bootstrapTable('load', esBook);
+                    $('#parallel_time_layer_book_table').bootstrapTable('load', parallelTimeLayerBook);
 
                     if ($.myStorage.checkExist('selectedStar5')){
                         var save = $.myStorage.get('selectedStar5');
@@ -342,6 +368,24 @@ $(document).ready(function () {
                             return row;
                         });
                         $('#es_book_table').bootstrapTable('load', restore);
+                    }
+
+                    if ($.myStorage.checkExist('getParallelTimeLayerBook')){
+                        var save = $.myStorage.get('getParallelTimeLayerBook');
+
+                        var restore = $.map(parallelTimeLayerBook,function (row) {
+                            var getRow = $.map(save, function (saveRow) {
+                                if (row['id'] === saveRow['id']){
+                                    return saveRow;
+                                }
+                            });
+
+                            if (getRow.length){
+                                row['qty'] = getRow[0]['qty'];
+                            }
+                            return row;
+                        });
+                        $('#parallel_time_layer_book_table').bootstrapTable('load', restore);
                     }
 
 
@@ -1005,6 +1049,18 @@ function star5tableHandle() {
         }
     };
 
+    window.operateParallelTimeLayerBooks = {
+        'change .parallel-time-layer-book-input': function (e, value, row, index) {
+            if (typeof $(e.target).val() !== "undefined") value = Math.ceil(parseInt($(e.target).val()));
+            if (value > 999) value = 999;
+            if (value < 0) value = 0;
+            $(e.target).val(value);
+            row['qty'] = value;
+            toSaveParallelTimeLayerBook();
+        }
+    };
+
+
     // Star 5 Table Options
     var star5TableColums = [{
         field: 'id',
@@ -1027,7 +1083,9 @@ function star5tableHandle() {
         width: 40,
         align: "center",
         formatter: function(value, row, index){
-            if(value){
+            if(row["ac"] != ""){
+                return '<font color="gray">-</font>';
+            }else if(value){
                 return '<i class="fa fa-heart had4" style="color:red"></i>';
             }else{
                 return '<i class="fa fa-heart had4" style="color:#aaa"></i>';
@@ -1238,7 +1296,7 @@ function star5tableHandle() {
             title: '名稱',
             width: 100
         },{
-            field: 'as',
+            field: 'es',
             title: '改典',
             width: 160
         },{
@@ -1252,6 +1310,37 @@ function star5tableHandle() {
                 return '<input class="form-control es-book-input" value="' + value + '" type="number" min="0" max="999" aria-label="'+row['es']+'數量">';
             },
             events: operateEsBooks
+        }],
+        locale: 'zh-TW',
+        uniqueId: "id",
+        classes: "table table-bordered table-striped table-sm table-borderless",
+        theadClasses: "thead-dark",
+    });
+
+
+    $('#parallel_time_layer_book_table').bootstrapTable({
+        columns: [{
+            field: 'id',
+            visible: false
+        },{
+            field: 'name',
+            title: '名稱',
+            width: 100
+        },{
+            field: 'ac',
+            title: '典錄',
+            width: 160
+        },{
+            field: 'qty',
+            title: '數量',
+            width: 60,
+            formatter: function (value, row, index) {
+                if (typeof value !== "undefined") value = Math.ceil(parseInt(value));
+                if (value > 999) value = 999;
+                if (value < 0) value = 0;
+                return '<input class="form-control parallel-time-layer-book-input" value="' + value + '" type="number" min="0" max="999" aria-label="'+row['ac']+'數量">';
+            },
+            events: operateParallelTimeLayerBooks
         }],
         locale: 'zh-TW',
         uniqueId: "id",
@@ -1366,6 +1455,21 @@ function toSaveEsBook() {
     });
     $.myStorage.save('getEsBook',save);
 }
+
+function toSaveParallelTimeLayerBook() {
+    var data = $('#parallel_time_layer_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+    var save = $.map(data,function (row, i) {
+        row['qty'] = parseInt(row['qty']);
+        if (row['qty'] > 999) row['qty'] = 999;
+        if (row['qty'] < 0 ) row['qty'] = 0;
+        return {
+            id: row['id'],
+            qty: row['qty']
+        };
+    });
+    $.myStorage.save('getParallelTimeLayerBook',save);
+}
+
 
 function freeTableHandle() {
     // Table icon click events
@@ -2120,9 +2224,11 @@ function genText() {
 
     var asData = [];
     var esData = [];
+    var parallelTimeLayerData =  [];
     if (showAsBooks){
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
         esData = $('#es_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        parallelTimeLayerData = $('#parallel_time_layer_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     }
 
 
@@ -2131,7 +2237,7 @@ function genText() {
         .setList(data)
         .setHeader(['角色','暱稱','天冥值','原版','AS','ES'],['>','<','<',2,1,1])
         .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas', 'hades'])
-        .setOptions({'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData), 'esData':jQuery.extend(true, {}, esData)})
+        .setOptions({'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData), 'esData':jQuery.extend(true, {}, esData), 'parallelTimeLayerData':jQuery.extend(true, {}, parallelTimeLayerData)})
         .setBeforeRow(function (row, index, data, cols, options) {
             if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'] || row['hades'])){
                 return;
@@ -2179,6 +2285,7 @@ function genText() {
         .setAfterRow(function (row, index, data, cols, options) {
             var asBook = '';
             var esBook = '';
+            var parallelTimeLayerBook = '';
             if (!!(data[index]['as']) && options.showAsBooks){
                 var asBookRow = $.map(options.asData,function (asRow, i) {
                     if (data[index]['id'] == asRow['id']){
@@ -2217,7 +2324,26 @@ function genText() {
 
             }
 
-            return asBook + esBook;
+            if (!!(data[index]['ac']) && options.showAsBooks){
+                var parallelTimeLayerBookRow = $.map(options.parallelTimeLayerData,function (acRow, i) {
+                    if (data[index]['id'] == acRow['id']){
+                        return {
+                            id: acRow['id'],
+                            qty: acRow['qty']
+                        };
+                    }
+                });
+                var parallelTimeLayerBookQty = 0;
+                if (parallelTimeLayerBookRow) parallelTimeLayerBookQty =  Math.ceil(parseInt(parallelTimeLayerBookRow[0]['qty']));
+                if (typeof parallelTimeLayerBookQty !== "undefined" && parallelTimeLayerBookQty > 0){
+                    parallelTimeLayerBook = '<br>' + options.divide +
+                        $.stringPad(row['ac'] + "的改典", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
+                        $.toFullWidthNumber(parallelTimeLayerBookQty, 2, 99, options.spaceText, options.halfSpaceText) + '本' + options.divide;
+                }
+
+            }
+
+            return asBook + esBook + parallelTimeLayerBook;
         });
 
     var html = [
@@ -2261,9 +2387,11 @@ function genTable() {
 
     var asData = [];
     var esData = [];
+    var parallelTimeLayerData = [];
     if (showAsBooks){
         asData = $('#as_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
         esData = $('#es_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
+        parallelTimeLayerData = $('#parallel_time_layer_book_table').bootstrapTable('getData',{useCurrentPage:false,includeHiddenRows:true,unfiltered:true});
     }
 
     var list = $.textTable
@@ -2271,7 +2399,7 @@ function genTable() {
         .setType('table')
         .setHeader(['角色','暱稱','天冥值','原版','AS','ES'],['>','<',3,2.5,2,2])
         .setCols(['name', 'nickname', 'lightShadow', 'had5', 'hadas', 'hades'])
-        .setOptions({'textWidth':20,'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData), 'esData':jQuery.extend(true, {}, esData)})
+        .setOptions({'textWidth':20,'showNotGet': showNotGet, 'genByType':genByType, 'showAsBooks':showAsBooks, 'asData':jQuery.extend(true, {}, asData), 'esData':jQuery.extend(true, {}, esData), 'parallelTimeLayerData':jQuery.extend(true, {}, parallelTimeLayerData)})
         .setBeforeRow(function (row, index, data, cols, options) {
             if (!options.showNotGet && !(row['had4'] || row['had5'] === "true" || row['hadas'] || row['hades'])){
                 return;
@@ -2320,6 +2448,7 @@ function genTable() {
         .setAfterRow(function (row, index, data, cols, options) {
             var asBook = '';
             var esBook = '';
+            var parallelTimeLayerBook = '';
             if (!!(data[index]['as']) && options.showAsBooks){
                 var asBookRow = $.map(options.asData,function (asRow, i) {
                     if (data[index]['id'] == asRow['id']){
@@ -2359,7 +2488,26 @@ function genTable() {
                 }
             }
 
-            return asBook + esBook;
+            if (!!(data[index]['ac']) && options.showAsBooks){
+                var parallelTimeLayerBookRow = $.map(options.parallelTimeLayerData,function (acRow, i) {
+                    if (data[index]['id'] == acRow['id']){
+                        return {
+                            id: acRow['id'],
+                            qty: acRow['qty']
+                        };
+                    }
+                });
+                var parallelTimeLayerBookQty = 0;
+                if (parallelTimeLayerBookRow) parallelTimeLayerBookQty =  Math.ceil(parseInt(parallelTimeLayerBookRow[0]['qty']));
+                if (typeof parallelTimeLayerBookQty !== "undefined" && parallelTimeLayerBookQty > 0){
+                    parallelTimeLayerBook = '<tr height="' + options.textWidth +'">\n<td colspan="2" align="center">\n' +
+                        row['ac'] + "的典錄" + "\n</td>" +
+                        '\n<td colspan="4" align="center">' +
+                        $.toFullWidthNumber(parallelTimeLayerBookQty, 0, 99, options.spaceText, options.halfSpaceText) + '本' + "\n</td>\n</tr>";
+                }
+            }
+
+            return asBook + esBook + parallelTimeLayerBook;
         });
 
     var table = [
@@ -2785,7 +2933,7 @@ function genTeamCheckCanvas() {
                     '   <img class="card-img-top" src="./images/characters/as/' + row["enName"]+'.jpg">',
                     '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
                     '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
-                    '       <p class="card-title m-0"><strong>' + row["name"] + 'AS</strong></p>',
+                    '       <p class="card-title m-0" style="font-family: \'Noto Sans TC\'"><strong>' + row["name"] + 'AS</strong></p>',
                     '   </div>',
                     '</div>'
                 ].join('\n');
@@ -2809,7 +2957,7 @@ function genTeamCheckCanvas() {
                     '   <img class="card-img-top" src="./images/characters/es/' + row["enName"]+'.jpg">',
                     '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
                     '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
-                    '       <p class="card-title m-0"><strong>' + row["name"] + 'ES</strong></p>',
+                    '       <p class="card-title m-0" style="font-family: \'Noto Sans TC\'"><strong>' + row["name"] + 'ES</strong></p>',
                     '   </div>',
                     '</div>'
                 ].join('\n');
@@ -2860,7 +3008,7 @@ function genTeamCheckCanvas() {
                 '   <div class="ml-1 position-absolute">' + stars + '</div>',
                 '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
                 ((row.had4 || row.had5 || row.hadas || row.hades) && row["lightShadow"] > 0 && row["lightShadow"] <= 255) ? '       <p class="card-text m-0">' + row["lightShadowType"] + " " + row["lightShadow"]  + '</p>' : '',
-                '       <p class="card-title m-0"><strong>' + row["name"] + '</strong></p>',
+                '       <p class="card-title m-0" style="font-family: \'Noto Sans TC\'"><strong>' + row["name"] + '</strong></p>',
                 '   </div>',
                 '</div>',
                 as,
