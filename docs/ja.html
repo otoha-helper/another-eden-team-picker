@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <!--Global site tag (gtag.js) - Google Analytics-->
+    <!--<script async src="https://www.googletagmanager.com/gtag/js?id=UA-165278227-1"></script>-->
+    <!--<script>-->
+      <!--window.dataLayer = window.dataLayer || [];-->
+      <!--function gtag(){dataLayer.push(arguments);}-->
+      <!--gtag('js', new Date());-->
+
+      <!--gtag('config', 'UA-165278227-1');-->
+    <!--</script>-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+    <meta name="author" content="AlexWong" >
+    <meta name="robots" content="index, follow" >
+    <meta name="description" content="貓神健檢小幫手是巴哈姆特穿越時空的貓哈拉版用隊伍健檢表格產生器, 隊伍健檢集中串健檢用表格快速建立小幫手。" >
+    <meta name="keywords" content="穿越時空的貓, 隊伍健檢, 健檢, 健檢表格, 貓神, 乙葉大人, 貓神健檢小幫手" >
+
+    <!-- meta og -->
+    <meta property="og:description" content="貓神健檢小幫手是巴哈姆特穿越時空的貓哈拉版用隊伍健檢表格產生器, 隊伍健檢集中串健檢用表格快速建立小幫手。" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="貓神健檢小幫手 JP Demo" />
+    <meta property="og:title" content="貓神健檢小幫手 JP Demo" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://otoha-helper.github.io/another-eden-team-picker/" />
+    <meta property="og:image" content="https://otoha-helper.github.io/another-eden-team-picker/images/otoha_icon.png" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="380" />
+    <meta property="og:image:height" content="380" />
+    <meta property="og:image:alt" content="乙葉" />
+
+    <!-- set to no cache -->
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="./images/favicon/favicon.ico" type="image/x-icon" />
+
+    <!--<link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png">-->
+    <!--<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon/favicon-32x32.png">-->
+    <!--<link rel="icon" type="image/png" sizes="16x16" href="./images/favicon/favicon-16x16.png">-->
+    <!--<link rel="manifest" href="./images/favicon/site.webmanifest">-->
+
+    <title>貓神健檢小幫手 JP Demo</title>
+
+    <!-- jquery.js v3.4.1 -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <!-- clipboard.js v2.0.4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.js"></script>
+
+    <!-- Latest CSS JS -->
+    <link rel="stylesheet" href="./style/css/fontawesome/all.css" crossorigin="anonymous">
+
+    <!-- bootstrap 4.3.1 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- bootstrap table 1.16.6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.js"></script>
+
+    <!-- bootbox.js v5.4.0 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+
+    <!-- jquery.csv.js 2012 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+    <!-- imagesloaded with MIT License -->
+    <script src="./lib/imagesloaded/imagesloaded.pkgd.min.js"></script>
+
+    <!-- html2canvas -->
+    <!-- Created by Niklas von Hertzen. Licensed under the MIT License. -->
+    <script src="./lib/html2canvas/html2canvas.min.js"></script>
+
+    <!-- User script -->
+    <script src="./js/my-storage.js?_=2021032101"></script>
+    <script src="./js/my-text-table.js?_=2021032101"></script>
+    <script src="./js/my-canvas.js?_=2021032101"></script>
+    <script src="./js/main_ja.js?_=2022031901"></script>
+    <script src="./lib/bootstrap-table/locale/bootstrap-table-ja-JP.js"></script>
+
+    <!-- User css -->
+    <link rel="stylesheet" href="./style/css/app.css?_=2022031901" media="screen" type="text/css">
+    <!--[if IE]><link href="./style/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" ><![endif]-->
+    <!--[if lt IE 9]><link href="./style/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" ><![endif]-->
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- In page Script -->
+    <script type="text/javascript">
+    </script>
+
+</head>
+<body>
+<section class="top-fixed-nav">
+    <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">角色表</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="option-tab" data-toggle="tab" href="#option-list" role="tab" aria-controls="list" aria-selected="true">進階</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-offset="-45,0">產生</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                <a class="dropdown-item" id="gencanvas-tab" data-toggle="tab" href="#gencanvas" role="tab" aria-controls="genCanvas" aria-selected="false">
+                    <i class="far fa-id-card"></i>
+                    生成圖片(beta)
+                    <i class="fas fa-caret-right"></i>
+                </a>
+                <span class="dropdown-item-text"><small>下載圖片即可。</small><br><strong>(建議)</strong></span>
+                <a class="dropdown-item" id="gentext-tab" data-toggle="tab" href="#gentexttable" role="tab" aria-controls="gentext" aria-selected="false">
+                    <i class="fas fa-list-ul"></i>
+                    生成純文字
+                    <i class="fas fa-caret-right"></i>
+                </a>
+                <span class="dropdown-item-text"><small>純文字版本適合任何人使用，複製後直接貼上即可。</small><br><strong>(建議)</strong></span>
+                <a class="dropdown-item mt-2" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">
+                    <i class="fas fa-th-list"></i>
+                    生成表格
+                    <i class="fas fa-caret-right"></i>
+                </a>
+                <span class="dropdown-item-text"><small>生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</small><br><strong>(閱讀說明)</strong></span>
+
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="help-tab" data-toggle="tab" href="#help" role="tab" aria-controls="list" aria-selected="true">
+                <i class="fas fa-question-circle"></i>
+            </a>
+        </li>
+    </ul>
+</section>
+<section class="content-tabs">
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+            <div class="container-fluid">
+                <div class="row justify-content-center mb-5">
+
+                    <div class="" id="toolbar">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="select order type">
+                            <button type="button" class="btn active-switch active" id="orderByTime">
+                                <i class="fas fa-clock active-show"></i>
+                                <i class="far fa-clock active-hide"></i>
+                                時序
+                            </button>
+                            <button type="button" class="btn active-switch" id="orderByType">
+                                <i class="fas fa-id-badge active-show"></i>
+                                <i class="far fa-id-badge active-hide"></i>
+                                屬性
+                            </button>
+                        </div>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Select all">
+                            <button type="button" class="btn" id="selectAllStar5Listed">
+                                <i class="fas fa-check-square"></i> 選擇全部
+                            </button>
+                            <button type="button" class="btn" id="unselectAllStar5Listed">
+                                <i class="far fa-square"></i> 清除已選
+                            </button>
+                        </div>
+                    </div>
+                    <table id="char_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                </div>
+                <div class="row justify-content-center mb-5">
+                    <div class="">
+                        <h4 class="pl-3" id="free">配布角色</h4>
+                        <div class="" id="free_toolbar">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Select all">
+                                <button type="button" class="btn" id="selectAllFreeListed">
+                                    <i class="fas fa-check-square"></i> 選擇全部
+                                </button>
+                                <button type="button" class="btn" id="unselectAllFreeListed">
+                                    <i class="far fa-square"></i> 清除已選
+                                </button>
+                            </div>
+
+                        </div>
+                        <table id="free_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+
+                        <h4 class="pl-3 pt-4" id="select_star5_sp">斷章 / 任務升星角色</h4>
+                        <table id="sp_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+
+                        <h4 class="pl-3 pt-4" id="select_star4">四星角色</h4>
+                        <div class="" id="star4_toolbar">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Select all">
+                                <button type="button" class="btn" id="selectAllStar4Listed">
+                                    <i class="fas fa-check-square"></i> 選擇全部
+                                </button>
+                                <button type="button" class="btn" id="unselectAllStar4Listed">
+                                    <i class="far fa-square"></i> 清除已選
+                                </button>
+                            </div>
+
+                        </div>
+                        <table id="star4_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid fixed-bottom-panel">
+                <div class="row justify-content-center">
+                    <div class="panel-body justify-content-center">
+
+                        <div class="btn-group dropup mr-2" role="group">
+                            <button id="weaponGroupDrop" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon">
+                                    <img src="images/icons/weapon/sword.png" alt="sword" />
+                                </span>
+                            </button>
+                            <div id="weaponGroup" class="dropdown-menu" aria-labelledby="weaponGroupDrop">
+                                <a class="dropdown-item active" href="#" data-weapon-type="顯示全部">
+                                    <img src="images/icons/weapon/sword.png" alt="showall" height="32" width="32"/>
+                                    顯示全部
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="劍">
+                                    <img src="images/icons/weapon/sword.png" alt="sword" height="32" width="32"/>
+                                    劍
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="杖">
+                                    <img src="images/icons/weapon/staff.png" alt="staff" height="32" width="32"/>
+                                    杖
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="槍">
+                                    <img src="images/icons/weapon/lance.png" alt="lance" height="32" width="32"/>
+                                    槍
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="刀">
+                                    <img src="images/icons/weapon/katana.png" alt="katana" height="32" width="32"/>
+                                    刀
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="錘">
+                                    <img src="images/icons/weapon/hammer.png" alt="hammer" height="32" width="32"/>
+                                    錘
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="拳">
+                                    <img src="images/icons/weapon/fists.png" alt="fists" height="32" width="32"/>
+                                    拳
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="弓">
+                                    <img src="images/icons/weapon/bow.png" alt="bow" height="32" width="32"/>
+                                    弓
+                                </a>
+                                <a class="dropdown-item" href="#" data-weapon-type="斧">
+                                    <img src="images/icons/weapon/ax.png" alt="ax" height="32" width="32"/>
+                                    斧
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="btn-group dropup mr-2" role="group">
+                            <button id="elementGroupDrop" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon">
+                                    <img src="images/icons/element/none.png" alt="none element" />
+                                </span>
+                            </button>
+                            <div id="elementGroup" class="dropdown-menu" aria-labelledby="elementGroupDrop">
+                                <a class="dropdown-item active" href="#" data-element-type="顯示全部">
+                                    <img src="images/icons/element/none.png" alt="showall" height="32" width="32"/>
+                                    顯示全部
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="地">
+                                    <img src="images/icons/element/earth.png" alt="earth" height="32" width="32"/>
+                                    地屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="火">
+                                    <img src="images/icons/element/fire.png" alt="fire" height="32" width="32"/>
+                                    火屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="水">
+                                    <img src="images/icons/element/water.png" alt="water" height="32" width="32"/>
+                                    水屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="風">
+                                    <img src="images/icons/element/wind.png" alt="wind" height="32" width="32"/>
+                                    風屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="無">
+                                    <img src="images/icons/element/none.png" alt="none" height="32" width="32"/>
+                                    無屬性
+                                </a>
+                            </div>
+                        </div>
+                        <div class="btn-group dropup mr-2" role="group">
+                            <button id="westernElementGroupDrop" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon">
+                                    <img src="images/icons/element/none.png" alt="none element" />
+                                </span>
+                            </button>
+                            <div id="westernElementGroup" class="dropdown-menu" aria-labelledby="elementGroupDrop">
+                                <a class="dropdown-item active" href="#" data-element-type="顯示全部">
+                                    <img src="images/icons/element/none.png" alt="showall" height="32" width="32"/>
+                                    顯示全部
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="雷">
+                                    <img src="images/icons/element/thunder.png" alt="thunder" height="32" width="32"/>
+                                    雷屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="陰">
+                                    <img src="images/icons/element/shade.png" alt="shade" height="32" width="32"/>
+                                    陰屬性
+                                </a>
+                                <a class="dropdown-item" href="#" data-element-type="晶">
+                                    <img src="images/icons/element/crystal.png" alt="crystal" height="32" width="32"/>
+                                    晶屬性
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="option-list" role="tabpanel" aria-labelledby="option-tab">
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-10 col-lg-6 pl-0 pr-0">
+
+                        <nav id="navbar-story" class="navbar navbar-light bg-light story-scroll-nav">
+                            <a class="navbar-brand" href="#">補充</a>
+                            <ul class="nav nav-pills">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" href="#select_as_book">異節</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="missionDropdown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">任務</a>
+                                    <div class="dropdown-menu" aria-labelledby="missionDropdown">
+                                        <a class="dropdown-item" href="#mainStoryTitle">主線</a>
+                                        <div role="separator" class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#otherStoryTitle">外傳 / 斷章</a>
+                                    </div>
+
+                                </li>
+
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="starDropdown" data-offset="-40,0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">其他角色</a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="starDropdown">
+                                        <a class="dropdown-item" href="#free">配布角色</a>
+                                        <div role="separator" class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#select_star5_sp">斷章 / 任務升星角色</a>
+                                        <a class="dropdown-item" href="#select_star4">四星角色</a>
+                                    </div>
+
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#extra_settings">
+                                        <i class="fas fa-cog"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="story-scroll-panel" data-spy="scroll" data-target="#navbar-story" data-offset="0">
+                            <div class="pl-3 pr-3 mb-2">
+                                <small>本頁為補充性資料，可自行選擇是否填寫。</small>
+                            </div>
+
+                            <div class="container">
+                                <div class="form-group row pt-2">
+                                    <label for="yumeBooks" class="col-6 col-form-label">詠夢之書數量</label>
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">持有</span>
+                                            </div>
+                                            <input type="number" id="yumeBooks" class="form-control text-center" aria-label="詠夢之書數量" value="0" min="0" max="999">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">本</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="" id="select_as_book">
+                                <h4 class="pl-3 pr-3 pt-2">異節</h4>
+                                <table id="as_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                            </div>
+
+                            <div class="" id="select_es_book">
+                                <h4 class="pl-3 pr-3 pt-2">改典</h4>
+                                <table id="es_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                            </div>
+
+                            <div class="" id="select_parallel_time_layer_book">
+                                <h4 class="pl-3 pr-3 pt-2">典錄</h4>
+                                <table id="parallel_time_layer_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
+                            </div>
+
+                            <div class="pl-3" id="mainStory" data-newest="84">
+                                <h4 class="pt-4" id="mainStoryTitle">主線章節</h4>
+                                <div class="btn-inline main-story-btn-group" id="mainStoryBtnGroup"></div>
+                            </div>
+
+                            <div class="pl-3 pr-3" id="otherStoryTitle">
+                                <h4 class="pt-4">其他</h4>
+                                <div class="pb-2 d-none" id="other_story_toolbar">
+                                    <div class="btn-group btn-group-sm float-right" role="group" aria-label="Select all">
+                                        <button type="button" class="btn" id="selectAllOtherStoryListed">
+                                            <i class="fas fa-check-square"></i> 選擇全部
+                                        </button>
+                                        <button type="button" class="btn" id="unselectAllOtherStoryListed">
+                                            <i class="far fa-square"></i> 清除已選
+                                        </button>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="" id="extraStory">
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="pl-3 pr-3" id="extra_settings">
+                                <h4 class="pt-4">設定</h4>
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showYumeBookQty">輸出表格包含詠夢之書</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showYumeBookQty" checked="checked">
+                                            <label class="custom-control-label" for="showYumeBookQty" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showNotGet">輸出表格包含未持有角色</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showNotGet" checked="checked">
+                                            <label class="custom-control-label" for="showNotGet" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showAsBooks">輸出表格包含異節和改典數量</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showAsBooks" checked="checked">
+                                            <label class="custom-control-label" for="showAsBooks" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showMissions">輸出表格包含任務資料</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showMissions" checked="checked">
+                                            <label class="custom-control-label" for="showMissions" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showFree">輸出表格包含配布角色</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showFree" checked="checked">
+                                            <label class="custom-control-label" for="showFree" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showSpData">輸出表格包含斷章角色</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showSpData" checked="checked">
+                                            <label class="custom-control-label" for="showSpData" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9" data-custom-switch-title-for="showStar4Data">輸出表格包含四星角色</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="showStar4Data" checked="checked">
+                                            <label class="custom-control-label" for="showStar4Data" data-true-label="包含" data-false-label="不包含">
+                                                包含
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row extra-setting-item">
+                                    <div class="col-8 col-sm-9">清除己記錄資料</div>
+                                    <div class="col-3 col-sm-3 pr-0">
+                                        <button type="button" class="btn btn-danger btn-sm" id="cleanup">清除</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h5>排序方式</h5>
+                        <div class="btn-group btn-group-sm btn-block mb-2" role="group" aria-label="select order type">
+                            <button type="button" class="btn active-switch active" id="tableOrderByTime">
+                                <i class="fas fa-clock active-show"></i>
+                                <i class="far fa-clock active-hide"></i>
+                                時序
+                            </button>
+                            <button type="button" class="btn active-switch" id="tableOrderByType">
+                                <i class="fas fa-id-badge active-show"></i>
+                                <i class="far fa-id-badge active-hide"></i>
+                                屬性
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
+                        <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
+                        <div class="result-editor" id="editor1" contentEditable="false"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="gentexttable" role="tabpanel" aria-labelledby="gentext-tab">
+            <div class="container">
+                <div class="row justify-content-center no-gutters">
+                    <div class="col-12">
+                        <h5>排序方式</h5>
+                        <div class="btn-group btn-group-sm btn-block mb-2" role="group" aria-label="select order type">
+                            <button type="button" class="btn active-switch active" id="textOrderByTime">
+                                <i class="fas fa-clock active-show"></i>
+                                <i class="far fa-clock active-hide"></i>
+                                時序
+                            </button>
+                            <button type="button" class="btn active-switch" id="textOrderByType">
+                                <i class="fas fa-id-badge active-show"></i>
+                                <i class="far fa-id-badge active-hide"></i>
+                                屬性
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
+                        <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
+                        <div class="result-editor" id="editor2" contentEditable="false"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="gencanvas" role="tabpanel" aria-labelledby="gencanvas-tab">
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col" style="overflow-x: scroll">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">圖片</span>
+                            </div>
+                            <select class="custom-select" id="imageSize">
+                                <option value="0.5" selected>巴哈姆特用 2MB 圖片</option>
+                                <option value="1">原始圖片</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="download_canvas" data-canvas-target="canvas">下載</button>
+                            </div>
+                        </div>
+
+                        <div id="canvas"></div>
+
+                        <div id="html_canvas" class="" style="width: 1120px">
+                        </div>
+
+                        <div id="imageOutput"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="help" role="tabpanel" aria-labelledby="help-tab">
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-12 col-md-10 col-lg-6">
+                        <img src="images/otoha_bar1.png" alt="help page top banner" class="img-fluid"/>
+                        <h1>貓神健檢小幫手</h1>
+                        <p>
+                            貓神健檢小幫手是國際版穿越時空的貓隊伍健檢表格生產器，主要為巴哈姆特穿越時空的貓哈拉區版而設，目的為幫助快速建立隊伍健檢表格。
+                        </p>
+                        <div class="card text-white bg-danger mb-4 text-center">
+                            <div class="card-header">重要提示</div>
+                            <div class="card-body">
+                                <h5 class="card-title">巴哈姆特穿越時空的貓哈拉版</h5>
+                                <p class="card-text">健檢表格請貼到集中串，可於置頂文章找到。</p>
+                                <p class="card-text">健檢表格請貼到集中串，可於置頂文章找到。</p>
+                                <p class="card-text">健檢表格請貼到集中串，可於置頂文章找到。</p>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Q : 如何標記已持有角色?</h5>
+                                <p class="card-text">顯示灰色的圖示為未持有狀態，只要點擊一次就會切換成標記持有狀態並顯示為紅色。如在紅色的圖示上點擊，將切換為未持有狀態。</p>
+                                <p class="card-text">如在灰色的★５的圖示上點擊，將自動標記☆４為持有。</p>
+                                <p class="card-text">如在紅色的☆４的圖示(或最低星)上點擊，將認為沒有此角色，★５圖示也會自動取消標記。</p>
+
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Q : 如何快速找到角色?</h5>
+                                <p class="card-text">角色表的角色數量很多的關係，為加快選擇特定角色的速度，在屏幕下方會有以下三個篩選按鍵。</p>
+                                <p class="card-text">【武器分類】【屬性分類】【重置篩選器】</p>
+                                <p class="card-text">點選一次條件會進行篩選，再次點選相同的條件會取消該篩選條件。</p>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Q : 如何選擇產生的表格?</h5>
+                                <p class="card-text">純文字不包含表格，複製後可貼上到任何地方。</p>
+                                <p class="card-text">表格因為有格式資料，在巴哈姆特回應時，請進入進階回應之後再貼上，以保持格式資料。(如下圖)</p>
+
+                            </div>
+                            <img class="card-img-top" src="https://i.imgur.com/xqecKbMh.png" alt="how to advance edit in baha">
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">關於作者</h5>
+                                        <p class="card-text">作者是一位很喜歡乙葉大人的時空貓玩家，同時也是會在巴哈姆特穿越時空的貓哈拉區版出沒，如有任何意見可於巴哈貼文中作出回應，請多多指教。</p>
+                                        <a href="https://forum.gamer.com.tw/C.php?bsn=29220&snA=3877" class="btn btn-primary" target="_blank">巴哈時空貓版 - 貓神健檢小幫手</a>
+                                        <p class="card-text"><small class="text-muted">喜歡乙葉大人的夜霧</small></p>
+                                        <p class="card-text"><small class="text-muted"></small></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="./images/otoha.jpg" alt="otoha" class="card-img" />
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+</body>
+</html>
