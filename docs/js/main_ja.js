@@ -789,14 +789,14 @@ var imageCell = function (value, row, index) {
     if (row['hadas'] === true){
         var animation = ' element-animation';
         if (row['had5'] === 'none') animation = '';
-        asImage = '  <img src="./images/characters/as/' + row["enName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
-        // asImage = '  <img src="./images/characters/as/' + row["jpName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
+        //asImage = '  <img src="./images/characters/as/' + row["enName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
+        asImage = '  <img src="./images/characters_icon/as/' + row["jpName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
     }
 
     var html = '<div class="media">\n' +
         '<div class="character-image mr-1">'+
-        '  <img src="./images/characters/' + row["enName"]+'.jpg" class="icon" width="50">\n' +
-        // '  <img src="./images/characters/' + row["jpName"]+'.jpg" class="icon" width="50">\n' +
+        //'  <img src="./images/characters/' + row["enName"]+'.jpg" class="icon" width="50">\n' +
+        '  <img src="./images/characters_icon/' + row["jpName"]+'.jpg" class="icon" width="50">\n' +
         asImage +
         '</div>'+
         '  <div class="media-body">\n' +
