@@ -3,7 +3,7 @@
  * Author: Zhixin Wen<wenzhixin2010@gmail.com>
  */
 
-$.fn.bootstrapTable.locales['zh-TW'] = {
+$.fn.bootstrapTable.locales['ja-JP'] = {
     formatLoadingMessage () {
         return '正在努力地載入牛棚，請稍候'
     },
@@ -88,4 +88,4 @@ $.fn.bootstrapTable.locales['zh-TW'] = {
     }
 }
 
-$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-TW'])
+$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['ja-JP'])
