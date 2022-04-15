@@ -425,63 +425,6 @@
 
         </div>
 
-        <div class="tab-pane fade" id="gentable" role="tabpanel" aria-labelledby="gentable-tab">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h5>排序方式</h5>
-                        <div class="btn-group btn-group-sm btn-block mb-2" role="group" aria-label="select order type">
-                            <button type="button" class="btn active-switch active" id="tableOrderByTime">
-                                <i class="fas fa-clock active-show"></i>
-                                <i class="far fa-clock active-hide"></i>
-                                時序
-                            </button>
-                            <button type="button" class="btn active-switch" id="tableOrderByType">
-                                <i class="fas fa-id-badge active-show"></i>
-                                <i class="far fa-id-badge active-hide"></i>
-                                屬性
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <button type="button" class="btn btn-success btn-block" id="gen">在新視窗開啟</button>
-                        <button type="button" class="btn btn-info btn-block copybtn" id="copytable" data-clipboard-target="#editor1">複製到剪貼簿</button>
-                        <div class="result-editor" id="editor1" contentEditable="false"></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="tab-pane fade" id="gentexttable" role="tabpanel" aria-labelledby="gentext-tab">
-            <div class="container">
-                <div class="row justify-content-center no-gutters">
-                    <div class="col-12">
-                        <h5>排序方式</h5>
-                        <div class="btn-group btn-group-sm btn-block mb-2" role="group" aria-label="select order type">
-                            <button type="button" class="btn active-switch active" id="textOrderByTime">
-                                <i class="fas fa-clock active-show"></i>
-                                <i class="far fa-clock active-hide"></i>
-                                時序
-                            </button>
-                            <button type="button" class="btn active-switch" id="textOrderByType">
-                                <i class="fas fa-id-badge active-show"></i>
-                                <i class="far fa-id-badge active-hide"></i>
-                                屬性
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <button type="button" class="btn btn-success btn-block" id="gentext">在新視窗開啟</button>
-                        <button type="button" class="btn btn-info btn-block copybtn" id="copytext" data-clipboard-target="#editor2">複製到剪貼簿</button>
-                        <div class="result-editor" id="editor2" contentEditable="false"></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
         <div class="tab-pane fade" id="gencanvas" role="tabpanel" aria-labelledby="gencanvas-tab">
 
             <div class="container">
@@ -492,8 +435,8 @@
                                 <span class="input-group-text" id="">圖片</span>
                             </div>
                             <select class="custom-select" id="imageSize">
-                                <option value="0.5" selected>巴哈姆特用 2MB 圖片</option>
-                                <option value="1">原始圖片</option>
+                                <option value="1" selected>原始圖片</option>
+                                <option value="0.5">巴哈姆特用 2MB 圖片</option>
                             </select>
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" id="download_canvas" data-canvas-target="canvas">下載</button>
