@@ -130,6 +130,7 @@ $(document).ready(function () {
                 return {
                     'id': row["ID"],
                     'name': row["角色名"],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'nickname': nickname,
                     'asNickname': asNickname,
@@ -163,6 +164,7 @@ $(document).ready(function () {
                 }
                 return {
                     'id': row['ID'],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'name': row["角色名"],
                     'asNickname': asNickname,
@@ -183,6 +185,7 @@ $(document).ready(function () {
                 }
                 return {
                     'id': row['ID'],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'name': row["角色名"],
                     'asNickname': asNickname,
@@ -203,6 +206,7 @@ $(document).ready(function () {
                 }
                 return {
                     'id': row['ID'],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'name': row["角色名"],
                     'asNickname': asNickname,
@@ -220,6 +224,7 @@ $(document).ready(function () {
                 return {
                     'id': row["ID"],
                     'name': row["角色名"],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'nickname': row["暱稱"],
                     'asNickname': row["AS暱稱"],
@@ -250,6 +255,7 @@ $(document).ready(function () {
                 return {
                     'id': row["ID"],
                     'name': row["角色名"],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'nickname': row["暱稱"],
                     'minStar': row["起始☆"],
@@ -273,6 +279,7 @@ $(document).ready(function () {
                 return {
                     'id': row["ID"],
                     'name': row["角色名"],
+                    'jpName': row["日名"],
                     'enName': row["英名"],
                     'nickname': row["暱稱"],
                     'element': row["主屬"],
@@ -786,11 +793,13 @@ var imageCell = function (value, row, index) {
         var animation = ' element-animation';
         if (row['had5'] === 'none') animation = '';
         asImage = '  <img src="./images/characters/as/' + row["enName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
+        // asImage = '  <img src="./images/characters/as/' + row["jpName"]+'.jpg" class="icon image-as'+ animation +'" width="50">\n';
     }
 
     var html = '<div class="media">\n' +
         '<div class="character-image mr-1">'+
         '  <img src="./images/characters/' + row["enName"]+'.jpg" class="icon" width="50">\n' +
+        // '  <img src="./images/characters/' + row["jpName"]+'.jpg" class="icon" width="50">\n' +
         asImage +
         '</div>'+
         '  <div class="media-body">\n' +
@@ -2931,6 +2940,7 @@ function genTeamCheckCanvas() {
                 as = [
                     '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.hadas === true) ? "": opacity+";" ) + '">',
                     '   <img class="card-img-top" src="./images/characters/as/' + row["enName"]+'.jpg">',
+                    // '   <img class="card-img-top" src="./images/characters/as/' + row["jpName"]+'.jpg">',
                     '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
                     '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
                     '       <p class="card-title m-0" style="font-family: \'Noto Sans TC\'"><strong>' + row["name"] + 'AS</strong></p>',
@@ -2955,6 +2965,7 @@ function genTeamCheckCanvas() {
                 es = [
                     '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.hades === true) ? "": opacity+";" ) + '">',
                     '   <img class="card-img-top" src="./images/characters/es/' + row["enName"]+'.jpg">',
+                    // '   <img class="card-img-top" src="./images/characters/es/' + row["jpName"]+'.jpg">',
                     '   <div class="ml-1 text-info position-absolute">' + stars + '</div>',
                     '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
                     '       <p class="card-title m-0" style="font-family: \'Noto Sans TC\'"><strong>' + row["name"] + 'ES</strong></p>',
@@ -3005,6 +3016,7 @@ function genTeamCheckCanvas() {
             return [
                 '<div class="card m-1 float-left position-relative' + border + '" style="width: 130px; border-width: 5px;' + ((row.had5 === true || row.had4 === true) ? "": opacity+";" ) + '">',
                 '   <img class="card-img-top" src="./images/characters/' + row["enName"]+'.jpg">',
+                // '   <img class="card-img-top" src="./images/characters/' + row["jpName"]+'.jpg">',
                 '   <div class="ml-1 position-absolute">' + stars + '</div>',
                 '   <div class="card-body p-0 m-0 position-absolute" style="bottom: 0px; background-color: rgba(255, 255, 255, 0.7);">',
                 ((row.had4 || row.had5 || row.hadas || row.hades) && row["lightShadow"] > 0 && row["lightShadow"] <= 255) ? '       <p class="card-text m-0">' + row["lightShadowType"] + " " + row["lightShadow"]  + '</p>' : '',
