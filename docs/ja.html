@@ -48,9 +48,6 @@
     <!-- jquery.js v3.4.1 -->
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-    <!-- clipboard.js v2.0.4 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.js"></script>
-
     <!-- Latest CSS JS -->
     <link rel="stylesheet" href="./style/css/fontawesome/all.css" crossorigin="anonymous">
 
@@ -103,7 +100,7 @@
             <a class="nav-link active" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">角色表</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="option-tab" data-toggle="tab" href="#option-list" role="tab" aria-controls="list" aria-selected="true">進階</a>
+            <a class="nav-link" id="option-tab" data-toggle="tab" href="#option-list" role="tab" aria-controls="list" aria-selected="true">設定</a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-offset="-45,0">產生</a>
@@ -114,18 +111,6 @@
                     <i class="fas fa-caret-right"></i>
                 </a>
                 <span class="dropdown-item-text"><small>下載圖片即可。</small><br><strong>(建議)</strong></span>
-                <a class="dropdown-item" id="gentext-tab" data-toggle="tab" href="#gentexttable" role="tab" aria-controls="gentext" aria-selected="false">
-                    <i class="fas fa-list-ul"></i>
-                    生成純文字
-                    <i class="fas fa-caret-right"></i>
-                </a>
-                <span class="dropdown-item-text"><small>純文字版本適合任何人使用，複製後直接貼上即可。</small><br><strong>(建議)</strong></span>
-                <a class="dropdown-item mt-2" id="gentable-tab" data-toggle="tab" href="#gentable" role="tab" aria-controls="gentable" aria-selected="false">
-                    <i class="fas fa-th-list"></i>
-                    生成表格
-                    <i class="fas fa-caret-right"></i>
-                </a>
-                <span class="dropdown-item-text"><small>生成的表格複製後需要在巴哈的進階回覆中貼上，如不清楚如何使用，建議使用生成純文字。</small><br><strong>(閱讀說明)</strong></span>
 
             </div>
         </li>
@@ -325,102 +310,8 @@
                 <div class="row justify-content-center">
                     <div class="col-sm-12 col-md-10 col-lg-6 pl-0 pr-0">
 
-                        <nav id="navbar-story" class="navbar navbar-light bg-light story-scroll-nav">
-                            <a class="navbar-brand" href="#">補充</a>
-                            <ul class="nav nav-pills">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#select_as_book">異節</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="missionDropdown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">任務</a>
-                                    <div class="dropdown-menu" aria-labelledby="missionDropdown">
-                                        <a class="dropdown-item" href="#mainStoryTitle">主線</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#otherStoryTitle">外傳 / 斷章</a>
-                                    </div>
 
-                                </li>
-
-
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="starDropdown" data-offset="-40,0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">其他角色</a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="starDropdown">
-                                        <a class="dropdown-item" href="#free">配布角色</a>
-                                        <div role="separator" class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#select_star5_sp">斷章 / 任務升星角色</a>
-                                        <a class="dropdown-item" href="#select_star4">四星角色</a>
-                                    </div>
-
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#extra_settings">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                         <div class="story-scroll-panel" data-spy="scroll" data-target="#navbar-story" data-offset="0">
-                            <div class="pl-3 pr-3 mb-2">
-                                <small>本頁為補充性資料，可自行選擇是否填寫。</small>
-                            </div>
-
-                            <div class="container">
-                                <div class="form-group row pt-2">
-                                    <label for="yumeBooks" class="col-6 col-form-label">詠夢之書數量</label>
-                                    <div class="col-6">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">持有</span>
-                                            </div>
-                                            <input type="number" id="yumeBooks" class="form-control text-center" aria-label="詠夢之書數量" value="0" min="0" max="999">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">本</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="" id="select_as_book">
-                                <h4 class="pl-3 pr-3 pt-2">異節</h4>
-                                <table id="as_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
-                            </div>
-
-                            <div class="" id="select_es_book">
-                                <h4 class="pl-3 pr-3 pt-2">改典</h4>
-                                <table id="es_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
-                            </div>
-
-                            <div class="" id="select_parallel_time_layer_book">
-                                <h4 class="pl-3 pr-3 pt-2">典錄</h4>
-                                <table id="parallel_time_layer_book_table" class="table table-bordered table-striped table-sm table-borderless"></table>
-                            </div>
-
-                            <div class="pl-3" id="mainStory" data-newest="84">
-                                <h4 class="pt-4" id="mainStoryTitle">主線章節</h4>
-                                <div class="btn-inline main-story-btn-group" id="mainStoryBtnGroup"></div>
-                            </div>
-
-                            <div class="pl-3 pr-3" id="otherStoryTitle">
-                                <h4 class="pt-4">其他</h4>
-                                <div class="pb-2 d-none" id="other_story_toolbar">
-                                    <div class="btn-group btn-group-sm float-right" role="group" aria-label="Select all">
-                                        <button type="button" class="btn" id="selectAllOtherStoryListed">
-                                            <i class="fas fa-check-square"></i> 選擇全部
-                                        </button>
-                                        <button type="button" class="btn" id="unselectAllOtherStoryListed">
-                                            <i class="far fa-square"></i> 清除已選
-                                        </button>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-
-                                <div class="" id="extraStory">
-
-                                </div>
-                            </div>
-
 
 
                             <div class="pl-3 pr-3" id="extra_settings">

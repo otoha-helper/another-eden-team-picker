@@ -121,6 +121,8 @@ $(document).ready(function () {
                 var nickname = row["暱稱"];
                 var asNickname = row["AS暱稱"];
                 if (row["角色名"].charAt(0) === '*') return;
+                if (row["AS名"].charAt(0) === '*') row["AS名"] = '';
+                if (row["ES名"].charAt(0) === '*') row["ES名"] = '';
                 if ($.trim(nickname) === "" && $.trim(asNickname) === "") {
                     nickname = row["角色名"];
                 } else if ($.trim(nickname) === "") {
