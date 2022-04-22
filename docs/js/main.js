@@ -1002,6 +1002,7 @@ function star5tableHandle() {
             if (!row["had5"]){
                 row["had5"] = true;
                 row["had4"] = true;
+                if (row["ac"] != "") row["had4"] = false;
             }else{
                 row["had5"] = false;
             }
