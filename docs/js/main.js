@@ -169,6 +169,7 @@ $(document).ready(function () {
                     'jpName': row["日名"],
                     'enName': row["英名"],
                     'name': row["角色名"],
+                    'nickname': nickname,
                     'asNickname': asNickname,
                     'as': row['AS名'] + '的異節',
                     'qty': 0
@@ -190,6 +191,7 @@ $(document).ready(function () {
                     'jpName': row["日名"],
                     'enName': row["英名"],
                     'name': row["角色名"],
+                    'nickname': nickname,
                     'asNickname': asNickname,
                     'es': row['ES名'] + '的改典',
                     'qty': 0
@@ -211,8 +213,9 @@ $(document).ready(function () {
                     'jpName': row["日名"],
                     'enName': row["英名"],
                     'name': row["角色名"],
+                    'nickname': nickname,
                     'asNickname': asNickname,
-                    'ac': row['異時層'] + '的典錄',
+                    'ac': row['異時層'] + '之典錄',
                     'qty': 0
                 }
             });
@@ -1275,8 +1278,10 @@ function star5tableHandle() {
             visible: false
         },{
             field: 'name',
-            title: '名稱',
-            width: 100
+            title: '角色',
+            width: 230,
+            formatter: imageCell,
+            events: operateAsBooks
         },{
             field: 'as',
             title: '異節',
@@ -1305,8 +1310,10 @@ function star5tableHandle() {
             visible: false
         },{
             field: 'name',
-            title: '名稱',
-            width: 100
+            title: '角色',
+            width: 230,
+            formatter: imageCell,
+            events: operateEsBooks
         },{
             field: 'es',
             title: '改典',
@@ -1336,8 +1343,10 @@ function star5tableHandle() {
             visible: false
         },{
             field: 'name',
-            title: '名稱',
-            width: 100
+            title: '角色',
+            width: 230,
+            formatter: imageCell,
+            events: operateParallelTimeLayerBooks
         },{
             field: 'ac',
             title: '典錄',
