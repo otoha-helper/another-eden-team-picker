@@ -193,7 +193,7 @@ $(document).ready(function () {
                     'name': row["角色名"],
                     'nickname': nickname,
                     'asNickname': asNickname,
-                    'es': row['ES名'] + '的改典',
+                    'es': row['ES名'] + '之改典',
                     'qty': 0
                 }
             });
@@ -2339,7 +2339,7 @@ function genText() {
                 if (esBookRow) esBookQty =  Math.ceil(parseInt(esBookRow[0]['qty']));
                 if (typeof esBookQty !== "undefined" && esBookQty > 0){
                     esBook = '<br>' + options.divide +
-                        $.stringPad(row['es'] + "的改典", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
+                        $.stringPad(row['es'] + "之改典", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
                         $.toFullWidthNumber(esBookQty, 2, 99, options.spaceText, options.halfSpaceText) + '本' + options.divide;
                 }
 
@@ -2358,7 +2358,7 @@ function genText() {
                 if (parallelTimeLayerBookRow) parallelTimeLayerBookQty =  Math.ceil(parseInt(parallelTimeLayerBookRow[0]['qty']));
                 if (typeof parallelTimeLayerBookQty !== "undefined" && parallelTimeLayerBookQty > 0){
                     parallelTimeLayerBook = '<br>' + options.divide +
-                        $.stringPad(row['ac'] + "的改典", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
+                        $.stringPad(row['ac'] + "之改典", (options.colsMaxLength.reduce(function(total,n){return total+n;}, 0)), "<", "＞") +
                         $.toFullWidthNumber(parallelTimeLayerBookQty, 2, 99, options.spaceText, options.halfSpaceText) + '本' + options.divide;
                 }
 
@@ -2503,7 +2503,7 @@ function genTable() {
                 if (esBookRow) esBookQty =  Math.ceil(parseInt(esBookRow[0]['qty']));
                 if (typeof esBookQty !== "undefined" && esBookQty > 0){
                     esBook = '<tr height="' + options.textWidth +'">\n<td colspan="2" align="center">\n' +
-                        row['es'] + "的改典" + "\n</td>" +
+                        row['es'] + "之改典" + "\n</td>" +
                         '\n<td colspan="4" align="center">' +
                         $.toFullWidthNumber(esBookQty, 0, 99, options.spaceText, options.halfSpaceText) + '本' + "\n</td>\n</tr>";
                 }
@@ -2522,7 +2522,7 @@ function genTable() {
                 if (parallelTimeLayerBookRow) parallelTimeLayerBookQty =  Math.ceil(parseInt(parallelTimeLayerBookRow[0]['qty']));
                 if (typeof parallelTimeLayerBookQty !== "undefined" && parallelTimeLayerBookQty > 0){
                     parallelTimeLayerBook = '<tr height="' + options.textWidth +'">\n<td colspan="2" align="center">\n' +
-                        row['ac'] + "的典錄" + "\n</td>" +
+                        row['ac'] + "之典錄" + "\n</td>" +
                         '\n<td colspan="4" align="center">' +
                         $.toFullWidthNumber(parallelTimeLayerBookQty, 0, 99, options.spaceText, options.halfSpaceText) + '本' + "\n</td>\n</tr>";
                 }
