@@ -10,3 +10,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - 國際版 2.13.1 ~ 2.14.1
+- 日版 3.0.0
